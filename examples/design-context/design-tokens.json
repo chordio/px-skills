@@ -1,0 +1,74 @@
+{
+  "$schema": "https://design-tokens.org/schema.json",
+  "color": {
+    "primary": {
+      "400": { "$value": "#60A5FA", "$type": "color" },
+      "500": { "$value": "#3B82F6", "$type": "color" },
+      "600": { "$value": "#2563EB", "$type": "color" }
+    },
+    "gray": {
+      "50": { "$value": "#F9FAFB", "$type": "color" },
+      "100": { "$value": "#F3F4F6", "$type": "color" },
+      "200": { "$value": "#E5E7EB", "$type": "color" },
+      "400": { "$value": "#9CA3AF", "$type": "color" },
+      "500": { "$value": "#6B7280", "$type": "color" },
+      "700": { "$value": "#374151", "$type": "color" },
+      "900": { "$value": "#111827", "$type": "color" }
+    },
+    "semantic": {
+      "success": { "$value": "#10B981", "$type": "color" },
+      "warning": { "$value": "#F59E0B", "$type": "color" },
+      "error": { "$value": "#EF4444", "$type": "color" },
+      "info": { "$value": "#3B82F6", "$type": "color" }
+    }
+  },
+  "typography": {
+    "fontFamily": {
+      "heading": { "$value": "Inter, system-ui, sans-serif", "$type": "fontFamily" },
+      "body": { "$value": "Inter, system-ui, sans-serif", "$type": "fontFamily" },
+      "mono": { "$value": "JetBrains Mono, ui-monospace, monospace", "$type": "fontFamily" }
+    },
+    "fontSize": {
+      "display": { "$value": "3rem", "$type": "dimension" },
+      "h1": { "$value": "2.25rem", "$type": "dimension" },
+      "h2": { "$value": "1.875rem", "$type": "dimension" },
+      "h3": { "$value": "1.5rem", "$type": "dimension" },
+      "h4": { "$value": "1.25rem", "$type": "dimension" },
+      "bodyLarge": { "$value": "1.125rem", "$type": "dimension" },
+      "body": { "$value": "1rem", "$type": "dimension" },
+      "bodySmall": { "$value": "0.875rem", "$type": "dimension" },
+      "caption": { "$value": "0.75rem", "$type": "dimension" }
+    },
+    "fontWeight": {
+      "regular": { "$value": "400", "$type": "fontWeight" },
+      "medium": { "$value": "500", "$type": "fontWeight" },
+      "semibold": { "$value": "600", "$type": "fontWeight" },
+      "bold": { "$value": "700", "$type": "fontWeight" }
+    },
+    "lineHeight": {
+      "tight": { "$value": "1.1", "$type": "number" },
+      "snug": { "$value": "1.25", "$type": "number" },
+      "normal": { "$value": "1.5", "$type": "number" },
+      "relaxed": { "$value": "1.6", "$type": "number" }
+    }
+  },
+  "spacing": {
+    "1": { "$value": "4px", "$type": "dimension" },
+    "2": { "$value": "8px", "$type": "dimension" },
+    "3": { "$value": "12px", "$type": "dimension" },
+    "4": { "$value": "16px", "$type": "dimension" },
+    "5": { "$value": "20px", "$type": "dimension" },
+    "6": { "$value": "24px", "$type": "dimension" },
+    "8": { "$value": "32px", "$type": "dimension" },
+    "10": { "$value": "40px", "$type": "dimension" },
+    "12": { "$value": "48px", "$type": "dimension" },
+    "16": { "$value": "64px", "$type": "dimension" }
+  },
+  "breakpoint": {
+    "sm": { "$value": "640px", "$type": "dimension" },
+    "md": { "$value": "768px", "$type": "dimension" },
+    "lg": { "$value": "1024px", "$type": "dimension" },
+    "xl": { "$value": "1280px", "$type": "dimension" },
+    "2xl": { "$value": "1536px", "$type": "dimension" }
+  }
+}
