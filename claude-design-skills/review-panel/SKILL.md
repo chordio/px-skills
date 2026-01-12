@@ -46,17 +46,21 @@ Extract nodeId and fileKey from URL (e.g., figma.com/design/:fileKey/:fileName?n
 
 Choose 2-4 experts based on design type. Load expert profiles from `twins/[name].twin.md`.
 
+**Expert resolution order:**
+1. Check if `twins/[expert-name].twin.md` exists → use the twin profile
+2. If no twin exists → generate an expert persona on-the-fly (see "Dynamic Expert Generation" below)
+
 **Selection heuristics:**
 
 | Design Type | Recommended Panel |
 |-------------|-------------------|
 | Mobile app | Luke Wroblewski (mobile), Jony Ive (craft), Aaron Walter (emotion) |
-| Landing page | April Dunford (positioning), Jony Ive (simplicity), Aaron Walter (trust) |
+| Landing page | Joanna Wiebe (conversion copy), April Dunford (positioning), Aaron Walter (trust) |
 | Dashboard | Edward Tufte (data viz), Brad Frost (systems), Leah Buley (accessibility) |
 | Design system | Brad Frost (atomic), Julie Zhuo (process), Leah Buley (inclusive) |
 | AI/Chat interface | Emily Campbell (AI UX), Aaron Walter (emotion), Val Head (motion) |
 | Onboarding flow | Aaron Walter (delight), Val Head (motion), Eli Woolery (problem-framing) |
-| E-commerce | April Dunford (value prop), Luke Wroblewski (mobile/forms), Aaron Walter (trust) |
+| E-commerce | Joanna Wiebe (conversion copy), April Dunford (value prop), Luke Wroblewski (mobile/forms) |
 | Enterprise/B2B | Leah Buley (accessibility), Clark Valberg (strategy), Julie Zhuo (scalability) |
 
 **Always include a generalist** (Jony Ive, Julie Zhuo, or Aaron Walter) for balanced perspective.
@@ -158,9 +162,61 @@ Load profiles from `twins/` folder:
 | eli-woolery | Design thinking, problem-framing | Early concepts, validation |
 | luke-wroblewski | Mobile, forms, touch | Mobile apps, responsive design |
 | april-dunford | Positioning, messaging | Landing pages, marketing |
+| joanna-wiebe | Conversion copy, VOC | Landing pages, sales pages |
 | leah-buley | Accessibility, inclusive design | Enterprise, compliance |
 | edward-tufte | Data visualization | Dashboards, analytics |
 | val-head | Motion, animation | Transitions, micro-interactions |
+
+## Dynamic Expert Generation
+
+When the design requires expertise not covered by existing twins, generate an appropriate expert on-the-fly.
+
+**When to use dynamic generation:**
+- Design type doesn't match existing expert specialties
+- User requests a specific expertise area (e.g., "gaming UI", "healthcare compliance")
+- Niche domain knowledge is needed (e.g., "fintech dashboards", "educational apps")
+
+**How to generate a dynamic expert:**
+
+Construct a persona using this template:
+
+```
+You are an expert in [specific domain], with deep experience in [relevant background].
+
+## Your Focus Areas
+- [2-3 domain-specific focus areas derived from the design context]
+
+## Your Critique Lens
+You evaluate designs through the lens of:
+- [Domain-specific consideration 1]
+- [Domain-specific consideration 2]
+- [Industry best practices or regulations if applicable]
+
+## Your Task
+Review this design focusing on [domain] considerations. Flag issues that someone without [domain] expertise might miss.
+
+Structure your critique as:
+1. **First Impression** (1-2 sentences)
+2. **What Works** (2-3 specific observations in your domain)
+3. **Concerns** (2-3 issues you'd flag, with reasoning)
+4. **Recommendation** (1 actionable next step)
+```
+
+**Example dynamic experts:**
+
+| Design Context | Generated Expert |
+|----------------|------------------|
+| Healthcare app | Healthcare UX specialist (HIPAA, patient anxiety, clinical workflows) |
+| Gaming interface | Game UI designer (player motivation, feedback loops, accessibility) |
+| Legal/compliance tool | Enterprise compliance UX expert (audit trails, regulatory requirements) |
+| Kids' educational app | Child UX specialist (age-appropriate design, COPPA, developmental psychology) |
+| Fintech dashboard | Financial UX expert (trust signals, data density, regulatory disclosures) |
+
+**Combining with existing twins:**
+
+When using dynamic experts, still include at least one existing twin as a generalist anchor:
+- Healthcare app → Dynamic healthcare expert + Aaron Walter (emotion) + Leah Buley (accessibility)
+- Gaming UI → Dynamic gaming expert + Val Head (motion) + Jony Ive (craft)
 
 ## Adding Custom Twins
 
