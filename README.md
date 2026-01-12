@@ -4,7 +4,7 @@ Six Claude Code skills for improving front-end UI design quality.
 
 | Skill | Purpose | When to Use |
 |-------|---------|-------------|
-| **design-specifier** | Generate design specs BEFORE coding | Starting new UI features |
+| **design-spec-writer** | Generate design specs BEFORE coding | Starting new UI features |
 | **design-context-initializer** | Initialize product design context | Project setup, foundation changes |
 | **design-reviewer** | Review implemented UI for issues | After implementation, before PRs |
 | **review-panel** | Run expert design review panels | Getting multi-perspective design feedback |
@@ -20,7 +20,7 @@ Copy the skill folders you want into your project's `.claude/skills/` directory:
 cp -r skills/* /path/to/your-project/.claude/skills/
 
 # Or copy individual skills
-cp -r skills/design-specifier /path/to/your-project/.claude/skills/
+cp -r skills/design-spec-writer /path/to/your-project/.claude/skills/
 cp -r skills/design-context-initializer /path/to/your-project/.claude/skills/
 cp -r skills/design-reviewer /path/to/your-project/.claude/skills/
 cp -r skills/review-panel /path/to/your-project/.claude/skills/
@@ -30,7 +30,7 @@ cp -r skills/social-post-designer /path/to/your-project/.claude/skills/
 
 ## Skills Overview
 
-### design-specifier
+### design-spec-writer
 
 Generate UX design specifications BEFORE implementing UI features.
 
@@ -133,7 +133,7 @@ Describe your product/feature and desired platforms. The skill generates complet
 ```
 design-context-initializer (foundation)
       |
-      +---> design-specifier (references context for grounded specs)
+      +---> design-spec-writer (references context for grounded specs)
       |
       +---> design-reviewer (references context for informed reviews)
       |
@@ -173,7 +173,7 @@ design-context/
 claude-design-skills/
 ├── README.md
 ├── skills/
-│   ├── design-specifier/
+│   ├── design-spec-writer/
 │   │   ├── SKILL.md
 │   │   ├── references/
 │   │   │   ├── strategic-scaffold-guide.md

@@ -1,9 +1,9 @@
 ---
-name: design-specifier
+name: design-spec-writer
 description: Generate UX design specifications before implementing UI features. Use when building new UI components, adding features with user-facing elements, or deciding between UX approaches. Triggers on "design spec", "how should I design", "UI for", "component for", or feature requests mentioning interface elements.
 ---
 
-# Design Specifier
+# Design Spec Writer
 
 Generate comprehensive UX design specifications BEFORE implementation using a two-stage approach.
 
