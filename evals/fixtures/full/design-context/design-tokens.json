@@ -1,0 +1,40 @@
+{
+  "color": {
+    "primary": { "value": "#2563EB", "description": "Primary brand color (blue)" },
+    "primary-hover": { "value": "#1D4ED8", "description": "Primary hover state" },
+    "primary-light": { "value": "#DBEAFE", "description": "Light primary for backgrounds" },
+    "surface": { "value": "#FFFFFF", "description": "Main surface/card background" },
+    "surface-secondary": { "value": "#F9FAFB", "description": "Secondary surfaces, page background" },
+    "surface-tertiary": { "value": "#F3F4F6", "description": "Tertiary surfaces, hover states" },
+    "text": { "value": "#111827", "description": "Primary text color" },
+    "text-secondary": { "value": "#6B7280", "description": "Secondary/muted text" },
+    "text-tertiary": { "value": "#9CA3AF", "description": "Placeholder, disabled text" },
+    "border": { "value": "#E5E7EB", "description": "Default border color" },
+    "border-focus": { "value": "#2563EB", "description": "Focus ring color" },
+    "error": { "value": "#DC2626", "description": "Error states" },
+    "error-light": { "value": "#FEE2E2", "description": "Error background" },
+    "success": { "value": "#059669", "description": "Success states" },
+    "success-light": { "value": "#D1FAE5", "description": "Success background" },
+    "warning": { "value": "#D97706", "description": "Warning states" },
+    "warning-light": { "value": "#FEF3C7", "description": "Warning background" }
+  },
+  "spacing": {
+    "xs": { "value": "4px", "description": "Tight spacing (icon padding, inline gaps)" },
+    "sm": { "value": "8px", "description": "Small spacing (label-to-input, button padding)" },
+    "md": { "value": "16px", "description": "Medium spacing (card padding, section gaps)" },
+    "lg": { "value": "24px", "description": "Large spacing (form group gaps, page sections)" },
+    "xl": { "value": "32px", "description": "Extra large (major section dividers)" },
+    "2xl": { "value": "48px", "description": "Page-level margins" }
+  },
+  "radius": {
+    "sm": { "value": "4px", "description": "Small elements (tags, badges)" },
+    "md": { "value": "8px", "description": "Medium elements (buttons, inputs, cards)" },
+    "lg": { "value": "12px", "description": "Large elements (modals, popovers)" },
+    "full": { "value": "9999px", "description": "Fully rounded (avatars, pills)" }
+  },
+  "shadow": {
+    "sm": { "value": "0 1px 2px 0 rgb(0 0 0 / 0.05)", "description": "Subtle elevation" },
+    "md": { "value": "0 4px 6px -1px rgb(0 0 0 / 0.1)", "description": "Cards, dropdowns" },
+    "lg": { "value": "0 10px 15px -3px rgb(0 0 0 / 0.1)", "description": "Modals, popovers" }
+  }
+}

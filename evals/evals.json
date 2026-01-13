@@ -1,0 +1,107 @@
+{
+  "version": "1.0.0",
+  "description": "Chordio Skills Evaluation Framework",
+  "skills": {
+    "design-spec-writer": {
+      "description": "Tests context-aware spec generation",
+      "tasks": [
+        {
+          "id": "login-form",
+          "fixture": "minimal",
+          "prompt": "Write a design spec for a login form with email and password fields for the TaskFlow app."
+        },
+        {
+          "id": "dashboard-widget",
+          "fixture": "with-system",
+          "prompt": "Write a design spec for a dashboard card showing daily active users for the TaskFlow app. The card should fit into the existing dashboard layout."
+        },
+        {
+          "id": "edit-profile",
+          "fixture": "full",
+          "prompt": "Write a design spec for an edit profile form where users can update their name, email, and avatar. This should fit into the existing TaskFlow design patterns."
+        }
+      ],
+      "rubric": {
+        "dimensions": [
+          { "name": "completeness", "weight": 1, "description": "Has both strategic scaffold and implementation details" },
+          { "name": "specificity", "weight": 1, "description": "Exact measurements, copy, and states defined" },
+          { "name": "token_refs", "weight": 1, "description": "References design tokens instead of hardcoded values" },
+          { "name": "pattern_adherence", "weight": 1, "requiresFixture": ["with-system", "full"], "description": "Reuses established patterns from components.md" },
+          { "name": "journey_awareness", "weight": 1, "requiresFixture": ["full"], "description": "Considers user journeys and adjacent flows" }
+        ]
+      }
+    },
+    "component-spec-writer": {
+      "description": "Tests comprehensive component specification generation",
+      "tasks": [
+        {
+          "id": "button-component",
+          "fixture": "minimal",
+          "prompt": "Write a design spec for a Button component that will be used across the application. It needs to support primary, secondary, and tertiary variants with appropriate visual hierarchy."
+        },
+        {
+          "id": "button-component-bad-input",
+          "fixture": "minimal",
+          "prompt": "I need a blue button for my app. Make it look nice.",
+          "testType": "gap-filling",
+          "description": "Tests if spec-writer fills in missing requirements from vague input"
+        }
+      ],
+      "rubric": {
+        "dimensions": [
+          { "name": "states_complete", "weight": 2, "description": "Defines all 7 states (default, hover, focus, pressed, disabled, loading, selected)" },
+          { "name": "sizes_defined", "weight": 1, "description": "Specifies at least 3 sizes with dimensions" },
+          { "name": "spacing_tokens", "weight": 1, "description": "Uses design tokens for padding, not hardcoded values" },
+          { "name": "color_per_state", "weight": 2, "description": "Defines bg/text/border colors for each state" },
+          { "name": "variants_covered", "weight": 1, "description": "Includes primary, secondary, tertiary variants" },
+          { "name": "semantic_tones", "weight": 1, "description": "Includes danger/critical tone at minimum" },
+          { "name": "focus_visible", "weight": 1, "description": "Defines accessible focus indicator" },
+          { "name": "touch_target", "weight": 1, "description": "Specifies minimum touch target (44px mobile)" },
+          { "name": "platform_diff", "weight": 1, "description": "Distinguishes mobile vs desktop behavior" },
+          { "name": "light_mode_states", "weight": 1, "description": "Light mode colors for ALL states (default, hover, pressed, focus, disabled)" },
+          { "name": "dark_mode_states", "weight": 1, "description": "Dark mode colors for ALL states (default, hover, pressed, focus, disabled)" },
+          { "name": "contrast_passes", "weight": 1, "description": "Specified text/background color combinations pass 4.5:1 contrast ratio" },
+          { "name": "usage_guidance", "weight": 1, "description": "Explains when to use each variant" },
+          { "name": "pressed_state", "weight": 1, "description": "Explicitly defines pressed/active visual feedback" }
+        ],
+        "maxScore": 16
+      },
+      "goldenExample": "fixtures/button-golden-example.md",
+      "antiPatternExample": "fixtures/button-bad-output.md"
+    },
+    "design-reviewer": {
+      "description": "Tests visual review accuracy",
+      "status": "coming-soon",
+      "tasks": [
+        { "id": "contrast-issue", "fixture": "screenshot", "prompt": "Review this screenshot for accessibility and usability issues" },
+        { "id": "truncation-bug", "fixture": "screenshot", "prompt": "Review this screenshot for overflow and truncation issues" },
+        { "id": "clean-design", "fixture": "screenshot", "prompt": "Review this screenshot for any design issues" },
+        { "id": "multi-viewport", "fixture": "screenshot", "prompt": "Review this page across different viewport sizes" }
+      ],
+      "rubric": {
+        "dimensions": [
+          { "name": "issue_detection", "weight": 1, "description": "Correctly identifies real issues" },
+          { "name": "false_positive_rate", "weight": 1, "description": "Avoids flagging non-issues" },
+          { "name": "severity_accuracy", "weight": 1, "description": "Assigns correct severity levels" }
+        ]
+      }
+    },
+    "review-panel": {
+      "description": "Tests expert panel selection and synthesis",
+      "status": "coming-soon",
+      "tasks": [
+        { "id": "mobile-app", "fixture": "design", "prompt": "Assemble a review panel for this mobile app design" },
+        { "id": "landing-page", "fixture": "design", "prompt": "Assemble a review panel for this landing page" },
+        { "id": "dashboard", "fixture": "design", "prompt": "Assemble a review panel for this data dashboard" },
+        { "id": "synthesis", "fixture": "design", "prompt": "Synthesize the panel feedback into actionable recommendations" }
+      ],
+      "rubric": {
+        "dimensions": [
+          { "name": "expert_selection", "weight": 1, "description": "Selects appropriate experts for the design type" },
+          { "name": "critique_distinctiveness", "weight": 1, "description": "Each expert provides unique perspective" },
+          { "name": "synthesis_quality", "weight": 1, "description": "Synthesis captures consensus and disagreements" }
+        ]
+      }
+    }
+  }
+}
