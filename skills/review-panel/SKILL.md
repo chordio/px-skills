@@ -69,14 +69,16 @@ If user specifies experts, honor their selection.
 
 ### 4. Run Parallel Reviews
 
-Launch sub-agents in parallel—one per expert using the Task tool:
+Launch sub-agents in parallel—one per expert:
 
 ```
 For each selected expert:
   1. Load twins/[expert-name].twin.md
-  2. Spawn Task sub-agent with expert profile and design context
+  2. Spawn a sub-agent with expert profile and design context
   3. All sub-agents run concurrently
 ```
+
+If sub-agent spawning is unavailable, fall back to sequential reviews.
 
 **Sub-agent prompt template:**
 

@@ -131,6 +131,23 @@ For video posts:
 - See `references/video-generation-prompts.md` for prompt structure and examples
 - Specify start/end images if needed for consistency
 
+### Step 4b: Generate Images (Optional)
+
+If the user wants images generated (not just prompts), spawn a sub-agent to generate images in parallel while continuing with copy refinement:
+
+```
+Generate social post images using the image-generator skill. Create:
+
+1. [post-name]-[platform].webp ([dimensions]) - [detailed prompt from Step 4]
+2. [carousel-slide-1].webp ([dimensions]) - [detailed prompt]
+...
+
+Save to /social-posts/images/
+Report back the list of generated files when complete.
+```
+
+If sub-agent spawning is unavailable, generate images sequentially before proceeding.
+
 ### Step 5: Deliver Complete Package
 
 Provide:

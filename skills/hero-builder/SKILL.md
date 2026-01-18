@@ -65,16 +65,17 @@ Choose ONE primary effect category from `references/hero-effects.md`:
 
 ### 4. Generate Hero Image (If Needed)
 
-If the hero requires imagery, spawn a subagent:
+If the hero requires imagery, spawn a sub-agent to generate images in parallel while continuing to build the component:
 
 ```
-Generate hero image using the imagegen skill. Create:
+Generate hero image using the image-generator skill. Create:
 
 hero-main.webp (16:9) - [Detailed prompt matching brand aesthetic]
 
-Use the imagegen script at .claude/skills/imagegen/scripts/generate_image.py
 Save to /hero/public/images/
 ```
+
+If sub-agent spawning is unavailable, generate images sequentially before proceeding.
 
 See `references/hero-imagery.md` for prompts by aesthetic.
 

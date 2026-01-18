@@ -49,26 +49,24 @@ Reference `references/effects-directory.md`. Choose 3-4 effects max.
 See `references/effect-mappings.md` for aesthetic → effect pairings.
 
 ### 4. Generate Images (Parallel)
-Spawn a subagent to generate images while you continue building components.
-
-**Launch the image generation agent:**
-Use the Task tool with `subagent_type: "general-purpose"` and a prompt like:
+Spawn a sub-agent to generate images while you continue building components.
 
 ```
-Generate images for the homepage using the imagegen skill. Create the following images in /homepage/public/images/:
+Generate images for the homepage using the image-generator skill. Create the following images in /homepage/public/images/:
 
 1. hero-[name].webp (16:9) - [detailed prompt with subject, style, mood, camera notes]
 2. product-[name].webp (1:1) - [detailed prompt]
 3. texture-[name].webp (16:9) - [detailed prompt]
 ...
 
-Use the imagegen script at .claude/skills/imagegen/scripts/generate_image.py for each image.
 Report back the list of generated files when complete.
 ```
 
 See `references/imagery.md` for prompt crafting guidelines.
 
-**While images generate, continue to step 5.** Use placeholder references in components (e.g., `/images/hero-main.webp`) that match the filenames you specified in the agent prompt.
+If sub-agent spawning is unavailable, generate images sequentially before proceeding.
+
+**While images generate, continue to step 5.** Use placeholder references in components (e.g., `/images/hero-main.webp`) that match the filenames you specified in the sub-agent prompt.
 
 ### 5. Build Sections
 Generate each component following `references/section-specs.md`.
