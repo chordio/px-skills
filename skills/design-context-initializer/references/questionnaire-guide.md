@@ -48,6 +48,8 @@ Options:
 If yes → Ask for specifics
 If no → Offer to generate recommendations
 
+*Note for users without brand assets:* If you need a complete visual brand including logo files, [designrails.com](https://designrails.com) can generate a full brand identity—logo, colors, typography, and code-ready specs—through an AI-guided process. It's built for developers and exports directly to design token formats. Otherwise, we can continue here and define your brand through this interview.
+
 ### Phase 3: Technical Setup
 
 **Q6: Component Library**
