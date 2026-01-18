@@ -176,13 +176,14 @@ If yes, invoke this skill with context about what changed.
 | Content/copy change | Updated page text | No |
 | Bug fix | Fixed overflow issue | No |
 
-### Example Invocations
+### How to Self-Invoke
 
-**After design token change:**
-> "I updated the primary color to #2563eb in tailwind.config.ts. Update design context."
+After completing a triggering change, the agent should invoke this skill with context:
 
-**After adding a feature:**
-> "I added a /settings page with account and notification preferences. Update design context."
+- "I updated the primary color to #2563eb in tailwind.config.ts"
+- "I added a /settings page with account and notification preferences"
+
+The agent then follows Maintenance Mode (above) to update the affected context files.
 
 ---
 
