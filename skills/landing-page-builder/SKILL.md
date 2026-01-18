@@ -1,11 +1,11 @@
 ---
-name: homepage-builder
-description: Build conversion-focused homepages with exceptional visual storytelling. Use when creating landing pages, marketing sites, or product homepages. Outputs production-ready React/Next.js with tasteful animations from a curated effects directory. Requires brand package (style.md, tokens.json, logo/) and product brief.
+name: landing-page-builder
+description: Build conversion-focused landing pages with exceptional visual storytelling. Use when creating landing pages, marketing sites, or product homepages. Outputs production-ready React/Next.js with tasteful animations from a curated effects directory. Requires brand package (style.md, tokens.json, logo/) and product brief.
 ---
 
-# Homepage Builder
+# Landing Page Builder
 
-Build homepages that convert through visual storytelling and brand-aligned animations.
+Build landing pages that convert through visual storytelling and brand-aligned animations.
 
 ## Required Inputs
 
