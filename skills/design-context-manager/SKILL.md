@@ -19,7 +19,12 @@ Invoke this skill after modifying:
 - CSS variables in `globals.css`, `index.css`, or similar
 - Font imports or typography configuration
 - Component library setup or theming
-- Brand-related constants
+
+### After Feature/Flow Changes
+Invoke this skill after:
+- Adding new pages or routes
+- Implementing major features
+- Changing core user flows or navigation
 
 ### Foundation Changes
 - Rebrand or design system migration
@@ -85,184 +90,18 @@ Use when project lacks design patterns or starting fresh.
 
 See [questionnaire-guide.md](references/questionnaire-guide.md) for question flow.
 
-## Context File Content Guidelines
+## Context File Templates
 
-### brand.md
-```markdown
-# Brand Identity
-
-## Overview
-- Product name and purpose
-- Industry context
-- Target audience
-
-## Visual Style
-- Style name (e.g., "Modern Minimal", "Brutalist", "Corporate Professional")
-- Key visual characteristics
-- Design principles
-
-## Voice & Tone
-- Overall voice personality
-- Tone by context (marketing, UI, errors, success)
-- Language principles
-- Words to use / avoid
-```
-
-### colors.md
-```markdown
-# Color System
-
-## Brand Colors
-- Primary: [hex] - usage guidelines
-- Secondary: [hex] - usage guidelines
-- Accent: [hex] - usage guidelines
-
-## Neutral Scale
-- 50-950 scale with hex values
-
-## Semantic Colors
-- Success, Warning, Error, Info
-- Background, foreground, border variants
-
-## Surface Colors
-- Background (primary, secondary, tertiary)
-- Foreground (primary, secondary, tertiary)
-- Border colors
-
-## Usage Guidelines
-- Color pairing recommendations
-- Accessibility considerations
-- Dark mode behavior (if applicable)
-```
-
-### typography.md
-```markdown
-# Typography
-
-## Font Families
-- Display/Headings: [font-family stack]
-- Body: [font-family stack]
-- Mono (if applicable): [font-family stack]
-
-## Type Scale
-- xs through 7xl with size, line-height, letter-spacing
-
-## Semantic Styles
-- h1-h6 specifications
-- body, bodySmall, caption
-- button, overline
-
-## Usage Guidelines
-- When to use each heading level
-- Responsive scaling rules
-- Font weight usage
-```
-
-### layout.md
-```markdown
-# Layout & Spacing
-
-## Spacing Scale
-- Base unit and scale values
-- Common spacing tokens
-
-## Grid System
-- Container max-widths
-- Column configurations
-- Gutter sizes
-
-## Responsive Breakpoints
-- Mobile, tablet, desktop, large desktop
-- Breakpoint values
-
-## Common Patterns
-- Card spacing
-- Form field spacing
-- Section padding
-```
-
-### components.md
-```markdown
-# Component Guidelines
-
-## Component Library
-- Primary library (e.g., shadcn/ui, Radix, MUI)
-- Component locations
-
-## Button Patterns
-- Primary, secondary, ghost variants
-- Size options
-- Icon button patterns
-
-## Form Patterns
-- Input styling
-- Label positioning
-- Validation display
-
-## Card Patterns
-- Padding and spacing
-- Border and shadow
-- Content hierarchy
-```
-
-### logo.md
-```markdown
-# Logo Guidelines
-
-## Logo Variations
-- Full logo
-- Icon/mark only
-- Wordmark only (if applicable)
-
-## Clear Space
-- Minimum padding requirements
-
-## Usage Rules
-- Minimum sizes
-- Background requirements
-- Don't list
-```
-
-### product-context.md
-```markdown
-# Product Context
-
-## Product Overview
-- Name and description
-- Core value proposition
-- Industry/domain
-
-## Target Audience
-- Primary users
-- User goals and pain points
-- Technical proficiency level
-
-## User Personas
-### [Persona Name]
-- Role
-- Goals
-- Pain points
-- Key tasks
-```
-
-### user-journeys.md
-```markdown
-# User Journeys
-
-## Primary Flows
-### [Flow Name]
-- Entry point
-- Key steps
-- Success state
-
-## Key Pages
-- Page name and purpose
-
-## Critical Interactions
-- Decision points
-- Error handling
-- Edge cases
-```
+See [templates/](templates/) for the full structure of each context file:
+- `brand-template.md` - Brand identity, voice, tone
+- `colors-template.md` - Color system and palettes
+- `typography-template.md` - Fonts and type scale
+- `layout-template.md` - Spacing, grid, breakpoints
+- `components-template.md` - Component patterns
+- `logo-template.md` - Logo usage guidelines
+- `product-context-template.md` - Product overview, personas
+- `user-journeys-template.md` - Flows, pages, interactions
+- `design-tokens-template.json` - W3C format tokens
 
 ## Maintenance Mode
 
@@ -328,25 +167,22 @@ If yes, invoke this skill with context about what changed.
 | Change Type | Example | Triggers? |
 |-------------|---------|-----------|
 | Color value change | Changed primary from blue to indigo | **Yes** |
-| New color added | Added `accent-gold` color | **Yes** |
 | Font family change | Switched body font to Inter | **Yes** |
-| Spacing scale change | Changed base unit from 4px to 8px | **Yes** |
-| Breakpoint modification | Added `xs` breakpoint | **Yes** |
+| Spacing/breakpoint change | Changed base unit or added breakpoint | **Yes** |
+| New page or route | Added `/settings` page | **Yes** |
+| Major feature | Implemented checkout flow | **Yes** |
+| User flow change | Restructured onboarding | **Yes** |
 | Component style tweak | Adjusted button padding | No |
 | Content/copy change | Updated page text | No |
 | Bug fix | Fixed overflow issue | No |
-| Layout adjustment | Changed grid within existing system | No |
 
-### Example Invocation
+### Example Invocations
 
-After changing `tailwind.config.ts`:
-```typescript
-colors: {
-  primary: '#2563eb' // Changed from #3b82f6
-}
-```
+**After design token change:**
+> "I updated the primary color to #2563eb in tailwind.config.ts. Update design context."
 
-Invoke: "I just updated the primary color to #2563eb in tailwind.config.ts. Update the design context."
+**After adding a feature:**
+> "I added a /settings page with account and notification preferences. Update design context."
 
 ---
 
