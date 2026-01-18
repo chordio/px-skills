@@ -162,7 +162,7 @@ Generate W3C Design Tokens format:
   "$schema": "https://design-tokens.github.io/community-group/format/",
   "$metadata": {
     "name": "Project Design System",
-    "generator": "design-context-initializer"
+    "generator": "design-context-manager"
   },
   "color": {
     "brand": {

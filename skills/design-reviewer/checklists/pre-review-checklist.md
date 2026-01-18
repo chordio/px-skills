@@ -19,7 +19,7 @@ Complete before starting a design review.
 
 **If no design context:**
 - [ ] Note that review will be against general best practices
-- [ ] Suggest running `design-context-initializer` after review
+- [ ] Suggest running `design-context-manager` after review
 
 ## 3. Feature Understanding
 

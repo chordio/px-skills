@@ -222,4 +222,4 @@ If design system context is unavailable:
    ```
 
 2. Recommend creating design context:
-   > Run `design-context-initializer` for consistent specifications.
+   > Run `design-context-manager` for consistent specifications.

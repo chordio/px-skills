@@ -1,19 +1,30 @@
 ---
-name: design-context-initializer
-description: Initialize or update design context files for a project. Use when design-context/ folder doesn't exist, when setting up a new project, or when foundation design elements change (new fonts, colors, major rebrand). NOT for day-to-day use - once context exists, other skills reference it directly.
+name: design-context-manager
+description: Initialize and maintain design context files. Use when design-context/ folder doesn't exist, after design-relevant code changes (colors, fonts, spacing), or when foundation elements change. The agent should invoke this after modifying design tokens to keep context in sync.
 ---
 
-# Design Context Initializer
+# Design Context Manager
 
 Initialize and maintain the design context files that ground all design decisions.
 
 ## When to Use
 
-- **Initial setup**: Project has no `design-context/` folder
-- **Foundation changes**: Underlying design system changed (new fonts, colors, component library)
-- **Major updates**: Rebrand, design system migration, significant style changes
+### Initial Setup
+- Project has no `design-context/` folder
+- Starting a new project from scratch
 
-**NOT for day-to-day use** - once context exists, `design-specifier` and `design-reviewer` reference it directly.
+### After Design-Relevant Code Changes
+Invoke this skill after modifying:
+- `tailwind.config.*` (colors, fonts, spacing, breakpoints)
+- CSS variables in `globals.css`, `index.css`, or similar
+- Font imports or typography configuration
+- Component library setup or theming
+- Brand-related constants
+
+### Foundation Changes
+- Rebrand or design system migration
+- Major style overhaul
+- New component library adoption
 
 ## Output Structure
 
@@ -253,15 +264,91 @@ See [questionnaire-guide.md](references/questionnaire-guide.md) for question flo
 - Edge cases
 ```
 
-## Update Mode
+## Maintenance Mode
 
-When updating existing context (foundation changes):
+When the agent has made design-relevant code changes, follow this workflow to sync context.
 
-1. Identify which files need updates based on what changed
-2. Read existing files to preserve custom additions
-3. Update only the affected sections
-4. Add "Last Updated" timestamp
-5. Note confidence level for extracted values
+### Step 1: Identify Affected Context Files
+
+| Code Change | Update These Files |
+|-------------|-------------------|
+| `theme.colors.*` or CSS `--color-*` | colors.md, design-tokens.json |
+| `theme.fontFamily.*` or font imports | typography.md, design-tokens.json |
+| `theme.spacing.*` or CSS `--spacing-*` | layout.md, design-tokens.json |
+| `theme.screens.*` (breakpoints) | layout.md |
+| Component library changes | components.md |
+| Brand voice/tone changes | brand.md |
+| New routes or user flows | user-journeys.md |
+| Product positioning changes | product-context.md |
+
+### Step 2: Read Existing Context
+
+Read `design-context/[affected-file].md` and preserve:
+- Custom additions not from extraction
+- User-provided overrides
+- Sections marked with `<!-- Manual -->` annotation
+
+### Step 3: Update Specific Sections
+
+**Do NOT regenerate entire files.** Update only the sections affected by the code change.
+
+For each changed value:
+1. Update the value
+2. Update the source annotation: `(Extracted from tailwind.config.ts)`
+3. Set confidence to `High` (you know what you just changed)
+
+### Step 4: Update Metadata
+
+At the bottom of each modified file, update:
+```markdown
+_Source: Extracted from [files]_
+_Last Updated: [ISO date]_
+_Recent Change: [Brief description]_
+```
+
+### Step 5: Sync design-tokens.json
+
+If colors, typography, or spacing changed, update the affected sections in `design-tokens.json` to keep it in sync with the markdown files.
+
+---
+
+## Self-Invocation Guidance
+
+The agent should proactively invoke this skill after completing work that affects design foundations.
+
+### Trigger Recognition
+
+After completing a task, ask:
+> "Did I just modify any design-system-level values (colors, fonts, spacing, breakpoints, component patterns)?"
+
+If yes, invoke this skill with context about what changed.
+
+### What Triggers Maintenance
+
+| Change Type | Example | Triggers? |
+|-------------|---------|-----------|
+| Color value change | Changed primary from blue to indigo | **Yes** |
+| New color added | Added `accent-gold` color | **Yes** |
+| Font family change | Switched body font to Inter | **Yes** |
+| Spacing scale change | Changed base unit from 4px to 8px | **Yes** |
+| Breakpoint modification | Added `xs` breakpoint | **Yes** |
+| Component style tweak | Adjusted button padding | No |
+| Content/copy change | Updated page text | No |
+| Bug fix | Fixed overflow issue | No |
+| Layout adjustment | Changed grid within existing system | No |
+
+### Example Invocation
+
+After changing `tailwind.config.ts`:
+```typescript
+colors: {
+  primary: '#2563eb' // Changed from #3b82f6
+}
+```
+
+Invoke: "I just updated the primary color to #2563eb in tailwind.config.ts. Update the design context."
+
+---
 
 ## Quality Standards
 

@@ -157,7 +157,7 @@ If no `design-context/` folder exists:
    - Industry best practices
 
 2. Include a note:
-   > **Tip:** Run `design-context-initializer` to create design context for more grounded specifications.
+   > **Tip:** Run `design-context-manager` to create design context for more grounded specifications.
 
 3. Make reasonable assumptions, noting them explicitly
 
