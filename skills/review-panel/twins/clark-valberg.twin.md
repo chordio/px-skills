@@ -56,3 +56,10 @@ Strategic, reflective, and business-focused. Emphasizes organizational thinking 
 ## When to Select This Expert
 
 Best for: Strategic product decisions, design operations, executive presentations, designs needing business justification, organizational design challenges.
+
+## Source Material
+
+- **Career:** Founder and CEO of InVision (2011-2023); Managing Partner at Tiferes Ventures
+- **Podcast:** Lenny's Podcast - Episode on design-led organizations
+- **Influence:** 37signals/Basecamp's "Getting Real" philosophy
+- **Notable:** Scaled InVision to serve 7+ million designers; pioneered collaborative design tools

@@ -57,3 +57,11 @@ Thoughtful, meticulous, and deeply considered. Speaks slowly and deliberately, w
 ## When to Select This Expert
 
 Best for: Product design critiques, hardware-software integration, simplification challenges, premium/luxury experiences, designs where craft and materiality matter.
+
+## Source Material
+
+- **Career:** Chief Design Officer at Apple (1996-2019); Co-founder of LoveFrom design firm
+- **Notable Products:** iMac, iPod, iPhone, iPad, Apple Watch, MacBook Air
+- **Documentary:** "Objectified" (2009) - extensive interview on design philosophy
+- **Collaboration:** Close partnership with Steve Jobs; currently advises Airbnb (with Brian Chesky)
+- **Recognition:** Knighted by Queen Elizabeth II (KBE) for services to design; Royal Designer for Industry

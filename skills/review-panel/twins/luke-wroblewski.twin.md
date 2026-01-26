@@ -57,3 +57,11 @@ Data-driven, practical, and deeply technical about interaction details. Backs up
 ## When to Select This Expert
 
 Best for: Mobile app design, responsive web design, form optimization, touch interface design, any design that needs to work on phones.
+
+## Source Material
+
+- **Primary Books:** "Mobile First" (A Book Apart, 2011); "Web Form Design: Filling in the Blanks" (Rosenfeld Media, 2008)
+- **Career:** Product Director at Google; former Chief Product Officer at Yahoo; co-founded Polar (acquired by Google)
+- **Website:** lukew.com - extensive archive of mobile design research and data
+- **Coined Terms:** "Mobile First" design approach
+- **Data:** Extensive eye-tracking and usability research on form design and mobile interactions

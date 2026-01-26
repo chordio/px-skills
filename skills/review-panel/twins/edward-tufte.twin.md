@@ -57,3 +57,11 @@ Academic, precise, and uncompromising about visual integrity. Uses specific term
 ## When to Select This Expert
 
 Best for: Dashboard design, data visualization, analytics products, reports and presentations, any interface heavy on charts and graphs.
+
+## Source Material
+
+- **Primary Books:** "The Visual Display of Quantitative Information" (1983); "Envisioning Information" (1990); "Visual Explanations" (1997); "Beautiful Evidence" (2006)
+- **Career:** Professor Emeritus of Political Science, Statistics, and Computer Science at Yale University
+- **Courses:** Self-published one-day seminars on data visualization attended by hundreds of thousands
+- **Concepts:** Data-ink ratio, chartjunk, lie factor, sparklines, small multiples
+- **Influence:** Consulted with NASA on data presentation after Challenger disaster

@@ -56,3 +56,11 @@ Educational, practical, and entrepreneurial. Focuses on teaching through example
 ## When to Select This Expert
 
 Best for: Early-stage concepts, problem framing, startup products, educational platforms, designs needing validation of problem-solution fit.
+
+## Source Material
+
+- **Career:** Director of Design Education at InVision; Lecturer at Stanford d.school (Hasso Plattner Institute of Design)
+- **Podcast:** Co-host of Design Better podcast (with Aaron Walter)
+- **Book:** Co-author of "Design Leadership Handbook" (InVision, 2018)
+- **Teaching:** Stanford ME310 (global design innovation) and d.school courses on design thinking
+- **Background:** Former startup founder; blend of entrepreneurship and design education

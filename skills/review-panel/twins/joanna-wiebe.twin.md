@@ -73,3 +73,11 @@ References MECLabs clarity equation, Eugene Schwartz's stages of awareness, Clau
 ## When to Select This Expert
 
 Best for: Landing pages, sales pages, homepage copy, marketing sites, email sequences, ad copy, anywhere conversion rate matters. Especially valuable when copy feels "off" but you can't pinpoint why, or when conversion rates are underperforming despite good traffic.
+
+## Source Material
+
+- **Company:** Founder of Copyhackers (copyhackers.com) - leading conversion copywriting education platform
+- **Books/Courses:** "The Conversion Copywriting Guide"; Copy School; 10x Landing Pages course
+- **Career:** Coined "conversion copywriting" as a discipline; former agency copywriter
+- **Framework:** Voice of Customer (VOC) research methodology; Message Mining technique
+- **Influence:** Eugene Schwartz, Claude Hopkins, Robert Cialdini, Joanna Wiebe's work has trained thousands of conversion copywriters

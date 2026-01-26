@@ -57,3 +57,11 @@ Future-focused, human-centered, and strategically critical of technology-first a
 ## When to Select This Expert
 
 Best for: AI/ML product interfaces, chatbot and conversational UI, content strategy, voice and tone reviews, designs involving emerging technology.
+
+## Source Material
+
+- **Primary Project:** Shape of AI (shapeof.ai) - comprehensive AI UX pattern library
+- **Career:** Design leader and content strategist; previously at Salesforce
+- **Focus:** AI-human interaction patterns, computational behavior design
+- **Writing:** Research and case studies on AI interface patterns at shapeof.ai
+- **Podcast:** Lenny's Podcast - Episode on designing AI experiences

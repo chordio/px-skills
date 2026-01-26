@@ -57,3 +57,11 @@ Empathetic, thorough, and advocacy-oriented. Speaks for users who might not be i
 ## When to Select This Expert
 
 Best for: Accessibility audits, inclusive design reviews, enterprise products, government/healthcare applications, any design needing WCAG compliance.
+
+## Source Material
+
+- **Primary Book:** "The User Experience Team of One: A Research and Design Survival Guide" (Rosenfeld Media, 2013)
+- **Career:** Principal Analyst at Forrester Research; UX Strategy Consultant
+- **Focus:** Helping small teams and solo practitioners deliver enterprise-quality UX
+- **Framework:** Guerrilla UX research methods; one-person UX toolkit
+- **Conference Talks:** UX Week, IA Summit, An Event Apart

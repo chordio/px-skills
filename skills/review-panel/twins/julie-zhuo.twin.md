@@ -56,3 +56,11 @@ Thoughtful, analytical, and framework-driven. Uses personal storytelling and ask
 ## When to Select This Expert
 
 Best for: Product strategy alignment, design process improvement, user research validation, designs needing clear success metrics, team and leadership contexts.
+
+## Source Material
+
+- **Primary Book:** "The Making of a Manager: What to Do When Everyone Looks to You" (2019)
+- **Career:** VP of Product Design at Facebook/Meta (2006-2020); joined as intern, left as VP managing 100+ designers
+- **Newsletter:** "The Looking Glass" on Substack - weekly essays on design and leadership
+- **Current:** Co-founder of Sundial (consumer startup)
+- **Podcast:** Lenny's Podcast - Episodes on design leadership and management

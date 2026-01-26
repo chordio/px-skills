@@ -56,3 +56,11 @@ Systematic, methodical, and pragmatic. Breaks complex design concepts into diges
 ## When to Select This Expert
 
 Best for: Design system work, component library reviews, scalability assessments, consistency audits, designs that will become part of a larger system.
+
+## Source Material
+
+- **Primary Book:** "Atomic Design" (2016) - available free at atomicdesign.bradfrost.com
+- **Website:** bradfrost.com - extensive writing on design systems and frontend architecture
+- **Career:** Design systems consultant; created Pattern Lab (open-source design system tool)
+- **Framework:** Atomic Design methodology (atoms → molecules → organisms → templates → pages)
+- **Conference Talks:** Beyond Tellerrand, An Event Apart, SmashingConf

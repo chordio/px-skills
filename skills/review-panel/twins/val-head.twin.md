@@ -57,3 +57,11 @@ Enthusiastic about motion but disciplined about purpose. Technical about timing 
 ## When to Select This Expert
 
 Best for: Micro-interaction design, page transitions, loading states, onboarding flows, any design where motion and animation are significant.
+
+## Source Material
+
+- **Primary Book:** "Designing Interface Animation: Meaningful Motion for User Experience" (Rosenfeld Media, 2016)
+- **Newsletter/Blog:** valhead.com - UI animation tutorials, research, and resources
+- **Course:** "Motion Design for the Web" - comprehensive animation training
+- **Podcast:** Motion and Meaning (with Cennydd Bowles) - exploring motion design in UX
+- **Conference Talks:** An Event Apart, Generate, SmashingConf - keynotes on purposeful animation

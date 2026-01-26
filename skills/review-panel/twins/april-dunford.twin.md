@@ -57,3 +57,11 @@ Direct, strategic, and no-nonsense. Cuts through marketing fluff to focus on wha
 ## When to Select This Expert
 
 Best for: Landing pages, marketing sites, product positioning, homepage design, B2B products, anywhere first impressions and conversion matter.
+
+## Source Material
+
+- **Primary Book:** "Obviously Awesome: How to Nail Product Positioning so Customers Get It, Buy It, Love It" (2019)
+- **Upcoming Book:** "Sales Pitch: How to Craft a Story to Stand Out and Win" (2023)
+- **Career:** 25+ years in B2B technology; VP roles at Nortel, IBM, and multiple startups
+- **Framework:** 10-step positioning methodology (competitive alternatives → unique attributes → value → target customers → market category)
+- **Podcast:** Lenny's Podcast - Episode on positioning strategy
