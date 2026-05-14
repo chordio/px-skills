@@ -20,6 +20,7 @@ directory of pbakaus/impeccable:
 - `interaction-design.md`
 - `responsive-design.md`
 - `ux-writing.md`
+- `heuristics-scoring.md`
 
 `anti-patterns.md` is a curated extract from impeccable's `skill/SKILL.md`
 ("Absolute bans", shared design laws, AI slop test sections).

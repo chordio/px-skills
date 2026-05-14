@@ -21,7 +21,15 @@ if [[ -z "$NEW_COMMIT" ]]; then
   exit 1
 fi
 
-if [[ "$OLD_COMMIT" == "$NEW_COMMIT" ]]; then
+REFS=(typography color-and-contrast spatial-design motion-design interaction-design responsive-design ux-writing heuristics-scoring)
+
+# Self-heal: even if commits match, refetch when any expected file is missing locally
+MISSING=0
+for f in "${REFS[@]}"; do
+  [[ -f "$DEST/${f}.md" ]] || MISSING=$((MISSING+1))
+done
+
+if [[ "$OLD_COMMIT" == "$NEW_COMMIT" && "$MISSING" -eq 0 ]]; then
   echo "Already at upstream commit $NEW_COMMIT. Nothing to do."
   exit 0
 fi
@@ -29,9 +37,9 @@ fi
 echo "Refreshing impeccable references"
 echo "  was: $OLD_COMMIT"
 echo "  now: $NEW_COMMIT"
+[[ "$MISSING" -gt 0 ]] && echo "  $MISSING expected file(s) missing locally — will re-fetch"
 echo ""
 
-REFS=(typography color-and-contrast spatial-design motion-design interaction-design responsive-design ux-writing)
 changed=0
 failed=0
 tmpdir="$(mktemp -d)"
