@@ -60,3 +60,15 @@ Tier 2/3/4 chordio skills are skipped — see conversation logs.
 
 - Whether to set `CLAUDE_DESIGN_SKILLS_ROOT` as an env var for path indirection vs hard-code `~/.claude-design-skills` — decided against env var indirection; the gstack precedent shows hard-coded paths work fine for single-canonical-install setups
 - Whether to commit per-task or bundle commits — defer to user
+
+---
+
+## v2 follow-ups (post-PR)
+
+- [x] **7. Vendor `heuristics-scoring.md`** — Nielsen's 10 heuristics with 0–4 rubric, vendored from impeccable. Added to `shared/design-taste/`, refresh script's REFS array, NOTICE.md, and wired into design-reviewer for severity grading.
+- [x] **8. Restructure `extraction-guide.md`** — Path A and Path C now parallel sections in `skills/design-context-manager/references/extraction-guide.md`, with shared Design Tokens JSON Structure / Confidence Annotations / Error Handling at the bottom. SKILL.md's Path C section now links to the guide.
+- [x] **9. Smoke-test canonical install** — cloned `chordio/claude-design-skills@ehudhal/inspect-claude-md` to `~/.claude-design-skills`, ran `bash install.sh`, all 10 symlinks created, `bash install.sh --check` confirms all point at canonical paths, Claude Code harness auto-discovered the new skills (confirmed via skill listing). **Note:** v2 work (heuristics-scoring, Path C in extraction-guide, refresh script self-heal) is not yet pushed — `~/.claude-design-skills` is at `b836a9a` and won't include those until you commit + push + `git pull` from canonical.
+
+## Refresh script hardening (incidental)
+
+`refresh-impeccable.sh` was missing a "fetch if any expected file is missing" check — fixed during v2. Now self-heals if you delete a file from `shared/design-taste/`.
