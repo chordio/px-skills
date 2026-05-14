@@ -167,6 +167,8 @@ Use when the user has a live site — their own production site, a competitor fo
 - `/reference-ux` — captures UX *flows*, not just tokens; different scope, complementary output
 - `/browse` (from gstack) — preferred browser primitive when available
 
+See [extraction-guide.md](references/extraction-guide.md) for the full Path C harvest table, reverse-engineering steps, common site patterns, and limitations.
+
 ## Context File Templates
 
 See [templates/](templates/) for the full structure of each context file:
