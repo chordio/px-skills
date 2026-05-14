@@ -1,32 +1,97 @@
 # Claude Design Skills
 
-Six Claude Code skills for improving front-end UI design quality.
+A bundle of Claude Code skills for improving front-end UI design quality, plus curated design-taste reference material that grounds every skill.
+
+## Skills
 
 | Skill | Purpose | When to Use |
 |-------|---------|-------------|
 | **design-spec-writer** | Generate design specs BEFORE coding | Starting new UI features |
-| **design-context-initializer** | Initialize product design context | Project setup, foundation changes |
+| **design-context-manager** | Initialize/maintain product design context | Project setup, foundation changes, reverse-engineer a live site |
 | **design-reviewer** | Review implemented UI for issues | After implementation, before PRs |
-| **review-panel** | Run expert design review panels | Getting multi-perspective design feedback |
+| **review-panel** | Run expert design review panels (26 twins) | Multi-perspective design feedback |
 | **design-manager-twin-creator** | Create digital twins of design leaders | Capturing someone's critique style |
-| **social-post-designer** | Create social media posts with AI visuals | Social content creation |
+| **reference-ux** | Reverse-engineer a competitor's UX flow | Studying how another product solves a problem |
+| **hero-builder** | Build striking hero sections | Landing page heroes, above-the-fold |
+| **landing-page-builder** | Build conversion-focused landing pages | Marketing sites, product homepages |
+| **image-generator** | Generate AI imagery (nano-banana / Veo) | Hero imagery, marketing visuals |
+| **social-post-designer** | Create social posts with AI visuals | Social content creation |
+
+All design skills load curated taste references from the canonical checkout at `~/.claude-design-skills/shared/design-taste/` — see [Design Taste References](#design-taste-references) below.
 
 ## Installation
 
-Copy the skill folders you want into your project's `.claude/skills/` directory:
+The supported install path is a one-time clone to a canonical location, then `bash install.sh` to symlink every skill into `~/.claude/skills/`. Updates are then a single `git pull` away — no re-copy needed.
+
+Keep the canonical checkout at `~/.claude-design-skills`: skills read shared taste references from `~/.claude-design-skills/shared/design-taste/`, so project-local copies are not supported.
+
+### First-time install
 
 ```bash
-# Copy all skills
-cp -r skills/* /path/to/your-project/.claude/skills/
+git clone <your-fork-url> ~/.claude-design-skills
+cd ~/.claude-design-skills
+bash install.sh
 
-# Or copy individual skills
-cp -r skills/design-spec-writer /path/to/your-project/.claude/skills/
-cp -r skills/design-context-initializer /path/to/your-project/.claude/skills/
-cp -r skills/design-reviewer /path/to/your-project/.claude/skills/
-cp -r skills/review-panel /path/to/your-project/.claude/skills/
-cp -r skills/design-manager-twin-creator /path/to/your-project/.claude/skills/
-cp -r skills/social-post-designer /path/to/your-project/.claude/skills/
+# Verify what's installed
+bash install.sh --check
 ```
+
+### Updating
+
+```bash
+cd ~/.claude-design-skills
+git pull
+# Symlinks already point at the working tree — instantly current
+```
+
+### Removing
+
+```bash
+cd ~/.claude-design-skills
+bash install.sh --uninstall
+```
+
+### Working in worktrees
+
+`install.sh` defaults its source to the directory containing the script. To swap your live install to point at a Conductor workspace or git worktree:
+
+```bash
+cd ~/conductor/workspaces/claude-design-skills/<workspace>
+bash install.sh --force      # Re-point symlinks at this worktree
+
+# When done experimenting:
+cd ~/.claude-design-skills
+bash install.sh --force      # Restore the main checkout
+```
+
+Run `bash install.sh --check` from anywhere to see which checkout each skill currently points at.
+
+## Design Taste References
+
+`shared/design-taste/` contains curated design reference material vendored from [pbakaus/impeccable](https://github.com/pbakaus/impeccable) (Apache-2.0). Every design skill in this repo reads from these files as the bar for what good design looks like.
+
+```
+shared/design-taste/
+├── anti-patterns.md         # Bans (no side-stripe borders, no gradient text, etc.)
+├── typography.md            # Type systems, font pairing, modular scales
+├── color-and-contrast.md    # OKLCH, tinted neutrals, dark mode, accessibility
+├── spatial-design.md        # Spacing systems, grids, visual hierarchy
+├── motion-design.md         # Easing, timing, micro-interactions
+├── interaction-design.md    # Affordances, feedback, state changes
+├── responsive-design.md     # Breakpoints, fluid scales
+├── ux-writing.md            # Voice, error messages, calibrated copy
+├── NOTICE.md                # Apache-2.0 attribution
+└── .impeccable-commit       # Pinned upstream commit
+```
+
+To refresh from upstream impeccable:
+
+```bash
+cd ~/.claude-design-skills
+bash refresh-impeccable.sh
+```
+
+The script no-ops if you're already at the upstream HEAD. Otherwise it pulls the latest, reports what changed, and leaves the diff for you to review and commit. `anti-patterns.md` is curated (not auto-fetched) — re-derive manually if upstream's `skill/SKILL.md` "Absolute bans" section has evolved.
 
 ## Skills Overview
 
@@ -39,41 +104,28 @@ Generate UX design specifications BEFORE implementing UI features.
 - Component selection and styling guidance
 - Layout and responsive behavior specs
 - Copywriting for all UI elements
-- Avoids "AI slop" patterns (generic designs)
+- Avoids "AI slop" patterns via `shared/design-taste/anti-patterns.md`
 
-**Usage:**
-Ask Claude to generate a design spec for your feature. If `design-context/` exists, it will be used for grounding.
+**Usage:** Ask Claude to generate a design spec for your feature. If `design-context/` exists, it grounds the spec.
 
-### design-context-initializer
+### design-context-manager
 
 Initialize and maintain design context files that ground all design decisions.
 
-**Key Features:**
-- Two paths: Auto-extraction from codebase OR interactive questionnaire
-- Outputs modular design files: `brand.md`, `colors.md`, `typography.md`, `layout.md`, `components.md`, `logo.md`
-- Machine-readable `design-tokens.json` (W3C format)
-- Product context for functional design critique
+**Three paths:**
+- **Path A — Extraction**: scan tailwind config, CSS variables, components to extract from an existing codebase
+- **Path B — Interactive**: questionnaire-driven for new projects with no existing patterns
+- **Path C — Live URL**: point at a live site and reverse-engineer its design system via browser automation (`/browse`, Browser Use, Playwright, or Puppeteer)
 
-**When to Use:**
-- Initial project setup (no `design-context/` exists)
-- After major foundation changes (new fonts, colors, rebrand)
-- NOT for day-to-day use
-
-**Output Location:** `design-context/` in your project root
+**Outputs:** `brand.md`, `colors.md`, `typography.md`, `layout.md`, `components.md`, `logo.md`, `design-tokens.json` (W3C format), `product-context.md`, `user-journeys.md` — all under `design-context/` in your project root.
 
 ### design-reviewer
 
-Review implemented UI for usability issues across four specialized domains.
-
-**Key Features:**
-- Four review lenses: Typography, Color/Contrast, Layout/Spacing, Overflow/Truncation
-- Visual inspection via Puppeteer scripts
-- Responsive testing at multiple viewports
-- Severity classification (Critical, Major, Minor)
+Review implemented UI for usability issues across four specialized domains: Typography, Color/Contrast, Layout/Spacing, and Overflow/Truncation. Cross-references findings against `shared/design-taste/anti-patterns.md`.
 
 **Prerequisites:**
 1. Chrome with remote debugging: `--remote-debugging-port=9222`
-2. Install puppeteer-core: `npm install puppeteer-core`
+2. `npm install puppeteer-core`
 
 **Usage:**
 ```bash
@@ -81,77 +133,80 @@ Review implemented UI for usability issues across four specialized domains.
 /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --remote-debugging-port=9222
 
 # Capture screenshots
-node .claude/skills/design-reviewer/scripts/screenshot.js 375 667 mobile.png
-node .claude/skills/design-reviewer/scripts/screenshot.js 1440 900 desktop.png
-
-# Run DOM checks
-node .claude/skills/design-reviewer/scripts/eval.js "[...document.querySelectorAll('*')].filter(el => el.scrollWidth > el.clientWidth).length"
+node ~/.claude/skills/design-reviewer/scripts/screenshot.js 375 667 mobile.png
+node ~/.claude/skills/design-reviewer/scripts/screenshot.js 1440 900 desktop.png
 ```
 
 ### review-panel
 
-Assemble and run expert design review panels with 2-4 specialists for multi-perspective critique.
+Assemble and run expert design review panels with 2-4 specialists for multi-perspective critique. Includes 26 pre-built expert twins (Jony Ive, Julie Zhuo, Brad Frost, Edward Tufte, Teresa Torres, April Dunford, Bob Moesta, and more). Synthesis cross-references `shared/design-taste/anti-patterns.md`.
 
-**Key Features:**
-- Selects optimal experts based on design type (mobile app, landing page, dashboard, etc.)
-- Runs parallel sub-agent reviews from different expert perspectives
-- Synthesizes findings into consensus, differing perspectives, and prioritized actions
-- Supports Figma URLs, images, and design descriptions
-- Includes 13 pre-built expert twins (Jony Ive, Julie Zhuo, Brad Frost, etc.)
-
-**Usage:**
-Share a design (Figma URL, image, or description) and ask for a review panel critique. Claude will select appropriate experts and run parallel reviews.
+**Usage:** Share a design (Figma URL, image, or description). Claude selects appropriate experts based on design type and runs parallel reviews.
 
 ### design-manager-twin-creator
 
-Create digital twins of design managers and leaders by analyzing their feedback patterns and interviewing them about their principles.
+Create digital twins of design managers and leaders by analyzing their feedback patterns and conducting structured interviews. Created twins drop into `review-panel/twins/` for use in panel reviews.
 
-**Key Features:**
-- Analyzes source materials (Figma comments, Slack threads, review transcripts)
-- Conducts structured interviews to capture philosophy and critique style
-- Outputs a standalone skill that embodies their perspective
-- Created twins can be used with the review-panel skill
+**Usage:** Provide examples of someone's feedback (Figma comments, Slack threads, review transcripts) and/or conduct an interview. The skill generates a reusable twin profile.
 
-**Usage:**
-Provide examples of someone's feedback (comments, conversations, written reviews) and/or conduct an interview. The skill generates a reusable twin profile.
+### reference-ux
+
+Capture and reverse-engineer UX patterns from live products. Point at any URL — the skill browses the experience on desktop + mobile, captures screenshots, and produces a structured UX reference document covering flow architecture, interaction patterns, layout templates, copy/tone, design tokens, responsive adaptations, and design principles.
+
+**Output:** `docs/references/<slug>/reference.md` + `screenshots/` (when in a git repo), or `~/.gstack/projects/<slug>/references/<slug>/` otherwise.
+
+**Usage:** `Reference Stripe's pricing flow` — Claude navigates, captures, analyzes, and documents.
+
+### hero-builder
+
+Build hero sections that stop the scroll. Outputs production-ready React/Next.js with curated visual effects (atmospheric, typographic, interactive, cinematic, product). Refuses the hero-metric template, gradient text, glassmorphism-as-default, and other slop patterns flagged in `shared/design-taste/anti-patterns.md`.
+
+**Required Inputs:** Brand package (`style.md`, `tokens.json`, `logo/`) + hero brief (core promise, audience, mood).
+
+### landing-page-builder
+
+Build conversion-focused landing pages with exceptional visual storytelling. Section types: Hero → Problem → Solution → Benefits → How It Works → Social Proof → FAQ → Final CTA. Sub-agents handle image generation in parallel.
+
+**Required Inputs:** Brand package + product brief (what/who/problem/solution/differentiation/features/social proof/objections).
+
+### image-generator
+
+Generate AI imagery via nano-banana (images) and Veo (video) with detailed prompts tuned to brand aesthetic. Used by hero-builder and landing-page-builder as a sub-agent for parallel image generation.
 
 ### social-post-designer
 
-Create high-converting social media posts with AI-generated visuals across multiple formats.
-
-**Key Features:**
-- Supports text-only, image, carousel, and video post formats
-- Applies proven copywriting techniques (hooks, CTAs, engagement drivers)
-- Generates detailed prompts for AI image generators (nano-banana) and video generators (Veo)
-- Platform-specific optimization (LinkedIn, Twitter/X, Instagram, TikTok, Facebook)
-
-**Usage:**
-Describe your product/feature and desired platforms. The skill generates complete post packages including copy, visual specifications, and generation prompts.
+Create high-converting social media posts with AI-generated visuals across LinkedIn, Twitter/X, Instagram, TikTok, and Facebook. Supports text-only, image, carousel, and video formats. Generates copy and detailed visual prompts for image/video generators.
 
 ## Skill Interactions
 
 ```
-design-context-initializer (foundation)
+design-context-manager (foundation)
       |
-      +---> design-spec-writer (references context for grounded specs)
+      +---> design-spec-writer (grounded specs)
       |
-      +---> design-reviewer (references context for informed reviews)
+      +---> design-reviewer (informed reviews)
       |
-      +---> review-panel (references context for expert critiques)
+      +---> review-panel (expert critiques)
+      |
+      +---> hero-builder, landing-page-builder (brand-aligned output)
 
-design-manager-twin-creator ---> review-panel (created twins can be added to panel)
+reference-ux ---> design-context-manager (Path C inspiration)
+             ---> design-spec-writer (UX patterns to draw from)
 
-social-post-designer (standalone, uses brand context if available)
+design-manager-twin-creator ---> review-panel (created twins added to panel)
+
+image-generator ---> hero-builder, landing-page-builder, social-post-designer
+                     (sub-agent for parallel image gen)
 ```
 
 **Progressive Enhancement:**
-- Without context: Skills work but produce generic output
-- With product-context only: Better persona awareness
-- With full context: Best results, full system awareness
+- Without context: skills work but produce generic output
+- With product-context only: better persona awareness
+- With full design-context/ + taste references: best results
 
 ## Design Context Structure
 
-When `design-context-initializer` runs, it creates:
+When `design-context-manager` runs, it creates:
 
 ```
 design-context/
@@ -164,7 +219,8 @@ design-context/
 ├── design-tokens.json    # Machine-readable tokens (W3C format)
 ├── product-context.md    # What you're building, for whom
 ├── user-journeys.md      # Key pages and workflows
-└── logos/                # Logo assets (SVG, PNG)
+├── logos/                # Logo assets (SVG, PNG)
+└── source/               # (Path C only) Screenshots + source manifest
 ```
 
 ## Repository Structure
@@ -172,85 +228,30 @@ design-context/
 ```
 claude-design-skills/
 ├── README.md
+├── LICENSE
+├── install.sh                # Symlink installer
+├── refresh-impeccable.sh     # Re-fetch upstream design references
+├── docs/
+│   └── augmentation-plan.md  # Plan for the design-taste augmentation
+├── shared/
+│   └── design-taste/         # Vendored impeccable refs (Apache-2.0)
 ├── skills/
 │   ├── design-spec-writer/
-│   │   ├── SKILL.md
-│   │   ├── references/
-│   │   │   ├── strategic-scaffold-guide.md
-│   │   │   ├── implementation-expert-guide.md
-│   │   │   ├── ux-patterns.md
-│   │   │   └── anti-patterns.md
-│   │   └── templates/
-│   │       └── spec-output-template.md
-│   │
-│   ├── design-context-initializer/
-│   │   ├── SKILL.md
-│   │   ├── references/
-│   │   │   ├── extraction-guide.md
-│   │   │   └── questionnaire-guide.md
-│   │   └── templates/
-│   │       ├── brand-template.md
-│   │       ├── colors-template.md
-│   │       ├── typography-template.md
-│   │       ├── layout-template.md
-│   │       ├── components-template.md
-│   │       ├── logo-template.md
-│   │       ├── product-context-template.md
-│   │       ├── user-journeys-template.md
-│   │       └── design-tokens-template.json
-│   │
+│   ├── design-context-manager/
 │   ├── design-reviewer/
-│   │   ├── SKILL.md
-│   │   ├── references/
-│   │   │   ├── typography-review.md
-│   │   │   ├── color-review.md
-│   │   │   ├── layout-review.md
-│   │   │   ├── overflow-review.md
-│   │   │   └── severity-guide.md
-│   │   ├── checklists/
-│   │   │   ├── pre-review-checklist.md
-│   │   │   └── issue-format.md
-│   │   └── scripts/
-│   │       ├── README.md
-│   │       ├── screenshot.js
-│   │       └── eval.js
-│   │
-│   ├── review-panel/
-│   │   ├── SKILL.md
-│   │   └── twins/
-│   │       ├── aaron-walter.twin.md
-│   │       ├── april-dunford.twin.md
-│   │       ├── brad-frost.twin.md
-│   │       ├── clark-valberg.twin.md
-│   │       ├── edward-tufte.twin.md
-│   │       ├── eli-woolery.twin.md
-│   │       ├── emily-campbell.twin.md
-│   │       ├── joanna-wiebe.twin.md
-│   │       ├── jony-ive.twin.md
-│   │       ├── julie-zhuo.twin.md
-│   │       ├── leah-buley.twin.md
-│   │       ├── luke-wroblewski.twin.md
-│   │       └── val-head.twin.md
-│   │
+│   ├── review-panel/         # 26 expert twins under twins/
 │   ├── design-manager-twin-creator/
-│   │   ├── SKILL.md
-│   │   └── references/
-│   │       ├── extraction-patterns.md
-│   │       ├── interview-guide.md
-│   │       └── twin-profile-template.md
-│   │
+│   ├── reference-ux/
+│   ├── hero-builder/
+│   ├── landing-page-builder/
+│   ├── image-generator/
 │   └── social-post-designer/
-│       ├── SKILL.md
-│       └── references/
-│           ├── image-generation-prompts.md
-│           ├── post-formats.md
-│           ├── social-copywriting.md
-│           └── video-generation-prompts.md
-│
-└── examples/
-    └── design-context/   # Example output files
+├── agent-instructions/
+│   └── CLAUDE.md             # Canonical instructions for AI agents working in this repo
+├── evals/                    # Test framework
+└── examples/                 # Example design-context output
 ```
 
 ## License
 
-MIT
+MIT for code in this repo. Vendored material under `shared/design-taste/` is Apache-2.0 — see `shared/design-taste/NOTICE.md` for attribution to pbakaus/impeccable and (transitively) Anthropic's frontend-design skill.

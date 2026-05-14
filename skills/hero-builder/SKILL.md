@@ -20,6 +20,16 @@ Either from `product.md` or direct input:
 - **Audience** — Who is this for?
 - **Mood** — How should visitors feel?
 
+## Design Taste References (read first)
+
+Hero work needs intentional taste. Read these from `~/.claude-design-skills/shared/design-taste/` before generating:
+
+- `anti-patterns.md` — hero-metric template (the exact thing this skill must NOT produce), gradient text, glassmorphism-as-default, em dashes, AI slop reflexes
+- `typography.md` — scale + weight contrast (≥1.25 ratio); how hero headlines actually earn attention
+- `spatial-design.md` — vary spacing for rhythm; cards are lazy; don't wrap everything in containers
+- `motion-design.md` — exponential ease-out only (no bounce/elastic); don't animate layout properties
+- `ux-writing.md` — every word earns its place; no em dashes; no restated headings
+
 ## Generation Workflow
 
 ### 1. Define the Hero Personality

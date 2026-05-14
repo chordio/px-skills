@@ -15,6 +15,17 @@ Use this skill AFTER implementing UI features:
 - When debugging visual issues
 - For responsive design verification
 
+## Design Taste References (read first)
+
+Before reviewing, read the relevant references from `~/.claude-design-skills/shared/design-taste/`. They define what good looks like — your job is to compare implementation against this bar.
+
+- `anti-patterns.md` — bans to flag (side-stripe borders, gradient text, glassmorphism as default, hero-metric template, identical card grids, em dashes, dark-as-default reflex, AI slop)
+- `typography.md` — scale, weight contrast, line length (use during Typography review lens)
+- `color-and-contrast.md` — OKLCH, tinted neutrals, contrast targets (use during Color review lens)
+- `spatial-design.md` — rhythm, container discipline, nested cards (use during Layout review lens)
+- `interaction-design.md` — affordances, state changes (use during Overflow + general review)
+- `responsive-design.md` — breakpoint discipline (apply across all viewports)
+
 ## Prerequisites
 
 **Chrome with Remote Debugging:**

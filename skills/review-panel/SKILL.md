@@ -7,6 +7,15 @@ description: Assemble and run an expert design review panel. Use when reviewing 
 
 Expert design critique using a curated panel of design specialists. Each reviewer critiques from their unique lens, then findings are synthesized into actionable recommendations.
 
+## Design Taste References
+
+Panel experts critique through their individual lenses (Tufte on data-ink ratio, Ive on resolved complexity, Wroblewski on mobile tap targets, etc.). The synthesis step then cross-references shared bans from `~/.claude-design-skills/shared/design-taste/`:
+
+- `anti-patterns.md` — must-flag bans (side-stripe borders, gradient text, hero-metric template, identical card grids, em dashes, AI slop reflexes). Any consensus issue matching one of these gets bumped to high priority.
+- `typography.md`, `color-and-contrast.md`, `spatial-design.md`, `motion-design.md`, `interaction-design.md`, `responsive-design.md`, `ux-writing.md` — domain references for cross-checking individual expert feedback against established craft norms.
+
+If two experts disagree and one position aligns with a rule in these references, the synthesis should favor that position.
+
 ## Workflow
 
 ### 1. Gather Design Context

@@ -18,6 +18,19 @@ Build landing pages that convert through visual storytelling and brand-aligned a
 ### Product Brief (`product.md`)
 What, Who, Problem (3-4 pains), Solution, Differentiation, Features (6-8), Social proof, Objections
 
+## Design Taste References (read first)
+
+Landing pages spread across many sections — taste consistency across them is everything. Read all of these from `~/.claude-design-skills/shared/design-taste/`:
+
+- `anti-patterns.md` — bans you'll fight every section (hero-metric template, identical card grids, side-stripe borders, gradient text, glassmorphism-as-default, em dashes, AI slop reflexes)
+- `typography.md` — type scale and weight contrast across hero/body/captions
+- `color-and-contrast.md` — pick a color strategy first; OKLCH; never `#000`/`#fff`
+- `spatial-design.md` — vary spacing for rhythm; nested cards are always wrong
+- `motion-design.md` — exponential ease-out; don't animate layout properties
+- `interaction-design.md` — affordances must be unmistakable; states must be visible
+- `responsive-design.md` — breakpoint strategy; mobile-first
+- `ux-writing.md` — every word earns its place
+
 ## Generation Workflow
 
 ### 1. Define the Build
