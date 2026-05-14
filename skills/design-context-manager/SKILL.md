@@ -31,6 +31,21 @@ Invoke this skill after:
 - Major style overhaul
 - New component library adoption
 
+## Design Taste References
+
+The vendored references at `~/.claude-design-skills/shared/design-taste/` define what a complete, high-quality design system looks like. When extracting (Path A) or interviewing (Path B), use them as the **completeness bar** — does the design system you're producing have well-reasoned positions on each of these domains?
+
+- `typography.md` — type scale, weights, line length, OpenType features
+- `color-and-contrast.md` — color strategy (Restrained / Committed / Full palette / Drenched), OKLCH, tinted neutrals
+- `spatial-design.md` — spacing systems, grids, container discipline
+- `motion-design.md` — easing curves, timing, prefers-reduced-motion
+- `interaction-design.md` — affordances, feedback, state changes
+- `responsive-design.md` — breakpoint strategy, fluid scales
+- `ux-writing.md` — voice, error messages, calibrated copy
+- `anti-patterns.md` — what to NEVER include in the generated design system
+
+If the source codebase (Path A) is silent on a domain, flag the gap in the generated `design-context/` file with confidence: Low and suggest follow-up.
+
 ## Output Structure
 
 Creates `design-context/` folder in project root with:
@@ -89,6 +104,70 @@ Use when project lacks design patterns or starting fresh.
 4. Recommend design system setup steps
 
 See [questionnaire-guide.md](references/questionnaire-guide.md) for question flow.
+
+### Path C: Live URL (Reverse-engineer from a Rendered Site)
+
+Use when the user has a live site — their own production site, a competitor for inspiration, or a brand reference — and wants to capture its design system without source-code access.
+
+**Inputs:**
+- One URL (entry point)
+- Optionally: additional URLs to broaden the sample (e.g., homepage + pricing + a dashboard view)
+
+**Process:**
+
+1. **Choose a browser automation backend** — use the first available backend that can navigate, resize viewport, capture screenshots, read DOM/accessibility data, interact with the page, and evaluate JavaScript for computed styles. Prefer `/browse` from gstack when available; otherwise use Browser Use / in-app browser tools, Playwright, or Puppeteer / Chrome remote debugging. If no backend with these capabilities is available, stop and tell the user that live-URL extraction requires browser automation.
+
+2. **Browse and capture**:
+   - Set viewport to 1440×900
+   - Navigate to the URL
+   - Take a full-page screenshot (save under `design-context/source/desktop-{n}.png`)
+   - For each additional URL, repeat
+   - Then resize to 390×844 and re-navigate; capture one mobile screenshot per URL
+
+3. **Extract computed styles** by reading the rendered DOM via the selected backend's JavaScript eval and accessibility/DOM primitives. For each captured page, harvest:
+
+   | Token type | What to read |
+   |---|---|
+   | CSS custom properties | `getComputedStyle(document.documentElement).getPropertyValue(...)` for `--*` names found in the stylesheet |
+   | Typography | Computed `font-family`, `font-size`, `font-weight`, `line-height` on `h1`, `h2`, `h3`, `h4`, `p`, `button`, `a`, `input`, `label` |
+   | Color | Computed `background-color`, `color`, `border-color` across visible elements; deduplicate; semantic-group (brand / neutral / semantic / surface) |
+   | Spacing | Computed `padding`, `margin`, `gap` on layout containers; find the smallest base unit |
+   | Border radius | Computed `border-radius` on buttons, cards, inputs, modals |
+   | Shadows | Computed `box-shadow` on cards and floating elements |
+   | Breakpoints | Inspect `<meta name="viewport">`, look for responsive CSS in stylesheets, or infer from layout shift between desktop and mobile screenshots |
+   | Fonts | `document.fonts` entries; `@font-face` rules in stylesheets; `<link>` font CDN URLs |
+
+4. **Reverse-engineer the system** — given the harvested values:
+   - Cluster colors into semantic groups (Restrained / Committed / Full palette / Drenched — see `~/.claude-design-skills/shared/design-taste/color-and-contrast.md` for the framework)
+   - Identify the type scale by deduplicating font-size values; check if ratios are consistent (≥1.25 between steps — see `~/.claude-design-skills/shared/design-taste/typography.md`)
+   - Identify the spacing scale by deduplicating padding/margin values; find the base unit (commonly 4 or 8)
+   - Note container max-widths from layout shifts
+
+5. **Generate design-context files** with confidence annotations following Path A's pattern:
+   - **High** — value appears consistently across multiple pages/elements
+   - **Medium** — value found on one page or inferred from limited samples
+   - **Low** — best guess from sparse data; flag for user review
+
+6. **Save source artifacts** — write screenshots and a `source.json` manifest to `design-context/source/`:
+   ```json
+   {
+     "extractedFrom": "live-url",
+     "sourceUrls": ["https://example.com", "https://example.com/pricing"],
+     "capturedAt": "<ISO timestamp>",
+     "screenshots": ["desktop-1.png", "desktop-2.png", "mobile-1.png"]
+   }
+   ```
+
+**Limitations to flag in the generated files:**
+- Live extraction sees only what's rendered, not the underlying token system. A site may USE `#0F172A` while the source declares `--color-neutral-900` — the original names won't surface.
+- Single-page captures miss states (hover, focus, error). Re-run with additional URLs or invoke `/reference-ux` for full flow capture.
+- Authenticated views require either credentials or running this skill from a logged-in browser session. If using gstack, `/setup-browser-cookies` can help; with Playwright/Puppeteer, reuse an authenticated browser profile or storage state.
+
+**Related skills:**
+- `/reference-ux` — captures UX *flows*, not just tokens; different scope, complementary output
+- `/browse` (from gstack) — preferred browser primitive when available
+
+See [extraction-guide.md](references/extraction-guide.md) for the full Path C harvest table, reverse-engineering steps, common site patterns, and limitations.
 
 ## Context File Templates
 

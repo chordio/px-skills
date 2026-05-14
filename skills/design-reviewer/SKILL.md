@@ -15,6 +15,18 @@ Use this skill AFTER implementing UI features:
 - When debugging visual issues
 - For responsive design verification
 
+## Design Taste References (read first)
+
+Before reviewing, read the relevant references from `~/.claude-design-skills/shared/design-taste/`. They define what good looks like — your job is to compare implementation against this bar.
+
+- `anti-patterns.md` — bans to flag (side-stripe borders, gradient text, glassmorphism as default, hero-metric template, identical card grids, em dashes, dark-as-default reflex, AI slop)
+- `typography.md` — scale, weight contrast, line length (use during Typography review lens)
+- `color-and-contrast.md` — OKLCH, tinted neutrals, contrast targets (use during Color review lens)
+- `spatial-design.md` — rhythm, container discipline, nested cards (use during Layout review lens)
+- `interaction-design.md` — affordances, state changes (use during Overflow + general review)
+- `responsive-design.md` — breakpoint discipline (apply across all viewports)
+- `heuristics-scoring.md` — Nielsen's 10 usability heuristics with a 0–4 scoring rubric. Use to evidence-base severity calls (see Severity Classification below).
+
 ## Prerequisites
 
 **Chrome with Remote Debugging:**
@@ -123,13 +135,13 @@ If `design-context/` exists in the project, load relevant files:
 
 ### Severity Classification
 
-See `references/severity-guide.md` for classification criteria.
+See `references/severity-guide.md` for classification criteria. For Nielsen-heuristics-based severity grading (0–4 per heuristic), also reference `~/.claude-design-skills/shared/design-taste/heuristics-scoring.md` — a 0 or 1 on a heuristic typically justifies **Major** or **Critical**; 2 → **Minor**; 3–4 → no issue.
 
-| Severity | Description |
-|----------|-------------|
-| **Critical** | Prevents task completion or causes data loss |
-| **Major** | Significantly impacts usability |
-| **Minor** | Noticeable but doesn't block users |
+| Severity | Description | Heuristic score (approx) |
+|----------|-------------|--------------------------|
+| **Critical** | Prevents task completion or causes data loss | 0 |
+| **Major** | Significantly impacts usability | 1 |
+| **Minor** | Noticeable but doesn't block users | 2 |
 
 ## Output Format
 

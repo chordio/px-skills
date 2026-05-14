@@ -14,6 +14,17 @@ Generate comprehensive UX design specifications BEFORE implementation using a tw
 - When starting a new feature with interface elements
 - When user asks "how should I design..." or "what's the best UX for..."
 
+## Design Taste References (read first)
+
+These references at `~/.claude-design-skills/shared/design-taste/` set what good looks like and what to avoid. Read the relevant ones before drafting a spec:
+
+- `anti-patterns.md` — bans (side-stripe borders, gradient text, hero-metric template, identical card grids, em dashes, AI slop reflexes)
+- `typography.md` — type scale, font pairing, modular scales
+- `color-and-contrast.md` — OKLCH, tinted neutrals, theme decisions
+- `spatial-design.md` — spacing systems, grids, visual hierarchy
+
+The skill's own `references/anti-patterns.md` covers spec-time pattern advice; the shared `anti-patterns.md` covers implementation-time bans. Use both.
+
 ## Two-Stage Process
 
 ### Stage 1: Strategic Scaffold (WHAT)
