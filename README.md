@@ -23,6 +23,10 @@ All design skills load curated taste references from the canonical checkout at `
 
 The supported install path is a one-time clone to a canonical location, then `bash install.sh` to symlink every skill into `~/.claude/skills/`. Updates are then a single `git pull` away — no re-copy needed.
 
+`install.sh` does two things:
+1. Symlinks every skill into `~/.claude/skills/`
+2. If gstack is installed, registers a SessionStart hook that keeps gstack's design skills patched with chordio's taste references (see [gstack bridge](#gstack-bridge) below — opt out with `--no-bridge`)
+
 Keep the canonical checkout at `~/.claude-design-skills`: skills read shared taste references from `~/.claude-design-skills/shared/design-taste/`, so project-local copies are not supported.
 
 ### First-time install
@@ -65,6 +69,33 @@ bash install.sh --force      # Restore the main checkout
 ```
 
 Run `bash install.sh --check` from anywhere to see which checkout each skill currently points at.
+
+### gstack bridge
+
+If [gstack](https://github.com/gstack/gstack) is installed alongside this bundle, `install.sh` also registers a Claude Code **SessionStart hook** that keeps gstack's design skills (`design-review`, `plan-design-review`, `design-consultation`, `design-shotgun`, `design-html`) patched with a small block telling them to load chordio's taste references first.
+
+The bridge runs `bin/chordio-bridge` on every Claude session start and is fully idempotent:
+
+| Scenario | Behavior |
+|---|---|
+| Fresh install | Patches the 5 gstack SKILL.md.tmpl files, writes state to `~/.claude-design-skills/.bridge-state` |
+| Re-run, nothing changed | No-op, silent |
+| `gstack-upgrade` regenerated a tmpl | Detects content hash drift, re-patches that target |
+| chordio bumps `BRIDGE_VERSION` | Re-patches all targets with the new block |
+| gstack not installed | Silent no-op, exit 0 |
+| `--quiet` and no patches needed | No output, no session interruption |
+
+Opt out at install time with `--no-bridge`. Inspect or troubleshoot manually:
+
+```bash
+~/.claude-design-skills/bin/chordio-bridge --check     # report state, no writes
+~/.claude-design-skills/bin/chordio-bridge --dry-run   # show would-patches
+~/.claude-design-skills/bin/chordio-bridge --force     # re-patch everything
+bash install.sh --check                                # symlink + bridge state
+bash install.sh --uninstall                            # removes hook AND symlinks
+```
+
+The injected block is marker-fenced (`<!-- BEGIN chordio-taste vN --> ... <!-- END chordio-taste -->`) so it's safe to detect, replace, or strip. Patches in gstack's `SKILL.md.tmpl` survive `bun run gen:skill-docs` because they're the input to that regen. Patches in the rendered `SKILL.md` are belt-and-suspenders — if gstack regenerates and clobbers them, the next SessionStart re-patches.
 
 ## Design Taste References
 
@@ -229,8 +260,10 @@ design-context/
 claude-design-skills/
 ├── README.md
 ├── LICENSE
-├── install.sh                # Symlink installer
+├── install.sh                # Symlink installer + gstack bridge hook
 ├── refresh-impeccable.sh     # Re-fetch upstream design references
+├── bin/
+│   └── chordio-bridge        # SessionStart hook: patches gstack design skills
 ├── docs/
 │   └── augmentation-plan.md  # Plan for the design-taste augmentation
 ├── shared/
