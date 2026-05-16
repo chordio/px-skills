@@ -37,6 +37,20 @@ Modals are usually laziness. Exhaust inline / progressive alternatives first.
 No em dashes (no `—`, no `--`). Use commas, colons, semicolons, periods, or
 parentheses instead.
 
+### Partial color within a text block
+Wrapping select words inside any single text block (body paragraph,
+headline, subhead, list item) in an accent color to "draw the eye to
+value props," "highlight value tiers," or "emphasize the key phrase."
+Common in AI-generated landing pages and pitch-deck slides ported to
+web. Every contiguous text block is a single color; emphasis inside a
+block comes from typography (italic, weight, scale) or layout
+(separate lines, pull quotes, line breaks), never from color. Color
+can vary across blocks (a rust label above a black headline above a
+muted paragraph is fine, because each block is one color). Color
+cannot vary within a block. Rewrite the block as a single color; if a
+phrase truly needs visual separation, break it into its own line,
+its own block, or a short bulleted list.
+
 ---
 
 ## Color rules
