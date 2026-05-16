@@ -321,8 +321,8 @@ GPT_IMAGE_SIZES = {
 
 GPT_IMAGE_GENERATIONS_ENDPOINT = "https://api.openai.com/v1/images/generations"
 GPT_IMAGE_EDITS_ENDPOINT = "https://api.openai.com/v1/images/edits"
-GPT_IMAGE_DEFAULT_MODEL = "gpt-image-1"
-# Override via env var GPT_IMAGE_MODEL (e.g., set to "gpt-image-2" when shipped).
+GPT_IMAGE_DEFAULT_MODEL = "gpt-image-2"
+# Override via env var GPT_IMAGE_MODEL (e.g., pin to "gpt-image-2-2026-04-21" snapshot or fall back to "gpt-image-1").
 
 
 def generate_gpt_image(

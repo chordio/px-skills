@@ -8,7 +8,7 @@ Two providers are supported today; new ones are a one-dataclass addition.
 | Name | Backend | Env var | Default model id | Reference images |
 |------|---------|---------|------------------|------------------|
 | `nano-banana` (default) | Vercel AI Gateway | `AI_GATEWAY_API_KEY` | `google/gemini-3-pro-image` (Nano Banana) | yes (inline in content array) |
-| `gpt-image` | OpenAI Images API | `OPENAI_API_KEY` | `gpt-image-1` (override with `GPT_IMAGE_MODEL`) | yes (routes to `/v1/images/edits`) |
+| `gpt-image` | OpenAI Images API | `OPENAI_API_KEY` | `gpt-image-2` (override with `GPT_IMAGE_MODEL`; pin a snapshot like `gpt-image-2-2026-04-21` or fall back to `gpt-image-1`) | yes (routes to `/v1/images/edits`) |
 
 Set whichever env var(s) you need. A `.env` file in the project root (or
 any ancestor up to home) is auto-loaded by the script.
