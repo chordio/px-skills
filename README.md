@@ -6,6 +6,10 @@ A bundle of Claude Code skills for improving front-end UI design quality, plus c
 
 | Skill | Purpose | When to Use |
 |-------|---------|-------------|
+| **next-step** | Workspace-aware "what should I do next?" | Anytime you're unsure where to start |
+| **product-researcher** | Research (concept / domain / target) — produces a research brief at every pipeline level | Before architecting, before speccing, or to flesh out a vague idea |
+| **product-architect** | Initiative-level: decompose product into features, define architecture | New product from a concept; multi-feature work |
+| **product-spec-writer** | Generate product specs (requirements) BEFORE design | Scoping a feature from research/insights |
 | **design-spec-writer** | Generate design specs BEFORE coding | Starting new UI features |
 | **design-context-manager** | Initialize/maintain product design context | Project setup, foundation changes, reverse-engineer a live site |
 | **design-reviewer** | Review implemented UI for issues | After implementation, before PRs |
@@ -18,6 +22,58 @@ A bundle of Claude Code skills for improving front-end UI design quality, plus c
 | **social-post-designer** | Create social posts with AI visuals | Social content creation |
 
 All design skills load curated taste references from the canonical checkout at `~/.claude-design-skills/shared/design-taste/` — see [Design Taste References](#design-taste-references) below.
+
+## The Pipeline
+
+The product-design skills compose into an artifact-driven pipeline. **You don't need to remember the skill names** — each step produces a concrete file, and the file tells you what comes next. If you're ever lost, run `next-step` and it will tell you where you are.
+
+```
+  [ concept paragraph ]
+            │
+            ▼
+  research-brief.md + wiki/                          ◄── product-researcher (concept or domain mode)
+            │
+            ▼
+  product-brief.md + architecture.md + features.json ◄── product-architect
+            │
+            ▼  ── per feature ──────────────────────────────────────────┐
+  features/{slug}/research/brief.md                  ◄── product-researcher (target mode)
+            │
+            ▼
+  features/{slug}/specs/{name}/spec.md               ◄── product-spec-writer
+            │
+            ▼  ── once per product ────────────────────────────────────┐
+  design-context/                                    ◄── design-context-manager
+            │
+            ▼  ── per feature ─────────────────────────────────────────┐
+  features/{slug}/design-specs/{name}/spec.md        ◄── design-spec-writer
+            │
+            ▼
+  built code                                         ◄── hand-implementation (Next.js + mocks, etc.)
+            │
+            ▼
+  polished + tested                                  ◄── /qa + /design-review
+            │
+            ▼
+  shipped                                            ◄── /ship + /land-and-deploy + /canary
+```
+
+| Step | Artifact | Skill | Notes |
+|------|----------|-------|-------|
+| 0 | (in your head) | `/office-hours` *(optional)* | Pressure-test the idea with forcing questions |
+| 1 | `research-brief.md` + `wiki/` | `product-researcher` (concept or domain mode) | Initiative-level research |
+| 2 | `product-brief.md` + `architecture.md` + `features.json` + project scaffolds | `product-architect` | Decomposes into features + defines architecture |
+| 3 | `features/{feature}/research/brief.md` | `product-researcher` (target mode) | Per-feature deep research |
+| 4 | `features/{feature}/specs/{slug}/spec.md` | `product-spec-writer` | Per-feature requirements |
+| 5 | `design-context/` | `design-context-manager` | **Runs ONCE per product**, after specs, before any design-spec |
+| 6 | `features/{feature}/design-specs/{slug}/spec.{json,md}` | `design-spec-writer` | Per-feature UX spec, persisted to disk |
+| 7 | Built code | hand-implementation | No skill auto-generates multi-screen prototypes (yet) |
+| 8 | Polished + tested | `/qa` + `/design-review` | Iterative fix loops |
+| 9 | Shipped | `/ship` + `/land-and-deploy` + `/canary` | Workflow + post-deploy monitoring |
+
+**Single-feature projects** can skip steps 1-3 and start at step 4 (`product-spec-writer`). The scope guard in `product-spec-writer` will bounce you back to `product-architect` if the input is initiative-sized.
+
+**Lost?** Run `next-step` from your workspace and it will tell you exactly where you are and what to run next.
 
 ## Installation
 
@@ -126,6 +182,41 @@ The script no-ops if you're already at the upstream HEAD. Otherwise it pulls the
 
 ## Skills Overview
 
+### next-step
+
+Workspace-aware pipeline guide. Scans the current workspace to determine where you are in the pipeline and tells you the one concrete next thing to run. Use this when starting a session, onboarding a teammate, or anytime you ask "what should I do next?".
+
+**Usage:** Run `next-step` from your workspace.
+
+### product-architect
+
+Initiative-level product planning. Takes a vague product concept (or existing research), researches the space, decomposes it into features, defines the shared architecture (IA, nav, user flows, shared patterns, cross-feature touchpoints), and scaffolds one project per feature.
+
+**Output:** `product-brief.md`, `architecture.md`, `features.json` at workspace root; `features/{feature-slug}/` scaffolds with `frame.md` seeded from architecture.
+
+**Usage:** Run on a new product idea before any feature-level work. The architecture keeps independently-built features coherent.
+
+### product-researcher
+
+Research producer for **every** pipeline level. Three modes auto-detected from input:
+- **CONCEPT mode** — a vague idea ("I want to build X") → validation + sharpening brief
+- **DOMAIN mode** — a problem space ("async standup tools") → opportunity map
+- **TARGET mode** — a specific product (URL, company, app name) → feature-gap brief
+
+**Outputs:**
+- Concept / Domain → `research-brief.md` + `wiki/` at workspace root → feeds `product-architect`
+- Target → `features/{feature}/research/brief.md` → feeds `product-spec-writer`
+
+**Usage:** Drop in an idea, a domain phrase, or a URL — the skill detects the mode and produces the right brief shape.
+
+### product-spec-writer
+
+Generate a structured product spec (requirements doc) from research briefs, user insights, or problem descriptions. Defines **what** we're building, **why**, and **who** it's for — the input that grounds `design-spec-writer`.
+
+**Output:** `features/{feature}/specs/{spec-slug}/spec.{json,md}` (multi-feature) or `specs/{spec-slug}/spec.{json,md}` at workspace root (single-feature).
+
+**Usage:** Ask Claude to write a product spec when you have research or a problem statement and need to scope the feature before design.
+
 ### design-spec-writer
 
 Generate UX design specifications BEFORE implementing UI features.
@@ -211,23 +302,25 @@ Create high-converting social media posts with AI-generated visuals across Linke
 ## Skill Interactions
 
 ```
-design-context-manager (foundation)
-      |
-      +---> design-spec-writer (grounded specs)
-      |
-      +---> design-reviewer (informed reviews)
-      |
-      +---> review-panel (expert critiques)
-      |
-      +---> hero-builder, landing-page-builder (brand-aligned output)
+Main pipeline (chronological):
+product-researcher (concept/domain) → product-architect (initiative)
+                                              ↓
+                                      product-researcher (target, per feature)
+                                              ↓
+                                      product-spec-writer (per feature)
+                                              ↓
+                                      design-context-manager (ONCE, project-wide)
+                                              ↓
+                                      design-spec-writer (per feature)
+                                              ↓
+                                      build → /qa + /design-review → /ship
 
-reference-ux ---> design-context-manager (Path C inspiration)
-             ---> design-spec-writer (UX patterns to draw from)
-
-design-manager-twin-creator ---> review-panel (created twins added to panel)
-
-image-generator ---> hero-builder, landing-page-builder, social-post-designer
-                     (sub-agent for parallel image gen)
+Supporting skills:
+  next-step                       → workspace-aware "what now?" guide (run anytime)
+  design-context-manager          → also feeds design-reviewer, review-panel, hero/landing-page builders
+  reference-ux                    → feeds design-context-manager (Path C) and design-spec-writer
+  design-manager-twin-creator     → produces twins for review-panel
+  image-generator                 → sub-agent for hero-builder, landing-page-builder, social-post-designer
 ```
 
 **Progressive Enhancement:**
@@ -269,8 +362,12 @@ claude-design-skills/
 ├── shared/
 │   └── design-taste/         # Vendored impeccable refs (Apache-2.0)
 ├── skills/
-│   ├── design-spec-writer/
+│   ├── next-step/
+│   ├── product-researcher/
+│   ├── product-architect/
+│   ├── product-spec-writer/
 │   ├── design-context-manager/
+│   ├── design-spec-writer/
 │   ├── design-reviewer/
 │   ├── review-panel/         # 26 expert twins under twins/
 │   ├── design-manager-twin-creator/

@@ -142,6 +142,67 @@ Apply the two-stage process with gathered context.
 [Stage 2: Exact text for all UI elements]
 ```
 
+## Persisting the Spec
+
+Design specs persist to disk so work can resume from a fresh session and other skills (build, design-review, qa) can reference them.
+
+### Resolve location
+
+1. **Identify the feature** — derive from input, the product spec being implemented, or the current working context
+2. **Detect workspace mode:**
+   - **Multi-feature** — `features.json` exists at workspace root → use `features/<feature>/design-specs/`
+   - **Single-feature** — no `features.json` → use `design-specs/` at workspace root
+3. **Derive slug** from the spec name (kebab-case): `"Welcome Screen"` → `welcome-screen`
+
+### Write the artifacts
+
+1. **Create directory:**
+```bash
+mkdir -p <design-specs-dir>/<spec-slug>
+```
+
+2. **Write `spec.json`** (structured metadata):
+```json
+{
+  "name": "Welcome Screen",
+  "slug": "welcome-screen",
+  "type": "design-spec",
+  "feature": "<feature-slug>",
+  "productSpecSlug": "<linked-product-spec-slug or null>",
+  "stage": "draft",
+  "created": "<ISO timestamp>",
+  "updated": "<ISO timestamp>",
+  "sources": [
+    { "type": "product-spec", "path": "features/<feature>/specs/<slug>/spec.md", "label": "Product Spec" },
+    { "type": "design-context", "path": "design-context/", "label": "Design Context" }
+  ]
+}
+```
+
+3. **Write `spec.md`** — the full design spec using the Output Format above
+
+4. **If a corresponding product spec exists**, link the design spec back in its `spec.json` by setting `relatedDesignSpecs` to include this slug.
+
+### Report
+
+```
+Design spec saved to <design-specs-dir>/<spec-slug>/
+
+  spec.json — structured metadata (type: design-spec, stage: draft)
+  spec.md   — full design spec (Strategic Solution + Implementation Details)
+
+Linked to product spec: <slug> (if any)
+Design context referenced: design-context/<files>
+```
+
+### Updating specs
+
+When updating an existing design spec:
+- Read existing `spec.json` to preserve `created` timestamp and existing links
+- Update `"updated"` timestamp
+- Advance `"stage"` if appropriate (`draft` → `review` → `approved` → `implemented`)
+- Rewrite `spec.md` with updated content
+
 ## Quality Standards
 
 **DO:**
@@ -176,3 +237,13 @@ If no `design-context/` folder exists:
 
 For common UX patterns, see [ux-patterns.md](references/ux-patterns.md).
 For what to avoid, see [anti-patterns.md](references/anti-patterns.md).
+
+## Next step
+
+After the design spec is complete:
+
+1. Hand-implement the feature in your framework of choice (Next.js + mock data for prototypes; real backend for production)
+2. After implementation: run `/qa` to find and fix bugs, then `/design-review` to polish the visual layer
+3. When ready to ship: `/ship` → `/land-and-deploy` → `/canary` for post-deploy monitoring
+
+The design spec is the last design-skills artifact before code. Building is hand-work (no skill in this repo currently auto-generates multi-screen interactive prototypes).

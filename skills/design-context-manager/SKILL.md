@@ -7,6 +7,22 @@ description: Initialize and maintain design context files. Use when design-conte
 
 Initialize and maintain the design context files that ground all design decisions.
 
+## Pipeline Position
+
+This skill produces **project-wide visual infrastructure** (brand AND components). It runs **once per product**, not per feature.
+
+```
+product-architect / product-spec-writer  (defines what components are needed)
+                    ↓
+            design-context-manager       ← YOU ARE HERE — runs once, project-wide
+                    ↓
+              design-spec-writer         (per feature, references design-context/)
+```
+
+**Trigger condition:** run when either `architecture.md` exists at workspace root (multi-feature product), or the first `product-spec` is written (single-feature project). In both cases, **before any `design-spec-writer` call** — design specs need this as a reference.
+
+If you only need a brand vision (no component-level definition), `/design-consultation` (gstack) is a faster alternative that produces brand-only `DESIGN.md`. This skill covers both brand and components in one consistent folder, so prefer it as the canonical pipeline step.
+
 ## When to Use
 
 ### Initial Setup
