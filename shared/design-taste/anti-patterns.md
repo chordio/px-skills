@@ -51,6 +51,38 @@ cannot vary within a block. Rewrite the block as a single color; if a
 phrase truly needs visual separation, break it into its own line,
 its own block, or a short bulleted list.
 
+### Content above the header
+
+Eyebrows, category labels, "context-setting" lines, decorative timestamps,
+breadcrumbs on landing pages, "Welcome to…" or "Introducing…" labels, or
+any text element placed ABOVE the page H1 or section heading. Above-the-
+header content breaks information hierarchy: the reader's eye lands on a
+de-prioritized fragment first, then the actual headline, then the subhead.
+The reader has to parse two things sequentially before reaching the main
+idea, and the eyebrow steals first attention without earning the rank of
+"most important thing on the page."
+
+The hierarchy test: if a piece of text deserves first attention, it IS the
+headline; promote it. If it provides necessary context, it belongs IN the
+subhead, IN the body, or in a labelled section below the fold. If it is
+less important than the headline, it must not sit visually above the
+headline. Above the header is the worst placement: it pushes the main
+idea down without ranking as the main idea itself.
+
+Eyebrows BELOW or BESIDE a headline are different and often correct
+(the headline anchors first, the eyebrow contextualizes the section it
+introduces). This rule is specifically about placement ABOVE the
+headline, where the eyebrow competes for first attention without
+deserving it. Breadcrumbs on internal pages are a recognized convention
+and acceptable; breadcrumbs on a landing page or marketing page are
+this anti-pattern wearing a navigation costume.
+
+Common offenders: category eyebrows above an editorial H1, "Get started"
+or "Pricing" labels above the section heading, promotional badges above
+the hero headline when the badge is not in fact the most important idea,
+"Now in beta" or "Introducing" lines that should either BE the headline
+or be deleted.
+
 ---
 
 ## Color rules
