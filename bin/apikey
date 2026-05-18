@@ -1,0 +1,535 @@
+#!/usr/bin/env python3
+"""apikey — fetch API keys from 1Password into your project.
+
+Reads the service -> env var mapping from ~/.config/apikey/services.yaml,
+shells out to `op` (1Password CLI) to fetch the value, writes it to ./.env
+(or ~/.env.global with --global, or stdout with --shell).
+
+Stdlib only. No third-party deps.
+"""
+
+import argparse
+import json
+import os
+import shlex
+import subprocess
+import sys
+from getpass import getpass
+from pathlib import Path
+
+VERSION = "0.1.0"
+CONFIG_PATH = Path.home() / ".config" / "apikey" / "services.yaml"
+GLOBAL_ENV_PATH = Path.home() / ".env.global"
+DEFAULT_VAULT = "API Keys"
+DEFAULT_FIELD = "credential"
+
+
+# ──────────────────────────── output helpers ────────────────────────────
+
+def info(msg: str) -> None:
+    print(f"[apikey] {msg}", file=sys.stderr)
+
+
+def warn(msg: str) -> None:
+    print(f"[apikey] warning: {msg}", file=sys.stderr)
+
+
+def die(msg: str, code: int = 1) -> None:
+    print(f"[apikey] error: {msg}", file=sys.stderr)
+    sys.exit(code)
+
+
+# ──────────────────────────── tiny YAML parser ──────────────────────────
+# Handles the subset we need:
+#   top-level scalars       (vault: "API Keys")
+#   one section dict        (services:)
+#     nested items          (  openai:)
+#       leaf scalars        (    env: OPENAI_API_KEY)
+# No anchors, no flow style, no multi-line, no lists.
+
+def parse_yaml(text: str) -> dict:
+    result: dict = {}
+    cur_section = None
+    cur_item = None
+
+    for lineno, raw in enumerate(text.splitlines(), 1):
+        line = raw.rstrip()
+        stripped = line.lstrip()
+        if not stripped or stripped.startswith("#"):
+            continue
+
+        indent = len(line) - len(stripped)
+
+        if ":" not in stripped:
+            die(f"bad config line {lineno}: {raw!r}")
+
+        key, _, val = stripped.partition(":")
+        key = key.strip()
+        val = val.split("#", 1)[0].strip().strip('"').strip("'")
+
+        if indent == 0:
+            if val == "":
+                result[key] = {}
+                cur_section, cur_item = key, None
+            else:
+                result[key] = val
+                cur_section, cur_item = None, None
+        elif indent == 2:
+            if cur_section is None:
+                die(f"unexpected indent at line {lineno}: {raw!r}")
+            if val == "":
+                result[cur_section][key] = {}
+                cur_item = key
+            else:
+                result[cur_section][key] = val
+                cur_item = None
+        elif indent == 4:
+            if cur_section is None or cur_item is None:
+                die(f"unexpected indent at line {lineno}: {raw!r}")
+            result[cur_section][cur_item][key] = val
+        else:
+            die(f"unexpected indent {indent} at line {lineno}: {raw!r}")
+
+    return result
+
+
+def load_config() -> dict:
+    if not CONFIG_PATH.exists():
+        die(
+            f"config not found at {CONFIG_PATH}\n"
+            "Run install.sh from the claude-design-skills repo to seed it, "
+            "or copy config/apikey/services.yaml from the repo manually."
+        )
+    return parse_yaml(CONFIG_PATH.read_text())
+
+
+def lookup_service(cfg: dict, name: str) -> dict:
+    services = cfg.get("services", {})
+    svc = services.get(name)
+    if not svc:
+        known = ", ".join(sorted(services.keys())) or "(none configured)"
+        die(f"unknown service '{name}'\nKnown: {known}\nConfig: {CONFIG_PATH}")
+    if "env" not in svc:
+        die(f"service '{name}' has no 'env' mapping in {CONFIG_PATH}")
+    return svc
+
+
+# ──────────────────────────── op CLI wrappers ───────────────────────────
+
+def op_available() -> bool:
+    try:
+        subprocess.run(
+            ["op", "--version"],
+            capture_output=True, check=True, shell=False,
+        )
+        return True
+    except (FileNotFoundError, subprocess.CalledProcessError):
+        return False
+
+
+def op_get_field(item: str, vault: str, field: str) -> str:
+    try:
+        result = subprocess.run(
+            [
+                "op", "item", "get", item,
+                "--vault", vault,
+                "--field", field,
+                "--reveal",
+            ],
+            capture_output=True, text=True, check=True, shell=False,
+        )
+    except FileNotFoundError:
+        die("op CLI not found. Install: brew install --cask 1password-cli")
+    except subprocess.CalledProcessError as e:
+        stderr = (e.stderr or "").strip()
+        low = stderr.lower()
+        if "isn't a vault" in low or "no vault" in low:
+            die(f"vault '{vault}' not found in 1Password. Create it in the 1P app, then re-run.")
+        if "isn't an item" in low or "doesn't exist" in low or "no item" in low:
+            die(f"item '{item}' not found in vault '{vault}'. Run: apikey set {item}")
+        die(f"op failed: {stderr or 'unknown error'}")
+    return result.stdout.rstrip("\n")
+
+
+def op_item_exists(item: str, vault: str) -> bool:
+    try:
+        subprocess.run(
+            ["op", "item", "get", item, "--vault", vault],
+            capture_output=True, check=True, shell=False,
+        )
+        return True
+    except (FileNotFoundError, subprocess.CalledProcessError):
+        return False
+
+
+def op_create_or_update(item: str, vault: str, field: str, value: str) -> str:
+    if op_item_exists(item, vault):
+        try:
+            subprocess.run(
+                [
+                    "op", "item", "edit", item,
+                    f"{field}={value}",
+                    "--vault", vault,
+                ],
+                capture_output=True, text=True, check=True, shell=False,
+            )
+        except subprocess.CalledProcessError as e:
+            die(f"op item edit failed: {(e.stderr or '').strip()}")
+        return "updated"
+    try:
+        subprocess.run(
+            [
+                "op", "item", "create",
+                "--category=apicredential",
+                "--vault", vault,
+                f"--title={item}",
+                f"{field}={value}",
+            ],
+            capture_output=True, text=True, check=True, shell=False,
+        )
+    except FileNotFoundError:
+        die("op CLI not found. Install: brew install --cask 1password-cli")
+    except subprocess.CalledProcessError as e:
+        die(f"op item create failed: {(e.stderr or '').strip()}")
+    return "created"
+
+
+def op_list_titles(vault: str) -> set:
+    try:
+        result = subprocess.run(
+            ["op", "item", "list", "--vault", vault, "--format=json"],
+            capture_output=True, text=True, check=True, shell=False,
+        )
+    except (FileNotFoundError, subprocess.CalledProcessError):
+        return set()
+    try:
+        items = json.loads(result.stdout)
+    except json.JSONDecodeError:
+        return set()
+    return {it.get("title", "").lower() for it in items}
+
+
+# ──────────────────────────── .env writer ───────────────────────────────
+
+def read_env_lines(path: Path) -> list:
+    if not path.exists():
+        return []
+    return path.read_text().splitlines()
+
+
+def write_env_var(path: Path, var: str, value: str) -> None:
+    """Atomically write/update VAR=value in path, preserving other lines."""
+    lines = read_env_lines(path)
+    new_lines = []
+    found = False
+    new_line = f"{var}={value}"
+    for line in lines:
+        s = line.lstrip()
+        if s.startswith(f"{var}=") or s.startswith(f"export {var}="):
+            new_lines.append(new_line)
+            found = True
+        else:
+            new_lines.append(line)
+    if not found:
+        new_lines.append(new_line)
+
+    tmp = path.with_name(path.name + ".tmp")
+    tmp.write_text("\n".join(new_lines) + "\n")
+    os.chmod(tmp, 0o600)
+    tmp.replace(path)
+
+
+def remove_env_var(path: Path, var: str) -> bool:
+    if not path.exists():
+        return False
+    lines = path.read_text().splitlines()
+    new_lines = []
+    removed = False
+    for line in lines:
+        s = line.lstrip()
+        if s.startswith(f"{var}=") or s.startswith(f"export {var}="):
+            removed = True
+            continue
+        new_lines.append(line)
+    if not removed:
+        return False
+    tmp = path.with_name(path.name + ".tmp")
+    tmp.write_text("\n".join(new_lines) + ("\n" if new_lines else ""))
+    os.chmod(tmp, 0o600)
+    tmp.replace(path)
+    return True
+
+
+def check_gitignore(env_path: Path) -> None:
+    gitignore = Path(".gitignore")
+    name = env_path.name
+    if not gitignore.exists():
+        if Path(".git").exists():
+            warn(f"no .gitignore in this git repo — {name} could be committed")
+        return
+    entries = {l.strip() for l in gitignore.read_text().splitlines() if l.strip()}
+    if name in entries or "*.env" in entries or ".env*" in entries:
+        info(f"{name} is gitignored ✓")
+    else:
+        warn(f"{name} not in .gitignore — risk of committing your key")
+
+
+# ──────────────────────────── commands ──────────────────────────────────
+
+def cmd_add(args: argparse.Namespace) -> None:
+    cfg = load_config()
+    svc = lookup_service(cfg, args.service)
+    env_var = svc["env"]
+    field = svc.get("field", DEFAULT_FIELD)
+    vault = cfg.get("vault", DEFAULT_VAULT)
+
+    if args.paste:
+        value = getpass(f"paste {args.service} API key: ")
+    else:
+        info(f"fetching {args.service} from vault \"{vault}\"...")
+        value = op_get_field(args.service, vault, field)
+
+    value = value.strip()
+    if not value:
+        die("got empty value; nothing written")
+    if "\n" in value:
+        warn("value contains newlines; only first line will be usable in .env")
+
+    if args.shell:
+        print(f"export {env_var}={shlex.quote(value)}")
+        return
+
+    dest = GLOBAL_ENV_PATH if args.global_ else Path(".env")
+    write_env_var(dest, env_var, value)
+    if args.global_:
+        info(f"wrote {env_var} to {dest}")
+    else:
+        info(f"wrote {env_var} to ./{dest}")
+        check_gitignore(dest)
+
+
+def cmd_set(args: argparse.Namespace) -> None:
+    cfg = load_config()
+    svc = lookup_service(cfg, args.service)
+    field = svc.get("field", DEFAULT_FIELD)
+    vault = cfg.get("vault", DEFAULT_VAULT)
+    env_var = svc["env"]
+
+    if not op_available():
+        die("op CLI not found. Install: brew install --cask 1password-cli")
+
+    value = getpass(f"paste {args.service} API key: ").strip()
+    if not value:
+        die("got empty value; aborting")
+
+    action = op_create_or_update(args.service, vault, field, value)
+    info(f"{action} {args.service} in 1Password (vault \"{vault}\", field \"{field}\")")
+    info(f"tip: run `apikey add {args.service}` to write {env_var} to ./.env")
+
+
+def cmd_list(args: argparse.Namespace) -> None:
+    cfg = load_config()
+    services = cfg.get("services", {})
+    vault = cfg.get("vault", DEFAULT_VAULT)
+
+    env_path = Path(".env")
+    env_present = set()
+    if env_path.exists():
+        for line in env_path.read_text().splitlines():
+            s = line.lstrip()
+            if s.startswith("export "):
+                s = s[len("export "):]
+            if "=" in s:
+                env_present.add(s.split("=", 1)[0].strip())
+
+    op_was_queried = op_available()
+    in_1p = op_list_titles(vault) if op_was_queried else set()
+
+    print(f"Vault: {vault}")
+    print()
+    print(f"{'SERVICE':<20} {'ENV VAR':<28} {'1P':<4} {'.env':<5}")
+    print("-" * 60)
+    for name in sorted(services.keys()):
+        svc = services[name]
+        env_var = svc.get("env", "?")
+        mark_1p = "✓" if name in in_1p else ("·" if op_was_queried else "?")
+        mark_env = "✓" if env_var in env_present else "·"
+        print(f"{name:<20} {env_var:<28} {mark_1p:<4} {mark_env:<5}")
+
+    if not op_was_queried:
+        print()
+        info("op CLI not available — '1P' column shows '?'. Install op and re-run for full status.")
+
+
+def cmd_rm(args: argparse.Namespace) -> None:
+    cfg = load_config()
+    svc = lookup_service(cfg, args.service)
+    env_var = svc["env"]
+    env_path = Path(".env")
+    if remove_env_var(env_path, env_var):
+        info(f"removed {env_var} from ./.env")
+    else:
+        info(f"{env_var} not found in ./.env (nothing to do)")
+
+
+def cmd_doctor(args: argparse.Namespace) -> None:
+    issues = []
+
+    if not op_available():
+        issues.append("op CLI not found. Install: brew install --cask 1password-cli")
+        _emit_doctor(issues)
+        return
+    info("op installed ✓")
+
+    try:
+        result = subprocess.run(
+            ["op", "whoami"],
+            capture_output=True, text=True, check=True, shell=False,
+        )
+        first_line = result.stdout.strip().splitlines()[0] if result.stdout.strip() else "ok"
+        info(f"op signed in: {first_line} ✓")
+    except subprocess.CalledProcessError:
+        issues.append("op not signed in. Run: op signin")
+        _emit_doctor(issues)
+        return
+
+    if not CONFIG_PATH.exists():
+        issues.append(f"config not found at {CONFIG_PATH}")
+        _emit_doctor(issues)
+        return
+    info(f"config found at {CONFIG_PATH} ✓")
+
+    cfg = load_config()
+    vault = cfg.get("vault", DEFAULT_VAULT)
+    services = cfg.get("services", {})
+
+    try:
+        subprocess.run(
+            ["op", "vault", "get", vault, "--format=json"],
+            capture_output=True, text=True, check=True, shell=False,
+        )
+        info(f"vault \"{vault}\" exists ✓")
+    except subprocess.CalledProcessError:
+        issues.append(
+            f"vault \"{vault}\" not found in 1Password. Create it in the 1P app."
+        )
+        _emit_doctor(issues)
+        return
+
+    titles = op_list_titles(vault)
+    missing = [name for name in services if name not in titles]
+    if missing:
+        issues.append(
+            "services missing in 1P vault: " + ", ".join(missing)
+            + "\n      Run `apikey set <name>` to add each."
+        )
+    else:
+        info(f"all {len(services)} services present in vault ✓")
+
+    _emit_doctor(issues)
+
+
+def _emit_doctor(issues: list) -> None:
+    if issues:
+        print()
+        print("Issues:", file=sys.stderr)
+        for i in issues:
+            print(f"  - {i}", file=sys.stderr)
+        sys.exit(1)
+    print()
+    info("all checks passed ✓")
+
+
+def cmd_help(args: argparse.Namespace, parser: argparse.ArgumentParser, subparsers_map: dict) -> None:
+    if not args.cmd:
+        parser.print_help()
+        return
+    sp = subparsers_map.get(args.cmd)
+    if not sp:
+        die(f"unknown command '{args.cmd}'")
+    sp.print_help()
+
+
+# ──────────────────────────── main ──────────────────────────────────────
+
+def build_parser() -> tuple:
+    parser = argparse.ArgumentParser(
+        prog="apikey",
+        description="fetch API keys from 1Password into your project",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog=(
+            "EXAMPLES\n"
+            "  apikey add openai            # writes OPENAI_API_KEY to ./.env\n"
+            "  apikey add openai --shell    # eval $(apikey add openai --shell)\n"
+            "  apikey set elevenlabs        # store/update a key in 1Password\n"
+            "  apikey list                  # see what's known and where\n"
+            "  apikey doctor                # diagnose setup\n"
+            "\n"
+            f"Config: {CONFIG_PATH}\n"
+            "Run `apikey <command> --help` for command-specific options."
+        ),
+    )
+    parser.add_argument("-V", "--version", action="version", version=f"apikey {VERSION}")
+    subs = parser.add_subparsers(dest="command", metavar="<command>")
+
+    subparsers_map = {}
+
+    p_add = subs.add_parser("add", help="Fetch key from 1Password and write to ./.env")
+    p_add.add_argument("service", help="Service name as defined in services.yaml")
+    p_add.add_argument("--shell", action="store_true",
+                       help="Print `export VAR=value` to stdout instead of writing a file")
+    p_add.add_argument("--global", dest="global_", action="store_true",
+                       help="Write to ~/.env.global (mode 0600) instead of ./.env")
+    p_add.add_argument("--paste", action="store_true",
+                       help="Prompt for paste; skip op fetch (fallback)")
+    p_add.set_defaults(func=cmd_add)
+    subparsers_map["add"] = p_add
+
+    p_set = subs.add_parser("set",
+        help="Store/update a key in 1Password (paste from terminal)")
+    p_set.add_argument("service")
+    p_set.set_defaults(func=cmd_set)
+    subparsers_map["set"] = p_set
+
+    p_list = subs.add_parser("list",
+        help="Show known services, vault status, and local .env status")
+    p_list.set_defaults(func=cmd_list)
+    subparsers_map["list"] = p_list
+
+    p_rm = subs.add_parser("rm",
+        help="Remove a key from ./.env (does not touch 1Password)")
+    p_rm.add_argument("service")
+    p_rm.set_defaults(func=cmd_rm)
+    subparsers_map["rm"] = p_rm
+
+    p_doctor = subs.add_parser("doctor",
+        help="Diagnose op, vault, and config")
+    p_doctor.set_defaults(func=cmd_doctor)
+    subparsers_map["doctor"] = p_doctor
+
+    p_help = subs.add_parser("help", help="Show help for a command")
+    p_help.add_argument("cmd", nargs="?")
+    p_help.set_defaults(func=lambda a: cmd_help(a, parser, subparsers_map))
+    subparsers_map["help"] = p_help
+
+    return parser, subparsers_map
+
+
+def main() -> None:
+    parser, _ = build_parser()
+    if len(sys.argv) == 1:
+        parser.print_help()
+        sys.exit(0)
+    args = parser.parse_args()
+    if not getattr(args, "command", None):
+        parser.print_help()
+        sys.exit(0)
+    args.func(args)
+
+
+if __name__ == "__main__":
+    try:
+        main()
+    except KeyboardInterrupt:
+        print()
+        sys.exit(130)

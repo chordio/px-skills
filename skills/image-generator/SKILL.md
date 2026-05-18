@@ -1,6 +1,6 @@
 ---
 name: imagegen
-description: Generate high-quality images using Nano Banana Pro 3 via Vercel AI Gateway. Use when creating hero images, product shots, illustrations, or any visual assets. Requires VERCEL_API_KEY environment variable. Accepts aspect ratio and outputs to specified path.
+description: Generate high-quality images using Nano Banana Pro 3 via Vercel AI Gateway. Use when creating hero images, product shots, illustrations, or any visual assets. Requires AI_GATEWAY_API_KEY environment variable. Accepts aspect ratio and outputs to specified path.
 ---
 
 # Image Generation
@@ -9,7 +9,12 @@ Generate publication-quality images using Nano Banana Pro 3.
 
 ## Requirements
 
-Set `VERCEL_API_KEY` environment variable before use.
+Set the `AI_GATEWAY_API_KEY` environment variable before use (this is the
+Vercel AI Gateway key). The bundled `.env.example` shows the format.
+
+Quickest way to populate it: `apikey add vercel-gateway` from the
+claude-design-skills `apikey` CLI. Otherwise, write `AI_GATEWAY_API_KEY=...`
+to `.env` manually.
 
 ## Usage
 

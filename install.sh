@@ -15,6 +15,11 @@ BRIDGE_BIN="$SCRIPT_DIR/bin/chordio-bridge"
 SETTINGS_FILE="${CLAUDE_SETTINGS_FILE:-$HOME/.claude/settings.json}"
 HOOK_MATCHER='chordio-bridge'   # substring used to find/remove our hook entries
 
+APIKEY_BIN_SRC="$SCRIPT_DIR/bin/apikey"
+APIKEY_BIN_DEST="$HOME/.local/bin/apikey"
+APIKEY_CONFIG_SRC="$SCRIPT_DIR/config/apikey/services.yaml"
+APIKEY_CONFIG_DEST="$HOME/.config/apikey/services.yaml"
+
 usage() {
   cat <<'EOF'
 Usage: bash install.sh [--check | --force | --uninstall] [--no-bridge]
@@ -28,23 +33,26 @@ Source path defaults to the directory containing this script — so running
 it from a worktree swaps the live symlinks to that worktree.
 
 Options:
-  (no flag)     Install symlinks + register bridge hook + run an initial bridge pass
+  (no flag)     Install symlinks + register bridge hook + install apikey CLI
   --force       Overwrite existing symlinks
-  --check       Print symlink status + bridge hook status + bridge state
-  --uninstall   Remove symlinks and the bridge hook
-  --no-bridge   Skip bridge hook registration (skills-only install)
+  --check       Print symlink status + bridge hook status + apikey status
+  --uninstall   Remove symlinks, bridge hook, and apikey symlink (config preserved)
+  --no-bridge   Skip bridge hook registration
+  --no-apikey   Skip apikey CLI install
 EOF
 }
 
 MODE="install"
 FORCE=0
 NO_BRIDGE=0
+NO_APIKEY=0
 for arg in "$@"; do
   case "$arg" in
     --check)      MODE="check" ;;
     --force)      FORCE=1 ;;
     --uninstall)  MODE="uninstall" ;;
     --no-bridge)  NO_BRIDGE=1 ;;
+    --no-apikey)  NO_APIKEY=1 ;;
     -h|--help)    usage; exit 0 ;;
     *) echo "Unknown argument: $arg" >&2; usage; exit 1 ;;
   esac
@@ -140,6 +148,80 @@ bridge_hook_present() {
   ' "$SETTINGS_FILE" > /dev/null 2>&1
 }
 
+# ─── apikey CLI helpers ────────────────────────────────────────────────
+
+apikey_install() {
+  [[ -f "$APIKEY_BIN_SRC" ]] || { echo "  apikey: $APIKEY_BIN_SRC not found, skipping" >&2; return 1; }
+
+  mkdir -p "$(dirname "$APIKEY_BIN_DEST")"
+
+  # Symlink the CLI so repo updates flow through
+  if [[ -L "$APIKEY_BIN_DEST" && "$(readlink "$APIKEY_BIN_DEST")" == "$APIKEY_BIN_SRC" ]]; then
+    echo "  apikey: CLI symlink already in place"
+  else
+    if [[ -e "$APIKEY_BIN_DEST" || -L "$APIKEY_BIN_DEST" ]]; then
+      if [[ "$FORCE" -eq 1 ]]; then
+        rm -f "$APIKEY_BIN_DEST"
+      else
+        echo "  apikey: $APIKEY_BIN_DEST exists; use --force to overwrite"
+        return 0
+      fi
+    fi
+    ln -s "$APIKEY_BIN_SRC" "$APIKEY_BIN_DEST"
+    chmod +x "$APIKEY_BIN_SRC"
+    echo "  apikey: linked $APIKEY_BIN_DEST -> $APIKEY_BIN_SRC"
+  fi
+
+  # Seed the config IFF it doesn't exist (never overwrite user edits)
+  mkdir -p "$(dirname "$APIKEY_CONFIG_DEST")"
+  if [[ -f "$APIKEY_CONFIG_DEST" ]]; then
+    echo "  apikey: config already exists at $APIKEY_CONFIG_DEST (preserved)"
+  else
+    cp "$APIKEY_CONFIG_SRC" "$APIKEY_CONFIG_DEST"
+    chmod 600 "$APIKEY_CONFIG_DEST"
+    echo "  apikey: seeded $APIKEY_CONFIG_DEST"
+  fi
+
+  # PATH warning
+  case ":$PATH:" in
+    *":$HOME/.local/bin:"*) ;;
+    *) echo "  apikey: warning — $HOME/.local/bin is not in your PATH" >&2
+       echo "          add: export PATH=\"\$HOME/.local/bin:\$PATH\" to your shell rc" >&2 ;;
+  esac
+}
+
+apikey_uninstall() {
+  if [[ -L "$APIKEY_BIN_DEST" ]]; then
+    rm -f "$APIKEY_BIN_DEST"
+    echo "  apikey: removed symlink $APIKEY_BIN_DEST"
+  else
+    echo "  apikey: no symlink at $APIKEY_BIN_DEST"
+  fi
+  if [[ -f "$APIKEY_CONFIG_DEST" ]]; then
+    echo "  apikey: config preserved at $APIKEY_CONFIG_DEST (may contain custom services)"
+  fi
+}
+
+apikey_check() {
+  if [[ -L "$APIKEY_BIN_DEST" ]]; then
+    target="$(readlink "$APIKEY_BIN_DEST")"
+    if [[ "$target" == "$APIKEY_BIN_SRC" ]]; then
+      echo "  apikey CLI:     $APIKEY_BIN_DEST -> $target  [ok]"
+    else
+      echo "  apikey CLI:     $APIKEY_BIN_DEST -> $target  [points elsewhere]"
+    fi
+  elif [[ -f "$APIKEY_BIN_DEST" ]]; then
+    echo "  apikey CLI:     $APIKEY_BIN_DEST  (real file, not a symlink)"
+  else
+    echo "  apikey CLI:     not installed"
+  fi
+  if [[ -f "$APIKEY_CONFIG_DEST" ]]; then
+    echo "  apikey config:  $APIKEY_CONFIG_DEST  [present]"
+  else
+    echo "  apikey config:  not present (would be seeded on install)"
+  fi
+}
+
 # ─── Mode dispatch ──────────────────────────────────────────────────────
 
 case "$MODE" in
@@ -178,6 +260,10 @@ case "$MODE" in
     else
       echo "  bridge binary: $BRIDGE_BIN (missing or not executable)"
     fi
+
+    echo
+    echo "apikey:"
+    apikey_check
     ;;
 
   install)
@@ -220,6 +306,12 @@ case "$MODE" in
       fi
     fi
 
+    if [[ "$NO_APIKEY" -eq 0 ]]; then
+      echo
+      echo "apikey:"
+      apikey_install || true
+    fi
+
     echo
     echo "Verify:    bash install.sh --check"
     ;;
@@ -245,6 +337,12 @@ case "$MODE" in
       bridge_hook_uninstall || true
       echo "  (gstack SKILL.md.tmpl patches left in place — they'll fall through harmlessly without chordio's refs)"
       echo "  (bridge state file at \$CHORDIO_ROOT/.bridge-state left in place)"
+    fi
+
+    if [[ "$NO_APIKEY" -eq 0 ]]; then
+      echo
+      echo "apikey:"
+      apikey_uninstall || true
     fi
     ;;
 esac

@@ -1,0 +1,33 @@
+# apikey — service to env-var mapping
+# Read by ~/.local/bin/apikey at runtime.
+#
+# Format (handled by apikey's tiny YAML parser):
+#   - top-level scalars (vault: "API Keys")
+#   - one `services:` section with nested entries
+#   - each entry has `env:` and optional `field:` (defaults to "credential",
+#     which is the field name for 1Password's API Credential item type)
+#
+# To add a service: append an entry under `services:` with the env var name
+# your skills/code expect.
+
+vault: "API Keys"
+
+services:
+  openai:
+    env: OPENAI_API_KEY
+  anthropic:
+    env: ANTHROPIC_API_KEY
+  gemini:
+    env: GEMINI_API_KEY
+  codex:
+    env: CODEX_API_KEY
+  vercel-gateway:
+    env: AI_GATEWAY_API_KEY
+  supabase:
+    env: SUPABASE_ACCESS_TOKEN
+  elevenlabs:
+    env: ELEVENLABS_API_KEY
+  replicate:
+    env: REPLICATE_API_TOKEN
+  github:
+    env: GITHUB_TOKEN
