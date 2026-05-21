@@ -14,38 +14,53 @@ SKILLS_DEST="$HOME/.claude/skills"
 BRIDGE_BIN="$SCRIPT_DIR/bin/chordio-bridge"
 SETTINGS_FILE="${CLAUDE_SETTINGS_FILE:-$HOME/.claude/settings.json}"
 HOOK_MATCHER='chordio-bridge'   # substring used to find/remove our hook entries
+CLAUDE_MD_FILE="${CLAUDE_MD_FILE:-$HOME/.claude/CLAUDE.md}"
+BLOCK_FILE="$SCRIPT_DIR/agent-instructions/chordio-block.md"
+BARE_CLAUDEMD="$SCRIPT_DIR/agent-instructions/CLAUDE.md"
+BLOCK_BEGIN_PREFIX='<!-- BEGIN chordio-design-skills' # any version
+BLOCK_END='<!-- END chordio-design-skills -->'
 
 usage() {
   cat <<'EOF'
-Usage: bash install.sh [--check | --force | --uninstall] [--no-bridge]
+Usage: bash install.sh [--check | --force | --uninstall]
+                       [--no-bridge] [--no-claudemd] [--init-claudemd]
 
 Symlinks every skill in ./skills/ into ~/.claude/skills/ so Claude Code
-loads them at user scope. Also registers a SessionStart hook that keeps
-gstack's design skills patched with chordio's taste references (skipped
-if gstack is not installed).
+loads them at user scope. Also keeps a marker-fenced block in
+~/.claude/CLAUDE.md describing the bundle, and registers a SessionStart
+hook that keeps gstack's design skills patched with chordio's taste
+references (skipped if gstack is not installed).
 
 Source path defaults to the directory containing this script — so running
 it from a worktree swaps the live symlinks to that worktree.
 
 Options:
-  (no flag)     Install symlinks + register bridge hook + run an initial bridge pass
-  --force       Overwrite existing symlinks
-  --check       Print symlink status + bridge hook status + bridge state
-  --uninstall   Remove symlinks and the bridge hook
-  --no-bridge   Skip bridge hook registration (skills-only install)
+  (no flag)         Install symlinks + CLAUDE.md block + bridge hook + initial pass
+  --force           Overwrite existing symlinks
+  --check           Print symlink + CLAUDE.md block + bridge status
+  --uninstall       Remove symlinks, CLAUDE.md block, and bridge hook
+  --no-bridge       Skip bridge hook registration (skills-only install)
+  --no-claudemd     Skip the ~/.claude/CLAUDE.md block install/refresh
+  --init-claudemd   Seed ~/.claude/CLAUDE.md if missing (no prompt). Otherwise
+                    a missing file triggers an interactive prompt; non-interactive
+                    runs skip with a notice.
 EOF
 }
 
 MODE="install"
 FORCE=0
 NO_BRIDGE=0
+NO_CLAUDEMD=0
+INIT_CLAUDEMD=""   # empty = ask if TTY (else skip); "yes" = seed without prompting
 for arg in "$@"; do
   case "$arg" in
-    --check)      MODE="check" ;;
-    --force)      FORCE=1 ;;
-    --uninstall)  MODE="uninstall" ;;
-    --no-bridge)  NO_BRIDGE=1 ;;
-    -h|--help)    usage; exit 0 ;;
+    --check)            MODE="check" ;;
+    --force)            FORCE=1 ;;
+    --uninstall)        MODE="uninstall" ;;
+    --no-bridge)        NO_BRIDGE=1 ;;
+    --no-claudemd)      NO_CLAUDEMD=1 ;;
+    --init-claudemd)    INIT_CLAUDEMD="yes" ;;
+    -h|--help)          usage; exit 0 ;;
     *) echo "Unknown argument: $arg" >&2; usage; exit 1 ;;
   esac
 done
@@ -140,6 +155,116 @@ bridge_hook_present() {
   ' "$SETTINGS_FILE" > /dev/null 2>&1
 }
 
+# ─── CLAUDE.md block helpers (plain markdown, no jq needed) ─────────────
+
+claudemd_block_present() {
+  [[ -f "$CLAUDE_MD_FILE" ]] || return 1
+  grep -q "^$BLOCK_BEGIN_PREFIX" "$CLAUDE_MD_FILE"
+}
+
+# Strip any existing chordio block (any version) from $1 into $2.
+# Sets stdout to "had_block" if a block was removed, "no_block" otherwise.
+claudemd_strip_block() {
+  local src="$1" dst="$2"
+  : > "$dst"
+  awk -v begin="$BLOCK_BEGIN_PREFIX" -v end="$BLOCK_END" -v outfile="$dst" '
+    BEGIN { in_block=0; had_block=0 }
+    {
+      if (!in_block && index($0, begin) == 1) { in_block=1; had_block=1; next }
+      if (in_block && $0 == end)              { in_block=0; next }
+      if (!in_block)                          { print > outfile }
+    }
+    END { print (had_block ? "had_block" : "no_block") }
+  ' "$src"
+}
+
+# Idempotent: replaces an existing chordio block in place, or appends one.
+# Seeds ~/.claude/CLAUDE.md from the bare template if it doesn't exist
+# (interactive prompt by default; --init-claudemd forces yes; non-interactive
+# without the flag skips with a notice).
+claudemd_block_install() {
+  [[ -f "$BLOCK_FILE" ]]    || { echo "  CLAUDE.md: $BLOCK_FILE not found, skipping" >&2; return 1; }
+  [[ -f "$BARE_CLAUDEMD" ]] || { echo "  CLAUDE.md: $BARE_CLAUDEMD not found, skipping" >&2; return 1; }
+
+  if [[ ! -f "$CLAUDE_MD_FILE" ]]; then
+    local do_seed=0
+    if [[ "$INIT_CLAUDEMD" == "yes" ]]; then
+      do_seed=1
+    elif [[ -t 0 ]]; then
+      echo "  CLAUDE.md: $CLAUDE_MD_FILE does not exist."
+      echo "             chordio can seed it from $BARE_CLAUDEMD"
+      echo "             (operating-instructions preamble + Elon mantra) plus the"
+      echo "             marker-fenced chordio block. Existing files are never overwritten."
+      printf "             Create %s? [y/N] " "$CLAUDE_MD_FILE"
+      local answer=""
+      read -r answer || answer=""
+      case "$answer" in
+        y|Y|yes|YES) do_seed=1 ;;
+      esac
+    fi
+
+    if [[ "$do_seed" -ne 1 ]]; then
+      echo "  CLAUDE.md: $CLAUDE_MD_FILE not found — skipping (pass --init-claudemd to seed)"
+      return 0
+    fi
+
+    mkdir -p "$(dirname "$CLAUDE_MD_FILE")"
+    cp "$BARE_CLAUDEMD" "$CLAUDE_MD_FILE"
+    printf '\n' >> "$CLAUDE_MD_FILE"
+    cat "$BLOCK_FILE" >> "$CLAUDE_MD_FILE"
+    echo "  CLAUDE.md: seeded $CLAUDE_MD_FILE with baseline + chordio block"
+    return 0
+  fi
+
+  local tmp="$CLAUDE_MD_FILE.tmp.$$"
+  local status
+  status="$(claudemd_strip_block "$CLAUDE_MD_FILE" "$tmp")"
+
+  # Normalize: drop trailing blank lines, then add exactly one blank line
+  # before the appended block. Keeps the file from growing on each refresh.
+  local norm="$tmp.norm"
+  awk '
+    { lines[NR]=$0; if ($0 != "") last=NR }
+    END { for (i=1; i<=last; i++) print lines[i] }
+  ' "$tmp" > "$norm"
+  mv "$norm" "$tmp"
+
+  if [[ -s "$tmp" ]]; then
+    printf '\n' >> "$tmp"
+  fi
+  cat "$BLOCK_FILE" >> "$tmp"
+
+  if ! mv "$tmp" "$CLAUDE_MD_FILE"; then
+    rm -f "$tmp"
+    echo "  CLAUDE.md: failed to update $CLAUDE_MD_FILE" >&2
+    return 1
+  fi
+
+  if [[ "$status" == "had_block" ]]; then
+    echo "  CLAUDE.md: chordio block refreshed in $CLAUDE_MD_FILE"
+  else
+    echo "  CLAUDE.md: chordio block appended to $CLAUDE_MD_FILE"
+  fi
+}
+
+claudemd_block_uninstall() {
+  [[ -f "$CLAUDE_MD_FILE" ]] || { echo "  CLAUDE.md: $CLAUDE_MD_FILE not found — nothing to remove"; return 0; }
+  if ! claudemd_block_present; then
+    echo "  CLAUDE.md: no chordio block found in $CLAUDE_MD_FILE — nothing to remove"
+    return 0
+  fi
+
+  local tmp="$CLAUDE_MD_FILE.tmp.$$"
+  claudemd_strip_block "$CLAUDE_MD_FILE" "$tmp" >/dev/null
+
+  if ! mv "$tmp" "$CLAUDE_MD_FILE"; then
+    rm -f "$tmp"
+    echo "  CLAUDE.md: failed to update $CLAUDE_MD_FILE" >&2
+    return 1
+  fi
+  echo "  CLAUDE.md: chordio block removed from $CLAUDE_MD_FILE"
+}
+
 # ─── Mode dispatch ──────────────────────────────────────────────────────
 
 case "$MODE" in
@@ -164,6 +289,16 @@ case "$MODE" in
         printf "%-32s  (not installed)\n" "$name"
       fi
     done
+
+    echo
+    echo "CLAUDE.md:"
+    if [[ ! -f "$CLAUDE_MD_FILE" ]]; then
+      echo "  $CLAUDE_MD_FILE: not found"
+    elif claudemd_block_present; then
+      echo "  chordio block: registered in $CLAUDE_MD_FILE"
+    else
+      echo "  chordio block: not registered in $CLAUDE_MD_FILE"
+    fi
 
     echo
     echo "Bridge:"
@@ -209,6 +344,12 @@ case "$MODE" in
     echo
     echo "Symlinks:  installed $installed  overwrote $overwrote  skipped $skipped"
 
+    if [[ "$NO_CLAUDEMD" -eq 0 ]]; then
+      echo
+      echo "CLAUDE.md:"
+      claudemd_block_install || true
+    fi
+
     if [[ "$NO_BRIDGE" -eq 0 ]]; then
       echo
       echo "Bridge:"
@@ -238,6 +379,12 @@ case "$MODE" in
     done
     echo
     echo "Symlinks: removed $removed"
+
+    if [[ "$NO_CLAUDEMD" -eq 0 ]]; then
+      echo
+      echo "CLAUDE.md:"
+      claudemd_block_uninstall || true
+    fi
 
     if [[ "$NO_BRIDGE" -eq 0 ]]; then
       echo

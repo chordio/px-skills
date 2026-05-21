@@ -79,9 +79,10 @@ The product-design skills compose into an artifact-driven pipeline. **You don't 
 
 The supported install path is a one-time clone to a canonical location, then `bash install.sh` to symlink every skill into `~/.claude/skills/`. Updates are then a single `git pull` away — no re-copy needed.
 
-`install.sh` does two things:
+`install.sh` does three things:
 1. Symlinks every skill into `~/.claude/skills/`
-2. If gstack is installed, registers a SessionStart hook that keeps gstack's design skills patched with chordio's taste references (see [gstack bridge](#gstack-bridge) below — opt out with `--no-bridge`)
+2. Keeps a marker-fenced block in `~/.claude/CLAUDE.md` describing the bundle (see [CLAUDE.md block](#claudemd-block) below — opt out with `--no-claudemd`)
+3. If gstack is installed, registers a SessionStart hook that keeps gstack's design skills patched with chordio's taste references (see [gstack bridge](#gstack-bridge) below — opt out with `--no-bridge`)
 
 Keep the canonical checkout at `~/.claude-design-skills`: skills read shared taste references from `~/.claude-design-skills/shared/design-taste/`, so project-local copies are not supported.
 
@@ -125,6 +126,28 @@ bash install.sh --force      # Restore the main checkout
 ```
 
 Run `bash install.sh --check` from anywhere to see which checkout each skill currently points at.
+
+### CLAUDE.md block
+
+`install.sh` also keeps a marker-fenced block in `~/.claude/CLAUDE.md` describing the bundle so Claude sees the skill list at session start:
+
+```
+<!-- BEGIN chordio-design-skills v1 -->
+… block content (skill table, taste-refs pointer, gstack recommendation) …
+<!-- END chordio-design-skills -->
+```
+
+The exact content lives at `agent-instructions/chordio-block.md`. Idempotent: re-running install refreshes the block in place (byte-identical when nothing changed). Behaviour:
+
+| Scenario | Behaviour |
+|---|---|
+| `~/.claude/CLAUDE.md` exists | Appends the block; subsequent runs replace it in place. |
+| Missing file, interactive run | Prompts before seeding from `agent-instructions/CLAUDE.md` + the block. Default is no. |
+| Missing file, non-interactive run | Skips with a notice. Pass `--init-claudemd` to seed without prompting. |
+| `--no-claudemd` | Skip the block install/refresh entirely. |
+| `--uninstall` | Strips the block in place; the rest of the file is untouched. |
+
+`agent-instructions/CLAUDE.md` is the stack-agnostic baseline used for seeding — operating-instructions preamble, API-key recovery guidance, and the Elon first-principles algorithm. No skill-specific or gstack-specific content; those come from the chordio marker block and from gstack's own `/setup-gbrain` block respectively. The two installers manage separate marker namespaces and don't touch each other's content.
 
 ### gstack bridge
 
@@ -377,7 +400,8 @@ claude-design-skills/
 │   ├── image-generator/
 │   └── social-post-designer/
 ├── agent-instructions/
-│   └── CLAUDE.md             # Canonical instructions for AI agents working in this repo
+│   ├── CLAUDE.md             # Stack-agnostic baseline (seed for ~/.claude/CLAUDE.md)
+│   └── chordio-block.md      # Marker-fenced block installed into ~/.claude/CLAUDE.md
 ├── evals/                    # Test framework
 └── examples/                 # Example design-context output
 ```
