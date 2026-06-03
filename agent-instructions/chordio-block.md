@@ -1,4 +1,4 @@
-<!-- BEGIN chordio-design-skills v1 -->
+<!-- BEGIN chordio-design-skills v2 -->
 
 ## Chordio Design Skills
 
@@ -22,6 +22,7 @@ If unsure where to start, run `next-step` — it inspects the current workspace 
 | `landing-page-builder` | Build conversion-focused landing pages | Marketing sites, product homepages |
 | `image-generator` | Generate AI imagery (nano-banana / Veo) | Hero imagery, marketing visuals |
 | `social-post-designer` | Create social posts with AI visuals | Social content creation |
+| `humanizer` | Strip AI-writing tells from prose (standalone) | Editing or reviewing any written text |
 
 Every design skill loads curated taste references from `~/.claude-design-skills/shared/design-taste/` (vendored from `pbakaus/impeccable` — typography, color, spacing, motion, interaction, responsive, UX writing, anti-patterns). Treat these files as the bar for what good design looks like; reference them when generating or reviewing UI.
 
