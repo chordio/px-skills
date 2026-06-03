@@ -20,6 +20,7 @@ A bundle of Claude Code skills for improving front-end UI design quality, plus c
 | **landing-page-builder** | Build conversion-focused landing pages | Marketing sites, product homepages |
 | **image-generator** | Generate AI imagery (nano-banana / Veo) | Hero imagery, marketing visuals |
 | **social-post-designer** | Create social posts with AI visuals | Social content creation |
+| **humanizer** | Strip AI-writing tells from prose | Editing or reviewing any written text (standalone, not part of the design pipeline) |
 
 All design skills load curated taste references from the canonical checkout at `~/.claude-design-skills/shared/design-taste/` — see [Design Taste References](#design-taste-references) below.
 
@@ -322,6 +323,12 @@ Generate AI imagery via nano-banana (images) and Veo (video) with detailed promp
 
 Create high-converting social media posts with AI-generated visuals across LinkedIn, Twitter/X, Instagram, TikTok, and Facebook. Supports text-only, image, carousel, and video formats. Generates copy and detailed visual prompts for image/video generators.
 
+### humanizer
+
+Remove signs of AI-generated writing to make prose sound human. A standalone writing skill, not part of the product-design pipeline: it detects and fixes 31 patterns drawn from Wikipedia's "Signs of AI writing" guide (significance inflation, em/en dashes, rule-of-three, AI vocabulary, empty intensifiers, filler, and more), then runs a draft → audit → regression-check → final loop. Forked from [blader/humanizer](https://github.com/blader/humanizer) and maintained here with our own additions.
+
+**Usage:** Ask Claude to humanize a piece of text, optionally providing a sample of your own writing for voice matching.
+
 ## Skill Interactions
 
 ```
@@ -398,7 +405,8 @@ claude-design-skills/
 │   ├── hero-builder/
 │   ├── landing-page-builder/
 │   ├── image-generator/
-│   └── social-post-designer/
+│   ├── social-post-designer/
+│   └── humanizer/             # Standalone writing skill (AI-tell removal)
 ├── agent-instructions/
 │   ├── CLAUDE.md             # Stack-agnostic baseline (seed for ~/.claude/CLAUDE.md)
 │   └── chordio-block.md      # Marker-fenced block installed into ~/.claude/CLAUDE.md
