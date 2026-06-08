@@ -21,6 +21,7 @@ A bundle of Claude Code skills for improving front-end UI design quality, plus c
 | **image-generator** | Generate AI imagery (nano-banana / Veo) | Hero imagery, marketing visuals |
 | **social-post-designer** | Create social posts with AI visuals | Social content creation |
 | **humanizer** | Strip AI-writing tells from prose | Editing or reviewing any written text (standalone, not part of the design pipeline) |
+| **clarity-review** | Cold-reader test for standalone clarity (curse-of-knowledge defense) | After humanizer, before publishing any article, post, or landing page |
 
 All design skills load curated taste references from the canonical checkout at `~/.claude-design-skills/shared/design-taste/` — see [Design Taste References](#design-taste-references) below.
 
@@ -329,6 +330,12 @@ Remove signs of AI-generated writing to make prose sound human. A standalone wri
 
 **Usage:** Ask Claude to humanize a piece of text, optionally providing a sample of your own writing for voice matching.
 
+### clarity-review
+
+Verify a piece reads clearly to someone arriving with no context — the curse-of-knowledge defect that de-slopping and structural passes both miss. A standalone writing skill and the sibling to humanizer: humanizer makes prose *clean* (no AI tells), clarity-review makes it *clear* (every reference resolves where it appears). It slices a piece into reveal levels (dek/headline only → +intro → full), dispatches a panel of deliberately blind cold-reader sub-agents that see only the text and are forced to answer strictly from it (default NOT ESTABLISHED), and probes each load-bearing entity ("the map", coined terms, the dek's claims) for whether it resolves at the level where it first appears. Adds an informed given-new linear read and a dek/title audit. Diagnoses and classifies; it does not rewrite.
+
+**Usage:** Ask Claude to run a clarity review on an article, post, landing page, or any publication (a file path or pasted draft). Run it after humanizer.
+
 ## Skill Interactions
 
 ```
@@ -406,7 +413,8 @@ claude-design-skills/
 │   ├── landing-page-builder/
 │   ├── image-generator/
 │   ├── social-post-designer/
-│   └── humanizer/             # Standalone writing skill (AI-tell removal)
+│   ├── humanizer/             # Standalone writing skill (AI-tell removal)
+│   └── clarity-review/        # Standalone writing skill (cold-reader clarity test)
 ├── agent-instructions/
 │   ├── CLAUDE.md             # Stack-agnostic baseline (seed for ~/.claude/CLAUDE.md)
 │   └── chordio-block.md      # Marker-fenced block installed into ~/.claude/CLAUDE.md
