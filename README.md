@@ -7,6 +7,7 @@ A bundle of Claude Code skills for improving front-end UI design quality, plus c
 | Skill | Purpose | When to Use |
 |-------|---------|-------------|
 | **next-step** | Workspace-aware "what should I do next?" | Anytime you're unsure where to start |
+| **vet-idea** | Pressure-test an idea/feature/requirement with Elon's five-step first-principles algorithm (question → delete → optimize → speed up → automate) | Before researching or building anything — decide whether it should exist at all |
 | **product-researcher** | Research (concept / domain / target) — produces a research brief at every pipeline level | Before architecting, before speccing, or to flesh out a vague idea |
 | **product-architect** | Initiative-level: decompose product into features, define architecture | New product from a concept; multi-feature work |
 | **product-spec-writer** | Generate product specs (requirements) BEFORE design | Scoping a feature from research/insights |
