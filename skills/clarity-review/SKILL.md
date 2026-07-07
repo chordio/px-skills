@@ -109,7 +109,7 @@ the slice. Ignorance is the instrument.
    a one-line gloss of *what the text established* (not what they guessed), and a
    one-sentence "what is this about / what will it do for me".
 
-4. **Run the two informed passes yourself** (you, the orchestrating agent, with
+4. **Run the informed passes yourself** (you, the orchestrating agent, with
    full context — these complement the blind panel, they don't replace it):
    - **Given-new linear read** of the body: read top to bottom; flag every definite
      noun phrase or pronoun whose referent isn't yet established at that point.
@@ -117,6 +117,10 @@ the slice. Ignorance is the instrument.
      the body actually develops that property. An adjective the body never argues
      (the `good` in "good benchmarks") is a defect — it imports an axis and dilutes
      the promise. Confirm the dek states the *contribution* in language the body delivers.
+   - **Banned-forms sweep:** flag every sentence matching the rubric's *Banned
+     sentence forms* list — currently standalone "What …" fragments ("What
+     measurement is worth.", "What it measures."), which hit headings and deks
+     hardest. Classify as `banned-form`.
 
 5. **Synthesize by consensus.** An entity the **majority** of the panel marks
    `NOT ESTABLISHED` at the level where it appears is a confirmed defect; a lone

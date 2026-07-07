@@ -70,12 +70,29 @@ earns its own checklist, run by the orchestrating agent with full context:
 - **D-3 Standalone parse.** Reading only the dek, is anything referenced that a
   zero-context reader cannot identify?
 
+## Banned sentence forms (marketing copy)
+
+Sentence *shapes* that fail a cold reader regardless of content. Flag every
+instance in marketing copy (site, deks, headings, publications); classify as
+`banned-form`.
+
+- **"What …" fragments.** A free-relative clause punctuated as a standalone
+  declarative sentence: "What measurement is worth." "What it measures."
+  "What you get." A cold reader starts parsing a question and hits a period —
+  the sentence garden-paths, and the form is a stock AI-marketing kicker
+  besides. Common in headings, where it costs the most (L0/L1). The fix is not
+  to prepend "Here is…"; state the content directly ("Measurement pays for
+  itself when…", "It measures the experience the model ships.") or, rarely, use
+  a real question the next sentence answers. (Humanizer §35 is the same rule on
+  the clean axis.)
+
 ## Defect classes (locked vocabulary)
 
 Classify each finding. Don't invent classes; use `other` + explanation if nothing fits.
 
 | Class | What it is | Example |
 |---|---|---|
+| `banned-form` | a sentence shape on the banned-forms list above | "What measurement is worth." as a standalone sentence/heading |
 | `unestablished-referent` | a definite reference / term used before it's introduced | "the disagreement" with no disagreement mentioned yet |
 | `resolves-too-late` | resolves, but below its appearance level | a coined term defined in §3 but first used in the dek |
 | `unearned-claim` | an adjective/claim the body never develops | "good benchmarks" in a coverage piece |

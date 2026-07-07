@@ -327,7 +327,7 @@ Create high-converting social media posts with AI-generated visuals across Linke
 
 ### humanizer
 
-Remove signs of AI-generated writing to make prose sound human. A standalone writing skill, not part of the product-design pipeline: it detects and fixes 31 patterns drawn from Wikipedia's "Signs of AI writing" guide (significance inflation, em/en dashes, rule-of-three, AI vocabulary, empty intensifiers, filler, and more), then runs a draft → audit → regression-check → final loop. Forked from [blader/humanizer](https://github.com/blader/humanizer) and maintained here with our own additions.
+Remove signs of AI-generated writing to make prose sound human. A standalone writing skill, not part of the product-design pipeline: it detects and fixes 35 patterns drawn from Wikipedia's "Signs of AI writing" guide (significance inflation, em/en dashes, rule-of-three, AI vocabulary, empty intensifiers, filler, and more), then runs a draft → audit → regression-check → final loop. Forked from [blader/humanizer](https://github.com/blader/humanizer) and maintained here with our own additions.
 
 **Usage:** Ask Claude to humanize a piece of text, optionally providing a sample of your own writing for voice matching.
 
