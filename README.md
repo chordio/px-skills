@@ -217,7 +217,7 @@ Marketing-surface skills — hero sections, landing pages, social posts, AI imag
 
 The skill format — a folder with a `SKILL.md`, YAML frontmatter plus markdown instructions — is an open convention that multiple agents now read: Claude Code, Gemini CLI, OpenAI Codex, Cursor, GitHub Copilot, and others. Supporting the format means the client auto-invokes skills from their frontmatter descriptions, with no memory-file setup required. PX Skills is built and tested on Claude Code. What's Claude-specific today is shallow, and it's exactly three things:
 
-1. **The installer's targets** — `~/.claude/skills/` and `~/.claude/CLAUDE.md`. Other clients keep their skills and global memory (`AGENTS.md`-family files) in their own locations; teaching `install.sh` a per-client table is the planned path, with each client claimed only after a smoke test.
+1. **The installer's targets** — `install.sh` already works from a per-client table (client → skills directory → global memory file). Only the Claude Code row is active; rows for Gemini CLI, Codex, Cursor, and Copilot are in the table, commented out, and each activates only after a smoke test on that client. Unverified paths shipped as fact would be worse than no support.
 2. **Sub-agent fan-out** — `review-panel` runs its twins as parallel sub-agents and `clarity-review` runs a blind reader panel. clarity-review already documents a sequential fallback for hosts without a sub-agent primitive; review-panel needs the same treatment.
 3. **Peer handoffs** — gstack is itself a Claude Code bundle, so on other clients steps 9-10 fall back to "use your own QA and ship process," which the pipeline already supports.
 

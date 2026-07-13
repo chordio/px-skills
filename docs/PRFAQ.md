@@ -138,7 +138,7 @@ What still has to change between this document and the launch it describes. (Alr
 4. Untrack the stray eval database file.
 5. Publish the px-marketing-skills bundle from the extracted skills (hero-builder, landing-page-builder, social-post-designer, image-generator).
 6. Rename the GitHub repo to `px-skills` (old links redirect).
-7. Multi-client support: teach the installer a per-client table (skills directory + `AGENTS.md`-family memory file) for Gemini CLI, Codex, Cursor, and Copilot; add a sequential fallback to `review-panel`; claim each client in the README only after a smoke test on it.
+7. Multi-client support: the installer carries a per-client table (skills directory + `AGENTS.md`-family memory file) with Gemini CLI, Codex, Cursor, and Copilot rows gated; smoke-test each client, activate its row, then claim it in the README. Also add a sequential fallback to `review-panel`.
 8. Launch collateral: `social-post-designer` (px-marketing-skills) turns this PRFAQ into announcement posts, which then pass through the humanizer peer (with our house rules) and `clarity-review`.
 
 ---
