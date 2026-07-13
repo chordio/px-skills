@@ -25,8 +25,10 @@ directory of pbakaus/impeccable:
 `anti-patterns.md` is a curated extract from impeccable's `skill/SKILL.md`
 ("Absolute bans", shared design laws, AI slop test sections).
 
-Pinned upstream commit: see `.impeccable-commit`.
-Run `bash refresh-impeccable.sh` from the repo root to pull updates.
+Vendored-at commit: see `.impeccable-commit`. Upstream has since restructured
+its reference set (the files above no longer exist there in this form), so
+this snapshot is **maintained and evolved locally** rather than auto-refreshed.
+It remains redistributed under the original Apache-2.0 terms with this NOTICE.
 
 ## Anthropic frontend-design (transitive)
 
@@ -40,4 +42,4 @@ frontend-design skill. That upstream is also Apache-2.0 licensed.
 
 Both upstream projects are Apache 2.0. The vendored files retain that license.
 Modifications local to this repo are licensed per the top-level `LICENSE`
-file of `claude-design-skills`.
+file of `px-skills`.

@@ -16,7 +16,7 @@ Generate comprehensive UX design specifications BEFORE implementation using a tw
 
 ## Design Taste References (read first)
 
-These references at `~/.claude-design-skills/shared/design-taste/` set what good looks like and what to avoid. Read the relevant ones before drafting a spec:
+These references at `~/.px-skills/shared/design-taste/` set what good looks like and what to avoid. Read the relevant ones before drafting a spec:
 
 - `anti-patterns.md` — bans (side-stripe borders, gradient text, hero-metric template, identical card grids, em dashes, AI slop reflexes)
 - `typography.md` — type scale, font pairing, modular scales

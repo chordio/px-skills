@@ -204,8 +204,8 @@ Write a `source.json` manifest:
 
 For each token category, infer the underlying system from harvested values:
 
-- **Type scale** — deduplicate font-size values; check if ratios between steps are consistent (≥1.25 is healthy; flat scales like 14/16/18/20 indicate a weak system). Note the base size. See `~/.claude-design-skills/shared/design-taste/typography.md`.
-- **Color strategy** — cluster colors, count occurrences. Categorize against the four strategies in `~/.claude-design-skills/shared/design-taste/color-and-contrast.md`:
+- **Type scale** — deduplicate font-size values; check if ratios between steps are consistent (≥1.25 is healthy; flat scales like 14/16/18/20 indicate a weak system). Note the base size. See `~/.px-skills/shared/design-taste/typography.md`.
+- **Color strategy** — cluster colors, count occurrences. Categorize against the four strategies in `~/.px-skills/shared/design-taste/color-and-contrast.md`:
   - 1 brand hue + tinted neutrals + 1 accent ≤10% → Restrained
   - 1 saturated color carrying 30–60% of surface area → Committed
   - 3–4 named roles → Full palette
