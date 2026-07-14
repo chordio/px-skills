@@ -38,7 +38,7 @@ Nothing here patches, hooks, or edits other tools. `install.sh` symlinks the ski
 | **design-manager-twin-creator** | Create digital twins of design leaders | Capturing someone's critique style for review-panel |
 | **clarity-review** | Cold-reader test for standalone clarity (curse-of-knowledge defense) | After humanizer, before publishing any article, post, or landing page |
 
-Marketing-surface skills (hero sections, landing pages, social posts, AI imagery) live in the separate **px-marketing-skills** bundle; the pipeline's announce step uses it when installed.
+Marketing-surface skills (hero sections, landing pages, social posts, AI imagery) live in the separate [px-marketing-skills](https://github.com/chordio/px-marketing-skills) bundle; the pipeline's announce step uses it when installed.
 
 All design skills load curated taste references from the canonical checkout at `~/.px-skills/shared/design-taste/` — see [Design Taste References](#design-taste-references) below.
 
@@ -211,7 +211,7 @@ gstack's skills don't read PX artifacts natively. When handing off, tell them to
 
 ### px-marketing-skills
 
-Marketing-surface skills — hero sections, landing pages, social posts, AI image generation — live in a separate bundle so the core stays focused. The pipeline's announce step (11) uses its `social-post-designer` to turn your `prfaq.md` and `design-context/` into real launch content.
+Marketing-surface skills — hero sections, landing pages, social posts, AI image generation — live in a separate bundle, [chordio/px-marketing-skills](https://github.com/chordio/px-marketing-skills), so the core stays focused (and key-free: image generation's bring-your-own-key requirement lives there, not here). The pipeline's announce step (11) uses its `social-post-designer` to turn your `prfaq.md` and `design-context/` into real launch content.
 
 ## Portability
 
