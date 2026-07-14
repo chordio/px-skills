@@ -41,7 +41,10 @@ CLIENTS=(
   "claude|$HOME/.claude/skills|$CLAUDE_MD_FILE"
   # "gemini|$HOME/.gemini/skills|$HOME/.gemini/GEMINI.md"        # Gemini CLI — unverified
   # "codex|$HOME/.codex/skills|$HOME/.codex/AGENTS.md"           # OpenAI Codex — unverified
-  # "cursor|$HOME/.cursor/skills|$HOME/.cursor/AGENTS.md"        # Cursor — unverified
+  # "cursor|$HOME/.cursor/skills-cursor|"                        # Cursor — skills dir verified on disk (user scope,
+  #                                                              #   same SKILL.md format); no global memory file
+  #                                                              #   (in-app User Rules; AGENTS.md is project-scope).
+  #                                                              #   Activate after an auto-invocation smoke test.
   # "copilot|$HOME/.copilot/skills|$HOME/.copilot/AGENTS.md"     # GitHub Copilot CLI — unverified
 )
 
@@ -431,7 +434,9 @@ for row in "${CLIENTS[@]}"; do
       echo "Client: $CNAME"
       symlinks_check "$CSKILLS"
       echo
-      if [[ ! -f "$CMEM" ]]; then
+      if [[ -z "$CMEM" ]]; then
+        echo "  block: (this client has no global memory file; skills only)"
+      elif [[ ! -f "$CMEM" ]]; then
         echo "  block: $CMEM not found"
       elif block_present "$CMEM"; then
         echo "  block: px-skills block registered in $CMEM"
@@ -444,7 +449,7 @@ for row in "${CLIENTS[@]}"; do
     install)
       echo "Client: $CNAME"
       symlinks_install "$CSKILLS"
-      if [[ "$NO_CLAUDEMD" -eq 0 ]]; then
+      if [[ "$NO_CLAUDEMD" -eq 0 && -n "$CMEM" ]]; then
         echo
         block_install "$CNAME" "$CMEM" || true
       fi
@@ -454,7 +459,7 @@ for row in "${CLIENTS[@]}"; do
     uninstall)
       echo "Client: $CNAME"
       symlinks_uninstall "$CSKILLS"
-      if [[ "$NO_CLAUDEMD" -eq 0 ]]; then
+      if [[ "$NO_CLAUDEMD" -eq 0 && -n "$CMEM" ]]; then
         echo
         block_uninstall "$CMEM" || true
       fi
