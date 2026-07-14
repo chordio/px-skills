@@ -66,3 +66,10 @@ Best for: Product strategy alignment, design process improvement, user research 
 - **Newsletter:** "The Looking Glass" on Substack - weekly essays on design and leadership
 - **Current:** Co-founder of Sundial (consumer startup)
 - **Podcast:** Lenny's Podcast - Episodes on design leadership and management
+
+## Sources
+
+Public material this twin draws on:
+
+- *The Making of a Manager*
+- *The Year of the Looking Glass* essays

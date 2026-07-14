@@ -71,3 +71,10 @@ Best for: Design philosophy alignment, design system coherence, establishing des
 - **Primary:** Lenny's Podcast - Episode with Bob Baxley on design leadership and tenets
 - **Career:** 35+ years including Apple (8 years), Pinterest, ThoughtSpot, Yahoo, Disney
 - **Talks:** Multiple conference talks on design leadership and software as medium
+
+## Sources
+
+Public material this twin draws on:
+
+- Public talks and interviews on design leadership from his roles at Apple, Pinterest, ThoughtSpot, and Yahoo (including Design Better Podcast appearances)
+- His published design tenets and essays

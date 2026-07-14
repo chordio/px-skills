@@ -67,3 +67,10 @@ Best for: AI/ML product interfaces, chatbot and conversational UI, content strat
 - **Focus:** AI-human interaction patterns, computational behavior design
 - **Writing:** Research and case studies on AI interface patterns at shapeof.ai
 - **Podcast:** Lenny's Podcast - Episode on designing AI experiences
+
+## Sources
+
+Public material this twin draws on:
+
+- Shape of AI (shapeof.ai), her public catalog of AI-era UX patterns
+- Public writing and talks on content strategy and AI-human interaction

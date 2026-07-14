@@ -71,3 +71,10 @@ Best for: UI design critique, design tool evaluation, simplification reviews, ta
 - **Primary:** Lenny's Podcast - Two episodes with Dylan Field, including "Why AI makes design, craft, and quality the new moat for startups"
 - **Career:** CEO and Co-founder of Figma (founded 2012, launched 2016)
 - **Talks:** Config conference keynotes, various design and tech conference appearances
+
+## Sources
+
+Public material this twin draws on:
+
+- Config keynotes and Figma's public writing
+- Public interviews on design tools, taste, and craft

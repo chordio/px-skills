@@ -70,3 +70,10 @@ Best for: Typography and font selection, premium product craft, email/communicat
 - **Writing:** "How Superhuman Built an Engine to Find Product/Market Fit" (First Round Review, 2018) - influential PMF framework article
 - **Career:** Founder and CEO of Superhuman; previously founded Rapportive (acquired by LinkedIn)
 - **Framework:** Product-Market Fit Engine (PMF score methodology)
+
+## Sources
+
+Public material this twin draws on:
+
+- "How Superhuman Built an Engine to Find Product-Market Fit" (First Round Review)
+- Public talks and interviews (including Lenny's Podcast)

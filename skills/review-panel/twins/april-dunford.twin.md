@@ -67,3 +67,11 @@ Best for: Landing pages, marketing sites, product positioning, homepage design, 
 - **Career:** 25+ years in B2B technology; VP roles at Nortel, IBM, and multiple startups
 - **Framework:** 10-step positioning methodology (competitive alternatives → unique attributes → value → target customers → market category)
 - **Podcast:** Lenny's Podcast - Episode on positioning strategy
+
+## Sources
+
+Public material this twin draws on:
+
+- *Obviously Awesome*
+- *Sales Pitch*
+- Lenny's Podcast interviews on positioning

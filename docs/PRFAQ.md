@@ -106,7 +106,7 @@ The internal homepage copy (`homepage-copy.md`), which contains placeholder metr
 
 ### Are the real-person twins a launch risk?
 
-A managed one. The mitigations: a simulation notice in every twin file and in every panel synthesis, attribution rules that never put words in the person's mouth, a ban on improvising twins of people not in the roster, and a removal-on-request policy (`twins/DISCLAIMER.md`: 7 days, no questions asked, plus a do-not-recreate list). New twins require a Sources section; backfilling sources into the original 26 is a launch item. Deleting the twins would remove the most distinctive thing in the repo to avoid a risk that a policy handles.
+A managed one. The mitigations: a simulation notice in every twin file and in every panel synthesis, attribution rules that never put words in the person's mouth, a ban on improvising twins of people not in the roster, a Sources section in every twin listing the public material it draws on, and a removal-on-request policy (`twins/DISCLAIMER.md`: 7 days, no questions asked, plus a do-not-recreate list). Deleting the twins would remove the most distinctive thing in the repo to avoid a risk that a policy handles.
 
 ### What's the maintenance commitment?
 
@@ -130,15 +130,14 @@ There's no telemetry, so proxies: strangers filing install issues (evidence of r
 
 ## Launch checklist
 
-What still has to change between this document and the launch it describes. (Already done at the time of the latest revision: the `prfaq` skill exists; the bridge is deleted and the installer's footprint is symlinks plus one block; humanizer is a peer, not a fork; the repo is renamed `px-skills`; the extracted marketing skills live in their own `px-marketing-skills` repo; `LICENSE` names Chordio, Inc.; the README carries this positioning.)
+What still has to change between this document and the launch it describes. (Already done at the time of the latest revision: the `prfaq` skill exists; the bridge is deleted and the installer's footprint is symlinks plus one block; humanizer is a peer, not a fork; the repo is renamed `px-skills`; the extracted marketing skills live in their own `px-marketing-skills` repo; `LICENSE` names Chordio, Inc.; the twins ship with per-file simulation notices, per-twin source lists, and a removal policy; the README carries this positioning.)
 
-1. Backfill a Sources section into each of the 26 existing twins (the disclaimer, per-file notices, and removal policy now ship in `twins/DISCLAIMER.md`).
-2. Community scaffolding: `CONTRIBUTING.md`, issue templates, and CI that lints the installer, the skill frontmatter, and links.
-3. Evals honesty pass: relabel claims, mark unimplemented rubrics, document how to reproduce a run, and update the app's old branding.
-4. Untrack the stray eval database file.
-5. Multi-client support: the installer carries a per-client table (skills directory + `AGENTS.md`-family memory file) with Gemini CLI, Codex, Cursor, and Copilot rows gated; smoke-test each client, activate its row, then claim it in the README. Also add a sequential fallback to `review-panel`.
-6. Flip both repos public at launch.
-7. Launch collateral: `social-post-designer` (px-marketing-skills) turns this PRFAQ into announcement posts, which then pass through the humanizer peer (with our house rules) and `clarity-review`.
+1. Community scaffolding: `CONTRIBUTING.md`, issue templates, and CI that lints the installer, the skill frontmatter, and links.
+2. Evals honesty pass: relabel claims, mark unimplemented rubrics, document how to reproduce a run, and update the app's old branding.
+3. Untrack the stray eval database file.
+4. Multi-client support: the installer carries a per-client table (skills directory + `AGENTS.md`-family memory file) with Gemini CLI, Codex, Cursor, and Copilot rows gated; smoke-test each client, activate its row, then claim it in the README. Also add a sequential fallback to `review-panel`.
+5. Flip both repos public at launch.
+6. Launch collateral: `social-post-designer` (px-marketing-skills) turns this PRFAQ into announcement posts, which then pass through the humanizer peer (with our house rules) and `clarity-review`.
 
 ---
 

@@ -67,3 +67,10 @@ Best for: Accessibility audits, inclusive design reviews, enterprise products, g
 - **Focus:** Helping small teams and solo practitioners deliver enterprise-quality UX
 - **Framework:** Guerrilla UX research methods; one-person UX toolkit
 - **Conference Talks:** UX Week, IA Summit, An Event Apart
+
+## Sources
+
+Public material this twin draws on:
+
+- *The User Experience Team of One*
+- Public UX research and strategy talks

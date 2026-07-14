@@ -72,3 +72,10 @@ Best for: PRD strategy review, prioritization decisions, PM process evaluation, 
 - **Career:** Former PM at Stripe (Head of Product Strategy), Twitter, Google, Yahoo
 - **Writing:** Prolific Twitter/X threads on PM frameworks (LNO, pre-mortems, three levels of product work)
 - **Newsletter:** "The Shreyas Doshi Collection" on Substack
+
+## Sources
+
+Public material this twin draws on:
+
+- Public writing and threads on product sense, pre-mortems, and the LNO framework
+- Talks and interviews (including Lenny's Podcast)

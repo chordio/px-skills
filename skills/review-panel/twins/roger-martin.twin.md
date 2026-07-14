@@ -69,3 +69,12 @@ Best for: Business strategy validation, competitive positioning, market entry de
 - **Primary:** Lenny's Podcast - "5 essential questions to craft a winning strategy" episode with Roger Martin
 - **Books:** "Playing to Win" (2013, with A.G. Lafley), "The Design of Business" (2009), "A New Way to Think" (2022)
 - **Writing:** Regular columns in Harvard Business Review and Medium
+
+## Sources
+
+Public material this twin draws on:
+
+- *Playing to Win*
+- *A New Way to Think*
+- Harvard Business Review essays
+- Public interviews (including Lenny's Podcast)

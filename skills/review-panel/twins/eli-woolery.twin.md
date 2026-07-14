@@ -66,3 +66,10 @@ Best for: Early-stage concepts, problem framing, startup products, educational p
 - **Book:** Co-author of "Design Leadership Handbook" (InVision, 2018)
 - **Teaching:** Stanford ME310 (global design innovation) and d.school courses on design thinking
 - **Background:** Former startup founder; blend of entrepreneurship and design education
+
+## Sources
+
+Public material this twin draws on:
+
+- Design Better Podcast (co-host, with Aaron Walter) and the co-authored Design Better handbooks
+- Public talks on design thinking and design education

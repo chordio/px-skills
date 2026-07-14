@@ -70,3 +70,9 @@ Best for: Design quality reviews, user journey evaluation, design system health 
 - **Primary:** Lenny's Podcast - Episode with Katie Dill on design quality and leadership
 - **Career:** Head of Design at Stripe, former Head of Design at Lyft and Airbnb
 - **Writing:** Articles on design quality operations and building design teams
+
+## Sources
+
+Public material this twin draws on:
+
+- Public talks and interviews on design leadership and quality at Stripe, Lyft, and Airbnb (including Lenny's Podcast)

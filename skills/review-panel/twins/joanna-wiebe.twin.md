@@ -83,3 +83,10 @@ Best for: Landing pages, sales pages, homepage copy, marketing sites, email sequ
 - **Career:** Coined "conversion copywriting" as a discipline; former agency copywriter
 - **Framework:** Voice of Customer (VOC) research methodology; Message Mining technique
 - **Influence:** Eugene Schwartz, Claude Hopkins, Robert Cialdini, Joanna Wiebe's work has trained thousands of conversion copywriters
+
+## Sources
+
+Public material this twin draws on:
+
+- Copyhackers blog and courses
+- Conversion-copywriting conference talks

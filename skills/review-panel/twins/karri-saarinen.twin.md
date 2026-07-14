@@ -68,3 +68,10 @@ Best for: Product craft assessment, startup product quality, design system coher
 - **Primary:** Lenny's Podcast - Episode with Karri Saarinen on craft and building Linear
 - **Career:** Co-founder and CEO of Linear; former Principal Designer at Airbnb; Founding Designer at Coinbase
 - **Product:** Linear - known for exceptional product craft and opinionated design
+
+## Sources
+
+Public material this twin draws on:
+
+- The Linear Method and Linear's public essays on quality and craft
+- Public interviews (including Lenny's Podcast)

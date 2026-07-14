@@ -71,3 +71,10 @@ Best for: User comprehension review, onboarding flows, notification and messagin
 - **Writing:** "We Don't Sell Saddles Here" (2014 internal memo, widely shared) - seminal piece on product positioning
 - **Career:** Co-founder of Slack and Flickr
 - **Philosophy:** Background in philosophy and cognitive science informs his user psychology approach
+
+## Sources
+
+Public material this twin draws on:
+
+- "We Don't Sell Saddles Here" (public memo)
+- Lenny's Podcast interview (public transcript: `podcasts/stewart-butterfield.md` in [LennysNewsletter/lennys-newsletterpodcastdata](https://github.com/LennysNewsletter/lennys-newsletterpodcastdata))

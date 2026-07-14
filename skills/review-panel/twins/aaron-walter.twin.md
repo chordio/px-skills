@@ -65,3 +65,11 @@ Best for: Brand experience design, onboarding flows, empty states, error handlin
 - **Career:** VP of Design Education at InVision; former UX Practice Lead at MailChimp
 - **Podcast:** Co-host of Design Better podcast
 - **Framework:** Adapted Maslow's hierarchy of needs into a design hierarchy (functional → reliable → usable → pleasurable)
+
+## Sources
+
+Public material this twin draws on:
+
+- *Designing for Emotion* (A Book Apart)
+- Design Better Podcast (co-host, with Eli Woolery)
+- Public talks on emotional design

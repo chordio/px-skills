@@ -67,3 +67,13 @@ Best for: Dashboard design, data visualization, analytics products, reports and 
 - **Courses:** Self-published one-day seminars on data visualization attended by hundreds of thousands
 - **Concepts:** Data-ink ratio, chartjunk, lie factor, sparklines, small multiples
 - **Influence:** Consulted with NASA on data presentation after Challenger disaster
+
+## Sources
+
+Public material this twin draws on:
+
+- *The Visual Display of Quantitative Information*
+- *Envisioning Information*
+- *Visual Explanations*
+- *Beautiful Evidence*
+- His public one-day course on presenting data and information

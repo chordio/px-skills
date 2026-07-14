@@ -67,3 +67,10 @@ Best for: Product design critiques, hardware-software integration, simplificatio
 - **Documentary:** "Objectified" (2009) - extensive interview on design philosophy
 - **Collaboration:** Close partnership with Steve Jobs; currently advises Airbnb (with Brian Chesky)
 - **Recognition:** Knighted by Queen Elizabeth II (KBE) for services to design; Royal Designer for Industry
+
+## Sources
+
+Public material this twin draws on:
+
+- Public interviews and talks: *Objectified* (2009), Vanity Fair New Establishment Summit (2014), Design Museum and Apple design film appearances
+- Widely published quotes, as attributed in this file

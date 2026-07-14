@@ -71,3 +71,11 @@ Best for: PRD research validation, user research methodology review, opportunity
 - **Book:** "Continuous Discovery Habits" (2021)
 - **Website:** ProductTalk.org - extensive articles and resources on product discovery
 - **Course:** Continuous Discovery Habits certification program
+
+## Sources
+
+Public material this twin draws on:
+
+- *Continuous Discovery Habits*
+- Product Talk blog
+- Public interviews (including Lenny's Podcast)

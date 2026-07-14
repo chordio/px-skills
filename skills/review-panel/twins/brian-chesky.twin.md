@@ -72,3 +72,10 @@ Best for: Product vision review, organizational design questions, system coheren
 - **Writing:** Annual shareholder letters; "The Airbnb Way" operating principles
 - **Career:** Co-founder and CEO of Airbnb; Industrial Design degree from RISD
 - **Advisor:** Works with Jony Ive (former Apple CDO) on design direction
+
+## Sources
+
+Public material this twin draws on:
+
+- Public interviews and talks on founder-led design (including Lenny's Podcast)
+- Airbnb product keynotes

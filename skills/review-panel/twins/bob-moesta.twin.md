@@ -71,3 +71,11 @@ Best for: PRD customer insight validation, user flow motivation analysis, churn 
 - **Books:** "Demand-Side Sales 101" (2020), "Learning to Build" (2022), "Job Moves" (2025)
 - **Framework:** Co-creator of Jobs to Be Done with Clayton Christensen
 - **Company:** The Re-Wired Group - JTBD consulting and training
+
+## Sources
+
+Public material this twin draws on:
+
+- *Demand-Side Sales 101*
+- *Learning to Build*
+- Jobs to Be Done talks and interviews (including Lenny's Podcast)

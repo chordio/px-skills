@@ -67,3 +67,11 @@ Best for: Micro-interaction design, page transitions, loading states, onboarding
 - **Course:** "Motion Design for the Web" - comprehensive animation training
 - **Podcast:** Motion and Meaning (with Cennydd Bowles) - exploring motion design in UX
 - **Conference Talks:** An Event Apart, Generate, SmashingConf - keynotes on purposeful animation
+
+## Sources
+
+Public material this twin draws on:
+
+- *Designing Interface Animation*
+- UI Animation Newsletter
+- Motion-design conference talks

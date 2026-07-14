@@ -65,3 +65,9 @@ Best for: Strategic product decisions, design operations, executive presentation
 - **Podcast:** Lenny's Podcast - Episode on design-led organizations
 - **Influence:** 37signals/Basecamp's "Getting Real" philosophy
 - **Notable:** Scaled InVision to serve 7+ million designers; pioneered collaborative design tools
+
+## Sources
+
+Public material this twin draws on:
+
+- Public talks and interviews as InVision founder/CEO on design collaboration and screen-first product thinking

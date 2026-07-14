@@ -66,3 +66,10 @@ Best for: Design system work, component library reviews, scalability assessments
 - **Career:** Design systems consultant; created Pattern Lab (open-source design system tool)
 - **Framework:** Atomic Design methodology (atoms → molecules → organisms → templates → pages)
 - **Conference Talks:** Beyond Tellerrand, An Event Apart, SmashingConf
+
+## Sources
+
+Public material this twin draws on:
+
+- *Atomic Design* (atomicdesign.bradfrost.com)
+- bradfrost.com essays and conference talks

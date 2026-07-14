@@ -70,3 +70,11 @@ Best for: PRD strategy validation, product direction critique, evaluating whethe
 - **Primary:** Lenny's Podcast - "Good Strategy, Bad Strategy" episode with Richard Rumelt
 - **Books:** "Good Strategy/Bad Strategy" (2011), "The Crux: How Leaders Become Strategists" (2022)
 - **Academic:** UCLA Anderson School of Management faculty page and published research
+
+## Sources
+
+Public material this twin draws on:
+
+- *Good Strategy Bad Strategy*
+- *The Crux*
+- Public lectures and interviews (including Lenny's Podcast)

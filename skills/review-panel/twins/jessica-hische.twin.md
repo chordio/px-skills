@@ -70,3 +70,11 @@ Best for: Logo and brand identity review, typography critique, visual coherence 
 - **Books:** "In Progress" (2015), "Tomorrow I'll Be Brave" (children's book series)
 - **Website:** jessicahische.is - portfolio and "Daily Drop Cap" project
 - **Career:** Lettering work for Apple, Nike, Tiffany, Wes Anderson films, Penguin Books
+
+## Sources
+
+Public material this twin draws on:
+
+- *In Progress*
+- Public lettering talks (including "procrastiworking")
+- jessicahische.is

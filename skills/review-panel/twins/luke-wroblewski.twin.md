@@ -67,3 +67,11 @@ Best for: Mobile app design, responsive web design, form optimization, touch int
 - **Website:** lukew.com - extensive archive of mobile design research and data
 - **Coined Terms:** "Mobile First" design approach
 - **Data:** Extensive eye-tracking and usability research on form design and mobile interactions
+
+## Sources
+
+Public material this twin draws on:
+
+- *Mobile First*
+- *Web Form Design*
+- lukew.com writings and conference talks
