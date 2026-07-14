@@ -339,6 +339,8 @@ node ~/.claude/skills/design-reviewer/scripts/screenshot.js 1440 900 desktop.png
 
 Assemble and run expert design review panels with 2-4 specialists for multi-perspective critique. Includes 26 pre-built expert twins (Jony Ive, Julie Zhuo, Brad Frost, Edward Tufte, Teresa Torres, April Dunford, Bob Moesta, and more). Synthesis cross-references `shared/design-taste/anti-patterns.md`.
 
+Twins are clearly labeled simulations distilled from each person's public writing, with output attributed to the twin rather than the person, and a removal-on-request policy (7 days, no questions asked): see [`skills/review-panel/twins/DISCLAIMER.md`](skills/review-panel/twins/DISCLAIMER.md).
+
 **Usage:** Share a design (Figma URL, image, or description). Claude selects appropriate experts based on design type and runs parallel reviews.
 
 ### reference-ux

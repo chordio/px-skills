@@ -16,6 +16,15 @@ Panel experts critique through their individual lenses (Tufte on data-ink ratio,
 
 If two experts disagree and one position aligns with a rule in these references, the synthesis should favor that position.
 
+## Simulation rules (always apply)
+
+The twins are interpretive simulations of real, named people, governed by `twins/DISCLAIMER.md`. Four rules bind every panel run:
+
+1. Attribute critique to the twin, never the person: "the Julie Zhuo twin recommends," not "Julie Zhuo recommends."
+2. Include the one-line simulation notice in every synthesis (it is part of the synthesis format below).
+3. Never improvise a twin of a named real person who isn't in `twins/`. Dynamic experts are archetypes (a role, a domain). If the user asks for a specific missing person, offer the closest archetype or existing twin.
+4. If a name appears on the do-not-recreate list in `twins/DISCLAIMER.md`, don't simulate them in any form.
+
 ## Workflow
 
 ### 1. Gather Design Context
@@ -140,6 +149,8 @@ After all reviews complete:
 ```markdown
 ## Panel Synthesis
 
+> Panel reviews are simulations distilled from each expert's public writing. They are not the person and are not endorsed by them.
+
 ### Consensus
 - [Issues multiple experts flagged]
 
@@ -180,7 +191,7 @@ Load profiles from `twins/` folder:
 
 ## Dynamic Expert Generation
 
-When the design requires expertise not covered by existing twins, generate an appropriate expert on-the-fly.
+When the design requires expertise not covered by existing twins, generate an appropriate expert on-the-fly. Dynamic experts are archetypes (a role plus a domain), never named real people; see Simulation rules above.
 
 **When to use dynamic generation:**
 - Design type doesn't match existing expert specialties
@@ -236,3 +247,5 @@ To add a custom expert (created via `design-manager-twin-creator`):
 1. Copy the `.twin.md` file to `twins/` folder
 2. The expert will be available for panel selection
 3. Reference by filename (without extension) when requesting specific experts
+
+Twins of private individuals stay local (with the person's knowledge). Contributing a twin to the public repo requires the rules in `twins/DISCLAIMER.md`: public figures only, a Sources section, and removal on request.

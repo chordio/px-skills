@@ -74,7 +74,7 @@ Borrowed, and credited in `NOTICE.md` beside it: the design-taste references beg
 
 ### The review panel simulates real, named people. Is that okay?
 
-The twins are labeled simulations distilled from each person's public writing and talks. Read a twin as "what their published thinking suggests," never as their words; none of the 26 people are affiliated with this project or endorse it. Anyone simulated can ask to be removed, and the contribution guidelines commit to honoring that.
+The twins are labeled simulations distilled from each person's public writing and talks. Read a twin as "what their published thinking suggests," never as their words; none of the 26 people are affiliated with this project or endorse it, and panel output is attributed to the twin, not the person. Anyone simulated can ask to be removed: the policy in `skills/review-panel/twins/DISCLAIMER.md` commits to removal within 7 days, no questions asked.
 
 ### What happens when Anthropic changes the skill format?
 
@@ -106,7 +106,7 @@ The internal homepage copy (`homepage-copy.md`), which contains placeholder metr
 
 ### Are the real-person twins a launch risk?
 
-A managed one. The mitigations: a disclaimer where the panel runs, a removal-on-request policy in the contribution guidelines, and twins grounded in cited public sources. Deleting them would remove the most distinctive thing in the repo to avoid a risk that a policy handles.
+A managed one. The mitigations: a simulation notice in every twin file and in every panel synthesis, attribution rules that never put words in the person's mouth, a ban on improvising twins of people not in the roster, and a removal-on-request policy (`twins/DISCLAIMER.md`: 7 days, no questions asked, plus a do-not-recreate list). New twins require a Sources section; backfilling sources into the original 26 is a launch item. Deleting the twins would remove the most distinctive thing in the repo to avoid a risk that a policy handles.
 
 ### What's the maintenance commitment?
 
@@ -132,7 +132,7 @@ There's no telemetry, so proxies: strangers filing install issues (evidence of r
 
 What still has to change between this document and the launch it describes. (Already done at the time of the latest revision: the `prfaq` skill exists; the bridge is deleted and the installer's footprint is symlinks plus one block; humanizer is a peer, not a fork; the repo is renamed `px-skills`; the extracted marketing skills live in their own `px-marketing-skills` repo; `LICENSE` names Chordio, Inc.; the README carries this positioning.)
 
-1. Twins disclaimer and removal-on-request policy (review-panel + CONTRIBUTING).
+1. Backfill a Sources section into each of the 26 existing twins (the disclaimer, per-file notices, and removal policy now ship in `twins/DISCLAIMER.md`).
 2. Community scaffolding: `CONTRIBUTING.md`, issue templates, and CI that lints the installer, the skill frontmatter, and links.
 3. Evals honesty pass: relabel claims, mark unimplemented rubrics, document how to reproduce a run, and update the app's old branding.
 4. Untrack the stray eval database file.

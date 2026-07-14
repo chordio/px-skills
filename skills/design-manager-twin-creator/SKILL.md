@@ -192,3 +192,7 @@ A good twin should:
 - `references/twin-profile-template.md` - Profile structure
 - `references/extraction-patterns.md` - How to extract patterns from sources
 - `references/interview-guide.md` - Interview questions and approach
+
+## Consent and scope
+
+Twins of **private individuals** (a design manager, a colleague) are for local use, made with the person's knowledge — tell the user to get their OK before ingesting someone's feedback history. They are not accepted into the public px-skills repo without the person's written consent. Twins of **public figures** contributed to `review-panel/twins/` must follow `review-panel/twins/DISCLAIMER.md`: published-discourse material only, a Sources section, and acceptance that removal is on request, no questions asked.
