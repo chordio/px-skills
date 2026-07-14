@@ -4,15 +4,6 @@ Ten agent skills for product experience design: they take a product from a one-p
 
 The pipeline is **artifact-driven** — each step writes a file, and the file is the next step's input. You don't need to remember the skill names; remember the artifacts. If you're ever lost, run `next-step` and it tells you the one concrete next thing to do.
 
-PX Skills composes with two peer tools, each installed from its own source. Both are optional; every PX skill runs without them.
-
-| Peer | Where the pipeline uses it | Why you'd want it | Without it |
-|---|---|---|---|
-| [gstack](https://github.com/gstack/gstack) | Start of definition (`/office-hours` pressure-tests the idea before anything is built) and implementation time (`/qa`, `/design-review`, `/ship`) | Idea-locking up front; code quality, visual QA, and deployment at the end | Bring your own QA and ship process; the artifacts don't change |
-| [humanizer](https://github.com/blader/humanizer) | Any copy the pipeline produces: spec prose, UI text, announcements | Strips AI-writing tells; our additions layer on via [`shared/writing/humanizer-house-rules.md`](shared/writing/humanizer-house-rules.md) | Prose cleanup is manual |
-
-Nothing here patches, hooks, or edits other tools. `install.sh` symlinks the skills and maintains one documented block in your CLAUDE.md — that's the whole install footprint.
-
 ## Skills
 
 **Core (the pipeline):**
@@ -41,6 +32,34 @@ Nothing here patches, hooks, or edits other tools. `install.sh` symlinks the ski
 Marketing-surface skills (hero sections, landing pages, social posts, AI imagery) live in the separate [px-marketing-skills](https://github.com/chordio/px-marketing-skills) bundle; the pipeline's announce step uses it when installed.
 
 All design skills load curated taste references from the canonical checkout at `~/.px-skills/shared/design-taste/` — see [Design Taste References](#design-taste-references) below.
+
+## Recommended external skills
+
+PX Skills composes with two peer tools, each installed from its own source. Both are optional; every PX skill runs without them. `bash install.sh --check` reports which peers are present and where to get the missing ones.
+
+| Peer | Where the pipeline uses it | Why you'd want it | Without it |
+|---|---|---|---|
+| [gstack](https://github.com/gstack/gstack) | Start of definition (`/office-hours` pressure-tests the idea before anything is built) and implementation time (`/qa`, `/design-review`, `/ship`) | Idea-locking up front; code quality, visual QA, and deployment at the end | Bring your own QA and ship process; the artifacts don't change |
+| [humanizer](https://github.com/blader/humanizer) | Any copy the pipeline produces: spec prose, UI text, announcements | Strips AI-writing tells; our additions layer on via [`shared/writing/humanizer-house-rules.md`](shared/writing/humanizer-house-rules.md) | Prose cleanup is manual |
+
+Nothing here patches, hooks, or edits other tools. `install.sh` symlinks the skills and maintains one documented block in your CLAUDE.md — that's the whole install footprint.
+
+### gstack
+
+[gstack](https://github.com/gstack/gstack) provides the browse, QA, design-review, and ship workflows the pipeline hands off to. The pipeline uses it at two points:
+
+- **Start of definition** — `/office-hours` runs YC-style forcing questions to lock a strong idea before any research or code. `vet-idea` (ours) covers the same gate without gstack.
+- **Implementation time** — `/qa`, `/design-review` (test-fix-verify loops), then `/ship`, `/land-and-deploy`, `/canary`.
+
+gstack's skills don't read PX artifacts natively. When handing off, tell them to read `./design-context/` and `~/.px-skills/shared/design-taste/` first — `next-step` includes this in its suggestions automatically.
+
+### humanizer
+
+[blader/humanizer](https://github.com/blader/humanizer) (MIT) removes AI-writing tells from prose. Install it from its own repo — it ships as a Claude Code plugin. Our additional rules (empty intensifiers, standalone interrogative fragments, a regression-check step, and more) live in [`shared/writing/humanizer-house-rules.md`](shared/writing/humanizer-house-rules.md); apply them whenever you run humanizer. The CLAUDE.md block tells the agent to do this automatically. Run our `clarity-review` after it: humanizer makes prose *clean* (no AI tells), clarity-review makes it *clear* (every reference resolves where it appears).
+
+### px-marketing-skills
+
+Marketing-surface skills — hero sections, landing pages, social posts, AI image generation — live in a separate bundle, [chordio/px-marketing-skills](https://github.com/chordio/px-marketing-skills), so the core stays focused (and key-free: image generation's bring-your-own-key requirement lives there, not here). The pipeline's announce step (11) uses its `social-post-designer` to turn your `prfaq.md` and `design-context/` into real launch content.
 
 ## The Pipeline
 
@@ -191,27 +210,6 @@ The exact content lives at `agent-instructions/px-block.md`. Idempotent: re-runn
 | `--uninstall` | Strips the block in place; the rest of the file is untouched. |
 
 `agent-instructions/CLAUDE.md` is the stack-agnostic baseline used for seeding — operating-instructions preamble, API-key recovery guidance, and the Elon first-principles algorithm. Peer tools (like gstack) manage their own marker namespaces in the same file; the installers don't touch each other's content.
-
-## Optional peers
-
-PX Skills points at peers; it never installs, patches, or configures them. `bash install.sh --check` reports which peers are present and where to get the missing ones.
-
-### gstack
-
-[gstack](https://github.com/gstack/gstack) provides the browse, QA, design-review, and ship workflows the pipeline hands off to. The pipeline uses it at two points:
-
-- **Start of definition** — `/office-hours` runs YC-style forcing questions to lock a strong idea before any research or code. `vet-idea` (ours) covers the same gate without gstack.
-- **Implementation time** — `/qa`, `/design-review` (test-fix-verify loops), then `/ship`, `/land-and-deploy`, `/canary`.
-
-gstack's skills don't read PX artifacts natively. When handing off, tell them to read `./design-context/` and `~/.px-skills/shared/design-taste/` first — `next-step` includes this in its suggestions automatically.
-
-### humanizer
-
-[blader/humanizer](https://github.com/blader/humanizer) (MIT) removes AI-writing tells from prose. Install it from its own repo — it ships as a Claude Code plugin. Our additional rules (empty intensifiers, standalone interrogative fragments, a regression-check step, and more) live in [`shared/writing/humanizer-house-rules.md`](shared/writing/humanizer-house-rules.md); apply them whenever you run humanizer. The CLAUDE.md block tells the agent to do this automatically. Run our `clarity-review` after it: humanizer makes prose *clean* (no AI tells), clarity-review makes it *clear* (every reference resolves where it appears).
-
-### px-marketing-skills
-
-Marketing-surface skills — hero sections, landing pages, social posts, AI image generation — live in a separate bundle, [chordio/px-marketing-skills](https://github.com/chordio/px-marketing-skills), so the core stays focused (and key-free: image generation's bring-your-own-key requirement lives there, not here). The pipeline's announce step (11) uses its `social-post-designer` to turn your `prfaq.md` and `design-context/` into real launch content.
 
 ## Portability
 
