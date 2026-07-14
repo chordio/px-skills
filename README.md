@@ -61,7 +61,7 @@ Marketing-surface skills — hero sections, landing pages, social posts, AI imag
 
 ### Crit Club
 
-Multi-perspective panel critique — a `review-panel` of expert twins (clearly labeled simulations of public design thinkers) plus a twin-creator — lives in Crit Club, a separate project. It's kept out of this repo deliberately: simulating real, named people deserves its own boundary, and the disclaimer, per-twin source lists, and removal-on-request policy travel with the skills. When installed, the review step (9) gains panel critique, which is cheapest run on design specs before anything is built.
+Multi-perspective panel critique — a `review-panel` of expert twins (clearly labeled simulations of public design thinkers) plus a twin-creator — lives in Crit Club, a separate project. When installed, the review step (9) gains panel critique, which is cheapest run on design specs before anything is built.
 
 ## The Pipeline
 
