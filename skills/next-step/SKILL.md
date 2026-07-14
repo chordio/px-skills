@@ -36,7 +36,7 @@ You don't need to remember the pipeline — this skill computes your position an
 | 6 | `design-context/` folder (brand + components) | `design-context-manager` |
 | 7 | Design spec (per feature) | `design-spec-writer` |
 | 8 | Built code | hand-implementation (Next.js + mock data, etc.) |
-| 9 | Reviewed, polished code | `design-reviewer` + `review-panel`; gstack's `/qa` + `/design-review` if installed |
+| 9 | Reviewed, polished code | `design-reviewer`; Crit Club's `review-panel` and gstack's `/qa` + `/design-review` if installed |
 | 10 | Shipped + deployed | your ship process; gstack's `/ship` + `/land-and-deploy` if installed |
 | 11 | Announced (optional) | `social-post-designer` (px-marketing-skills bundle, if installed) consuming `prfaq.md` + `design-context/` |
 
@@ -260,9 +260,10 @@ You have:
   Run: design-reviewer
 
 Why: it audits typography, color, layout, and overflow against
-~/.px-skills/shared/design-taste/. For multi-perspective critique, follow with
-review-panel. If gstack is installed, /qa and /design-review add a test-fix-verify
-loop — tell them to read ./design-context/ and ~/.px-skills/shared/design-taste/ first.
+~/.px-skills/shared/design-taste/. If Crit Club is installed, its review-panel adds
+multi-perspective critique. If gstack is installed, /qa and /design-review add a
+test-fix-verify loop — tell them to read ./design-context/ and
+~/.px-skills/shared/design-taste/ first.
 ```
 
 ## Pipeline diagram (always show after the next step)

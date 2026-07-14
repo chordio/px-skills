@@ -6,9 +6,9 @@
 
 **PX Skills: an open-source product-experience pipeline that takes an idea from one paragraph to shipped UI, one artifact at a time**
 
-*Ten MIT-licensed core skills for Claude Code, Anthropic's coding agent. Every step writes one artifact, a plain file that tells you what comes next; if you get lost, `next-step` reads your workspace and points at the one thing to do.*
+*Nine MIT-licensed core skills for Claude Code, Anthropic's coding agent. Every step writes one artifact, a plain file that tells you what comes next; if you get lost, `next-step` reads your workspace and points at the one thing to do.*
 
-**github.com/chordio/px-skills — September 2026.** PX Skills, ten core skills for Claude Code plus three companions, is now public under the MIT license. The pipeline takes a software product from a one-paragraph idea to research briefs, product specs, design specs, and shipped UI, and saves every step of the product thinking as plain files in your project. Chordio maintains the bundle. There are no accounts, no telemetry, and no API keys, and installation is one script.
+**github.com/chordio/px-skills — September 2026.** PX Skills, nine core skills for Claude Code plus two companions, is now public under the MIT license. The pipeline takes a software product from a one-paragraph idea to research briefs, product specs, design specs, and shipped UI, and saves every step of the product thinking as plain files in your project. Chordio maintains the bundle. There are no accounts, no telemetry, and no API keys, and installation is one script.
 
 Coding agents made building fast and left process behind. A builder can stand up a working app in an afternoon, then reopen it a week later unable to answer basic questions: why does this feature exist, what did we decide about onboarding, where was I? Chat history doesn't answer them; it captures what was said, not what was decided. So each session re-derives decisions from scratch, and with nothing recorded about how the product should look, the UI drifts toward the same generic layout every agent produces.
 
@@ -18,7 +18,6 @@ Two gate skills bracket the pipeline. Before anything gets built, `vet-idea` ask
 
 The bundle also includes:
 
-- a review panel of 26 digital twins (clearly labeled simulations of public design thinkers, built from their published writing) that critique a design from several perspectives at once
 - curated taste references for typography, color, spacing, and motion (a snapshot originally from the pbakaus/impeccable project, evolved in this repo), which every design skill loads as its definition of good
 - `reference-ux`, which reverse-engineers how a live product solves a UX problem, and `clarity-review`, which tests whether a piece of writing survives a reader with no context (used on this document)
 - an eval harness that runs the same task with and without a skill, so "the skills help" stays a measurable claim
@@ -46,7 +45,7 @@ Because the pipeline is information architecture. A smarter model still can't re
 
 ### This much ceremony for a login form?
 
-The full pipeline is for products, not patches. Single-feature work starts at the spec step, and a scope guard bounces initiative-sized requests back up to the architecture step. Most skills earn their keep standalone: you can run `review-panel` on a mockup or `clarity-review` on a README without touching the pipeline.
+The full pipeline is for products, not patches. Single-feature work starts at the spec step, and a scope guard bounces initiative-sized requests back up to the architecture step. Most skills earn their keep standalone: you can run `vet-idea` on a feature request or `clarity-review` on a README without touching the pipeline.
 
 ### Does it only work with Claude Code?
 
@@ -54,7 +53,7 @@ Claude Code is the built-and-tested path. But the skill format itself, a folder 
 
 ### How is this different from an awesome-list, or from anthropics/skills?
 
-Those are collections of independent items. This is a system: the skills are wired together by the files they read and write, and `next-step` knows the wiring. The taste references and the twins are shared infrastructure that other skills load.
+Those are collections of independent items. This is a system: the skills are wired together by the files they read and write, and `next-step` knows the wiring. The taste references are shared infrastructure the design skills load.
 
 ### What does it cost, and which keys do I need?
 
@@ -70,11 +69,7 @@ The repo ships an eval harness that runs the same task with and without a skill 
 
 ### What's original here and what's borrowed?
 
-Borrowed, and credited in `NOTICE.md` beside it: the design-taste references began as copies from pbakaus/impeccable (Apache-2.0, pinned to the commit they were taken at) and are evolved in this repo, since upstream has restructured its reference set. That's the whole borrow; the doctrine is *vendor data, never behavior*. The tools we compose with (gstack, humanizer) are peers you install from their own sources; our humanizer additions live in a separate house-rules file, not a fork. Original: the pipeline and its artifact contracts, `next-step`, `vet-idea`, `prfaq`, `clarity-review`, the 26 twins, and the eval harness.
-
-### The review panel simulates real, named people. Is that okay?
-
-The twins are labeled simulations distilled from each person's public writing and talks. Read a twin as "what their published thinking suggests," never as their words; none of the 26 people are affiliated with this project or endorse it, and panel output is attributed to the twin, not the person. Anyone simulated can ask to be removed: the policy in `skills/review-panel/twins/DISCLAIMER.md` commits to removal within 7 days, no questions asked.
+Borrowed, and credited in `NOTICE.md` beside it: the design-taste references began as copies from pbakaus/impeccable (Apache-2.0, pinned to the commit they were taken at) and are evolved in this repo, since upstream has restructured its reference set. That's the whole borrow; the doctrine is *vendor data, never behavior*. The tools we compose with (gstack, humanizer) are peers you install from their own sources; our humanizer additions live in a separate house-rules file, not a fork. Original: the pipeline and its artifact contracts, `next-step`, `vet-idea`, `prfaq`, `clarity-review`, and the eval harness.
 
 ### What happens when Anthropic changes the skill format?
 
@@ -94,7 +89,7 @@ After the idea phase and before any implementation. An idea first survives `vet-
 
 ### What happens to `social-post-designer`?
 
-Two things. It moves out of this repo entirely, into the companion px-marketing-skills bundle along with hero-builder, landing-page-builder, and image-generator, so the core stays ten focused skills with no API keys. And it moves to the other end of the pipeline: the announce stage after shipping, where it turns the product's PRFAQ and design context into real launch content. We considered rewriting it as the early clarity tool and decided against it; its competence is post-ship content (hooks, platform formats, visual prompts). The early slot belongs to the smaller `prfaq` skill, which can borrow it to draft mock launch posts when the press release alone isn't a sharp enough test.
+Two things. It moves out of this repo entirely, into the companion px-marketing-skills bundle along with hero-builder, landing-page-builder, and image-generator, so the core stays a small, focused set with no API keys. And it moves to the other end of the pipeline: the announce stage after shipping, where it turns the product's PRFAQ and design context into real launch content. We considered rewriting it as the early clarity tool and decided against it; its competence is post-ship content (hooks, platform formats, visual prompts). The early slot belongs to the smaller `prfaq` skill, which can borrow it to draft mock launch posts when the press release alone isn't a sharp enough test.
 
 ### Where does the working-backwards pattern come from?
 
@@ -102,15 +97,15 @@ PRDkit, an earlier tool by the maintainer, modeled a product requirement as carr
 
 ### What gets cut before launch?
 
-The internal homepage copy (`homepage-copy.md`), which contains placeholder metrics and invented testimonials that have no place in a public repo; a stray committed database file; and the marketing-surface skills (hero-builder, landing-page-builder, social-post-designer, image-generator), which move to their own bundle. Also cut, structurally: the gstack bridge hook, the humanizer fork, and every stale cross-reference they carried. Not cut: the twins and the eval dashboard. Those get a disclaimer and honest labeling, respectively.
+The internal homepage copy (`homepage-copy.md`), which contains placeholder metrics and invented testimonials that have no place in a public repo; a stray committed database file; the marketing-surface skills (hero-builder, landing-page-builder, social-post-designer, image-generator), which move to their own bundle; and the panel skills (review-panel with its twins, design-manager-twin-creator), which move to Crit Club with their policy machinery. Also cut, structurally: the gstack bridge hook, the humanizer fork, and every stale cross-reference they carried. Not cut: the eval dashboard, which gets honest labeling.
 
 ### Are the real-person twins a launch risk?
 
-A managed one. The mitigations: a simulation notice in every twin file and in every panel synthesis, attribution rules that never put words in the person's mouth, a ban on improvising twins of people not in the roster, a Sources section in every twin listing the public material it draws on, and a removal-on-request policy (`twins/DISCLAIMER.md`: 7 days, no questions asked, plus a do-not-recreate list). Deleting the twins would remove the most distinctive thing in the repo to avoid a risk that a policy handles.
+Not for this repo: they aren't in it. Panel reviews and twin creation moved to Crit Club, a separate project, and the likeness surface moved with them: per-file simulation notices, per-twin source lists, attribution rules, and a removal-on-request policy (7 days, no questions asked, plus a do-not-recreate list) all travel along. The public pipeline repo ships no simulation of any real person. The trade is acknowledged: the repo gives up its most conversation-starting feature and gets a clean risk profile; the pipeline, `prfaq`, and `clarity-review` carry the story instead.
 
 ### What's the maintenance commitment?
 
-One maintainer, best effort, stated plainly. Issues get triaged; the taste snapshot evolves in-repo; peers (gstack, humanizer) update themselves from their own sources. PRs are welcome for twins, additions to the taste references, and fixes; new skills and pipeline changes start as an issue. The failure mode to avoid is implying support that doesn't exist.
+One maintainer, best effort, stated plainly. Issues get triaged; the taste snapshot evolves in-repo; peers (gstack, humanizer) update themselves from their own sources. PRs are welcome for taste-reference additions and fixes; new skills and pipeline changes start as an issue. The failure mode to avoid is implying support that doesn't exist.
 
 ### What's the relationship to gstack?
 
@@ -130,12 +125,12 @@ There's no telemetry, so proxies: strangers filing install issues (evidence of r
 
 ## Launch checklist
 
-What still has to change between this document and the launch it describes. (Already done at the time of the latest revision: the `prfaq` skill exists; the bridge is deleted and the installer's footprint is symlinks plus one block; humanizer is a peer, not a fork; the repo is renamed `px-skills`; the extracted marketing skills live in their own `px-marketing-skills` repo; `LICENSE` names Chordio, Inc.; the twins ship with per-file simulation notices, per-twin source lists, and a removal policy; the README carries this positioning.)
+What still has to change between this document and the launch it describes. (Already done at the time of the latest revision: the `prfaq` skill exists; the bridge is deleted and the installer's footprint is symlinks plus one block; humanizer is a peer, not a fork; the repo is renamed `px-skills`; the extracted marketing skills live in their own `px-marketing-skills` repo; the panel skills and twins moved to the separate Crit Club project with their notices, source lists, and removal policy; `LICENSE` names Chordio, Inc.; the README carries this positioning.)
 
 1. Community scaffolding: `CONTRIBUTING.md`, issue templates, and CI that lints the installer, the skill frontmatter, and links.
 2. Evals honesty pass: relabel claims, mark unimplemented rubrics, document how to reproduce a run, and update the app's old branding.
 3. Untrack the stray eval database file.
-4. Multi-client support: the installer carries a per-client table (skills directory + `AGENTS.md`-family memory file) with Gemini CLI, Codex, Cursor, and Copilot rows gated; smoke-test each client, activate its row, then claim it in the README. Also add a sequential fallback to `review-panel`.
+4. Multi-client support: the installer carries a per-client table (skills directory + `AGENTS.md`-family memory file) with Gemini CLI, Codex, Cursor, and Copilot rows gated; smoke-test each client, activate its row, then claim it in the README.
 5. Flip both repos public at launch.
 6. Launch collateral: `social-post-designer` (px-marketing-skills) turns this PRFAQ into announcement posts, which then pass through the humanizer peer (with our house rules) and `clarity-review`.
 

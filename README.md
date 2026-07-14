@@ -1,6 +1,6 @@
 # PX Skills
 
-Ten agent skills for product experience design: they take a product from a one-paragraph idea to a specced, designed, reviewed build, saving every decision as a file in your project. Built and tested on Claude Code; the skill format is an open convention other agents read too — see [Portability](#portability).
+Nine agent skills for product experience design: they take a product from a one-paragraph idea to a specced, designed, reviewed build, saving every decision as a file in your project. Built and tested on Claude Code; the skill format is an open convention other agents read too — see [Portability](#portability).
 
 The pipeline is **artifact-driven** — each step writes a file, and the file is the next step's input. You don't need to remember the skill names; remember the artifacts. If you're ever lost, run `next-step` and it tells you the one concrete next thing to do.
 
@@ -19,23 +19,21 @@ The pipeline is **artifact-driven** — each step writes a file, and the file is
 | **design-context-manager** | Initialize/maintain product design context | Project setup, foundation changes, reverse-engineer a live site |
 | **design-spec-writer** | Generate design specs BEFORE coding | Starting new UI features |
 | **design-reviewer** | Review implemented UI for issues | After implementation, before PRs |
-| **review-panel** | Run expert design review panels (26 twins) | Multi-perspective design feedback |
 
 **Companions (standalone, not counted in the pipeline):**
 
 | Skill | Purpose | When to Use |
 |-------|---------|-------------|
 | **reference-ux** | Reverse-engineer a competitor's UX flow | Studying how another product solves a problem |
-| **design-manager-twin-creator** | Create digital twins of design leaders | Capturing someone's critique style for review-panel |
 | **clarity-review** | Cold-reader test for standalone clarity (curse-of-knowledge defense) | After humanizer, before publishing any article, post, or landing page |
 
-Marketing-surface skills (hero sections, landing pages, social posts, AI imagery) live in the separate [px-marketing-skills](https://github.com/chordio/px-marketing-skills) bundle; the pipeline's announce step uses it when installed.
+Marketing-surface skills (hero sections, landing pages, social posts, AI imagery) live in the separate [px-marketing-skills](https://github.com/chordio/px-marketing-skills) bundle; the pipeline's announce step uses it when installed. Panel reviews (simulated expert twins) and twin creation live in Crit Club, a separate project, so no simulation of a real, named person ships in this repo; the review step uses them when installed.
 
 All design skills load curated taste references from the canonical checkout at `~/.px-skills/shared/design-taste/` — see [Design Taste References](#design-taste-references) below.
 
 ## Recommended external skills
 
-PX Skills composes with two peer tools, each installed from its own source. Both are optional; every PX skill runs without them. `bash install.sh --check` reports which peers are present and where to get the missing ones.
+PX Skills composes with a few external tools, each installed from its own source. All are optional; every PX skill runs without them. `bash install.sh --check` reports which peers are present and where to get the missing ones.
 
 | Peer | Where the pipeline uses it | Why you'd want it | Without it |
 |---|---|---|---|
@@ -60,6 +58,10 @@ gstack's skills don't read PX artifacts natively. When handing off, tell them to
 ### px-marketing-skills
 
 Marketing-surface skills — hero sections, landing pages, social posts, AI image generation — live in a separate bundle, [chordio/px-marketing-skills](https://github.com/chordio/px-marketing-skills), so the core stays focused (and key-free: image generation's bring-your-own-key requirement lives there, not here). The pipeline's announce step (11) uses its `social-post-designer` to turn your `prfaq.md` and `design-context/` into real launch content.
+
+### Crit Club
+
+Multi-perspective panel critique — a `review-panel` of expert twins (clearly labeled simulations of public design thinkers) plus a twin-creator — lives in Crit Club, a separate project. It's kept out of this repo deliberately: simulating real, named people deserves its own boundary, and the disclaimer, per-twin source lists, and removal-on-request policy travel with the skills. When installed, the review step (9) gains panel critique, which is cheapest run on design specs before anything is built.
 
 ## The Pipeline
 
@@ -94,7 +96,7 @@ Marketing-surface skills — hero sections, landing pages, social posts, AI imag
   built code                                         ◄── hand-implementation (Next.js + mocks, etc.)
       │
       ▼
-  reviewed + polished                                ◄── design-reviewer + review-panel  (gstack's /qa + /design-review if installed)
+  reviewed + polished                                ◄── design-reviewer  (Crit Club's review-panel + gstack's /qa + /design-review if installed)
       │
       ▼
   shipped                                            ◄── your ship process  (gstack's /ship + /land-and-deploy if installed)
@@ -114,7 +116,7 @@ Marketing-surface skills — hero sections, landing pages, social posts, AI imag
 | 6 | `design-context/` | `design-context-manager` | **Runs ONCE per product**, after specs, before any design-spec |
 | 7 | `features/{feature}/design-specs/{slug}/spec.{json,md}` | `design-spec-writer` | Per-feature UX spec, persisted to disk |
 | 8 | Built code | hand-implementation | No skill auto-generates multi-screen prototypes (yet) |
-| 9 | Reviewed + polished | `design-reviewer` + `review-panel` | gstack's `/qa` + `/design-review` add a test-fix-verify loop if installed |
+| 9 | Reviewed + polished | `design-reviewer` | Crit Club's `review-panel` adds multi-perspective critique, and gstack's `/qa` + `/design-review` add a test-fix-verify loop, if installed |
 | 10 | Shipped | your ship process | gstack's `/ship` + `/land-and-deploy` + `/canary` if installed |
 | 11 | Announced | `social-post-designer` (px-marketing-skills) | Reuses `prfaq.md` + `design-context/`; optional |
 
@@ -132,7 +134,7 @@ It does exactly two things, both inspectable and reversible:
 
 **1. Symlinks every skill** from the checkout into `~/.claude/skills/` (user scope, so the skills are available in every project you open). Symlinks rather than copies for one reason: the checkout stays the single source of truth. `git pull` updates your live install instantly, nothing drifts out of sync, and you can trial a branch by re-pointing the links from a worktree (`bash install.sh --force`), then point them back. `bash install.sh --check` shows exactly where every link points.
 
-**2. Maintains one marker-fenced block** in `~/.claude/CLAUDE.md`, between `<!-- BEGIN px-skills v1 -->` and `<!-- END px-skills -->`. Strictly speaking this block is optional: skills are self-describing, and supporting the format means the agent auto-invokes them from each `SKILL.md`'s own frontmatter — the bundle works with `--no-claudemd`. The block is an accuracy upgrade. With thirteen skills forming one pipeline, a session-start summary makes the agent noticeably more likely to call the right skill at the right moment, and it carries cross-skill context no single frontmatter can:
+**2. Maintains one marker-fenced block** in `~/.claude/CLAUDE.md`, between `<!-- BEGIN px-skills v1 -->` and `<!-- END px-skills -->`. Strictly speaking this block is optional: skills are self-describing, and supporting the format means the agent auto-invokes them from each `SKILL.md`'s own frontmatter — the bundle works with `--no-claudemd`. The block is an accuracy upgrade. With eleven skills forming one pipeline, a session-start summary makes the agent noticeably more likely to call the right skill at the right moment, and it carries cross-skill context no single frontmatter can:
 
 - the pipeline map — which skill feeds which, so "I have an idea" routes to `vet-idea` and research instead of straight to code
 - where the shared taste references live, and that design output is held to them
@@ -212,7 +214,7 @@ The exact content lives at `agent-instructions/px-block.md`. Idempotent: re-runn
 The skill format — a folder with a `SKILL.md`, YAML frontmatter plus markdown instructions — is an open convention that multiple agents now read: Claude Code, Gemini CLI, OpenAI Codex, Cursor, GitHub Copilot, and others. Supporting the format means the client auto-invokes skills from their frontmatter descriptions, with no memory-file setup required. PX Skills is built and tested on Claude Code. What's Claude-specific today is shallow, and it's exactly three things:
 
 1. **The installer's targets** — `install.sh` already works from a per-client table (client → skills directory → global memory file). Only the Claude Code row is active; rows for Gemini CLI, Codex, Cursor, and Copilot are in the table, commented out, and each activates only after a smoke test on that client. Unverified paths shipped as fact would be worse than no support.
-2. **Sub-agent fan-out** — `review-panel` runs its twins as parallel sub-agents and `clarity-review` runs a blind reader panel. clarity-review already documents a sequential fallback for hosts without a sub-agent primitive; review-panel needs the same treatment.
+2. **Sub-agent fan-out** — `clarity-review` runs its blind reader panel as parallel sub-agents, and documents a sequential fallback for hosts without that primitive.
 3. **Peer handoffs** — gstack is itself a Claude Code bundle, so on other clients steps 9-10 fall back to "use your own QA and ship process," which the pipeline already supports.
 
 The artifacts the pipeline writes — research briefs, `prfaq.md`, specs, `design-context/` — are plain files with no client coupling at all. Whatever agent reads them, the process comes along.
@@ -329,14 +331,6 @@ node ~/.claude/skills/design-reviewer/scripts/screenshot.js 375 667 mobile.png
 node ~/.claude/skills/design-reviewer/scripts/screenshot.js 1440 900 desktop.png
 ```
 
-### review-panel
-
-Assemble and run expert design review panels with 2-4 specialists for multi-perspective critique. Includes 26 pre-built expert twins (Jony Ive, Julie Zhuo, Brad Frost, Edward Tufte, Teresa Torres, April Dunford, Bob Moesta, and more). Synthesis cross-references `shared/design-taste/anti-patterns.md`.
-
-Twins are clearly labeled simulations distilled from each person's public writing, with output attributed to the twin rather than the person, and a removal-on-request policy (7 days, no questions asked): see [`skills/review-panel/twins/DISCLAIMER.md`](skills/review-panel/twins/DISCLAIMER.md).
-
-**Usage:** Share a design (Figma URL, image, or description). Claude selects appropriate experts based on design type and runs parallel reviews.
-
 ### reference-ux
 
 Capture and reverse-engineer UX patterns from live products. Point at any URL — the skill browses the experience on desktop + mobile, captures screenshots, and produces a structured UX reference document covering flow architecture, interaction patterns, layout templates, copy/tone, design tokens, responsive adaptations, and design principles.
@@ -344,12 +338,6 @@ Capture and reverse-engineer UX patterns from live products. Point at any URL �
 **Output:** `docs/references/<slug>/reference.md` + `screenshots/` (when in a git repo).
 
 **Usage:** `Reference Stripe's pricing flow` — Claude navigates, captures, analyzes, and documents.
-
-### design-manager-twin-creator
-
-Create digital twins of design managers and leaders by analyzing their feedback patterns and conducting structured interviews. Created twins drop into `review-panel/twins/` for use in panel reviews.
-
-**Usage:** Provide examples of someone's feedback (Figma comments, Slack threads, review transcripts) and/or conduct an interview. The skill generates a reusable twin profile.
 
 ### clarity-review
 
@@ -371,15 +359,15 @@ vet-idea → product-researcher (concept/domain) → prfaq → product-architect
                                                               ↓
                                                       design-spec-writer (per feature)
                                                               ↓
-                                                      build → design-reviewer + review-panel → ship → announce
-                                                              (gstack /qa + /design-review     (gstack  (px-marketing-
-                                                               if installed)                    /ship)   skills)
+                                                      build → design-reviewer → ship → announce
+                                                              (Crit Club panel +  (gstack  (px-marketing-
+                                                               gstack /qa if       /ship)   skills)
+                                                               installed)
 
 Supporting skills:
   next-step                       → workspace-aware "what now?" guide (run anytime)
-  design-context-manager          → also feeds design-reviewer and review-panel
+  design-context-manager          → also feeds design-reviewer
   reference-ux                    → feeds design-context-manager (Path C) and design-spec-writer
-  design-manager-twin-creator     → produces twins for review-panel
   clarity-review                  → prose clarity gate for anything you publish (pairs with the humanizer peer)
 ```
 
@@ -430,9 +418,7 @@ px-skills/
 │   ├── design-context-manager/
 │   ├── design-spec-writer/
 │   ├── design-reviewer/
-│   ├── review-panel/         # 26 expert twins under twins/
 │   ├── reference-ux/
-│   ├── design-manager-twin-creator/
 │   └── clarity-review/
 ├── agent-instructions/
 │   ├── CLAUDE.md             # Stack-agnostic baseline (seed for ~/.claude/CLAUDE.md)

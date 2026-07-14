@@ -2,7 +2,7 @@
 
 ## PX Skills
 
-PX Skills (`px-skills`, installed at `~/.px-skills/`) is a product-experience pipeline: ten core Claude Code skills that take a product from a one-paragraph idea to a specced, designed, reviewed build, saving every decision as a file in the workspace. Skills are symlinked into `~/.claude/skills/` and loaded at user scope.
+PX Skills (`px-skills`, installed at `~/.px-skills/`) is a product-experience pipeline: nine core Claude Code skills that take a product from a one-paragraph idea to a specced, designed, reviewed build, saving every decision as a file in the workspace. Skills are symlinked into `~/.claude/skills/` and loaded at user scope.
 
 If unsure where to start, run `next-step` — it inspects the current workspace and tells you the one concrete next thing to do.
 
@@ -19,9 +19,8 @@ If unsure where to start, run `next-step` — it inspects the current workspace 
 | `design-context-manager` | Initialize/maintain product design context | Project setup, foundation changes, reverse-engineer a live site |
 | `design-spec-writer` | Generate design specs BEFORE coding | Starting new UI features |
 | `design-reviewer` | Review implemented UI for issues | After implementation, before PRs |
-| `review-panel` | Run expert design review panels (26 twins) | Multi-perspective design feedback |
 
-**Companions:** `reference-ux` (reverse-engineer a competitor's UX flow), `design-manager-twin-creator` (create new twins for review-panel), `clarity-review` (cold-reader test for standalone clarity — run on any prose before publishing).
+**Companions:** `reference-ux` (reverse-engineer a competitor's UX flow), `clarity-review` (cold-reader test for standalone clarity — run on any prose before publishing). Panel reviews (`review-panel`, expert twin simulations) and `design-manager-twin-creator` live in the separate Crit Club project; use them at the review step when installed.
 
 Every design skill loads curated taste references from `~/.px-skills/shared/design-taste/` (typography, color, spacing, motion, interaction, responsive, UX writing, anti-patterns — a snapshot originally from `pbakaus/impeccable`, evolved here). Treat these files as the bar for what good design looks like; reference them when generating or reviewing UI.
 

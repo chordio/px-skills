@@ -11,7 +11,7 @@
 # The block is optional context, not a requirement: skills are self-describing
 # (each SKILL.md's frontmatter is what the agent auto-invokes from), so the
 # bundle works with --no-claudemd. The block makes the agent more likely to
-# call the right skill at the right time across the 13-skill pipeline.
+# call the right skill at the right time across the pipeline.
 #
 # Source dir defaults to the directory containing this script, so running it
 # from a worktree swaps the live symlinks to that worktree. Re-run safely from
