@@ -130,16 +130,15 @@ There's no telemetry, so proxies: strangers filing install issues (evidence of r
 
 ## Launch checklist
 
-What still has to change between this document and the launch it describes. (Already done at the time of the latest revision: the `prfaq` skill exists; the bridge is deleted and the installer's footprint is symlinks plus one block; humanizer is a peer, not a fork; the marketing skills are extracted; the README carries this positioning.)
+What still has to change between this document and the launch it describes. (Already done at the time of the latest revision: the `prfaq` skill exists; the bridge is deleted and the installer's footprint is symlinks plus one block; humanizer is a peer, not a fork; the repo is renamed `px-skills`; the extracted marketing skills live in their own `px-marketing-skills` repo; `LICENSE` names Chordio, Inc.; the README carries this positioning.)
 
-1. Name the copyright holder in the top-level `LICENSE`; add the twins disclaimer and removal-on-request policy.
+1. Twins disclaimer and removal-on-request policy (review-panel + CONTRIBUTING).
 2. Community scaffolding: `CONTRIBUTING.md`, issue templates, and CI that lints the installer, the skill frontmatter, and links.
 3. Evals honesty pass: relabel claims, mark unimplemented rubrics, document how to reproduce a run, and update the app's old branding.
 4. Untrack the stray eval database file.
-5. Publish the px-marketing-skills bundle from the extracted skills (hero-builder, landing-page-builder, social-post-designer, image-generator).
-6. Rename the GitHub repo to `px-skills` (old links redirect).
-7. Multi-client support: the installer carries a per-client table (skills directory + `AGENTS.md`-family memory file) with Gemini CLI, Codex, Cursor, and Copilot rows gated; smoke-test each client, activate its row, then claim it in the README. Also add a sequential fallback to `review-panel`.
-8. Launch collateral: `social-post-designer` (px-marketing-skills) turns this PRFAQ into announcement posts, which then pass through the humanizer peer (with our house rules) and `clarity-review`.
+5. Multi-client support: the installer carries a per-client table (skills directory + `AGENTS.md`-family memory file) with Gemini CLI, Codex, Cursor, and Copilot rows gated; smoke-test each client, activate its row, then claim it in the README. Also add a sequential fallback to `review-panel`.
+6. Flip both repos public at launch.
+7. Launch collateral: `social-post-designer` (px-marketing-skills) turns this PRFAQ into announcement posts, which then pass through the humanizer peer (with our house rules) and `clarity-review`.
 
 ---
 
