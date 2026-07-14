@@ -170,10 +170,6 @@ cd ~/.px-skills
 bash install.sh --uninstall
 ```
 
-### Migrating from claude-design-skills
-
-If you previously installed this bundle under its old name (`chordio-design-skills` at `~/.claude-design-skills`, with a SessionStart bridge hook), re-running `bash install.sh` from the new checkout migrates automatically: it removes the old CLAUDE.md block, unregisters the bridge hook from `settings.json`, strips the patch blocks the bridge injected into gstack's skill files, removes stale symlinks for skills that moved out, and tells you when it's safe to delete the old checkout.
-
 ### Working in worktrees
 
 `install.sh` defaults its source to the directory containing the script. To swap your live install to point at a Conductor workspace or git worktree:
