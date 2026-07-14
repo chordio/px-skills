@@ -15,7 +15,7 @@ Reverse-engineer UX patterns from live products by browsing them. Output: a stru
 
 ## Design Taste References (read first)
 
-When characterizing what a competitor does well or poorly, judge against the references at `~/.claude-design-skills/shared/design-taste/`:
+When characterizing what a competitor does well or poorly, judge against the references at `~/.px-skills/shared/design-taste/`:
 
 - `anti-patterns.md` — note when the captured product violates these bans (helpful when the user wants to do better, not just copy)
 - `typography.md`, `color-and-contrast.md`, `spatial-design.md`, `interaction-design.md`, `responsive-design.md`, `ux-writing.md` — domain references for naming what you observe (e.g., "border-weight selection affordance" rather than "they used a border")
@@ -183,7 +183,7 @@ Characterize the overall approach:
 ### Cross-check against taste references
 
 For each notable pattern, ask:
-- Does it match or violate anything in `~/.claude-design-skills/shared/design-taste/anti-patterns.md`?
+- Does it match or violate anything in `~/.px-skills/shared/design-taste/anti-patterns.md`?
 - If it's an anti-pattern, note explicitly — the user may want to do the opposite
 - If it's an exemplar (e.g., principled spacing rhythm, restrained color, calibrated copy), name the underlying principle from the domain references
 

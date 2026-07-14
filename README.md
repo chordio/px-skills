@@ -1,99 +1,156 @@
-# Claude Design Skills
+# PX Skills
 
-A bundle of Claude Code skills for improving front-end UI design quality, plus curated design-taste reference material that grounds every skill.
+Nine agent skills for product experience design: they take a product from a one-paragraph idea to a specced, designed, reviewed build, saving every decision as a file in your project. Built and tested on Claude Code; the skill format is an open convention other agents read too — see [Portability](#portability).
+
+The pipeline is **artifact-driven** — each step writes a file, and the file is the next step's input. You don't need to remember the skill names; remember the artifacts. If you're ever lost, run `next-step` and it tells you the one concrete next thing to do.
 
 ## Skills
+
+**Core (the pipeline):**
 
 | Skill | Purpose | When to Use |
 |-------|---------|-------------|
 | **next-step** | Workspace-aware "what should I do next?" | Anytime you're unsure where to start |
 | **vet-idea** | Pressure-test an idea/feature/requirement with Elon's five-step first-principles algorithm (question → delete → optimize → speed up → automate) | Before researching or building anything — decide whether it should exist at all |
+| **prfaq** | Working-backwards gate: write the announcement (press release + FAQ) before implementation | After the idea survives vetting and research, before architecture or specs |
 | **product-researcher** | Research (concept / domain / target) — produces a research brief at every pipeline level | Before architecting, before speccing, or to flesh out a vague idea |
 | **product-architect** | Initiative-level: decompose product into features, define architecture | New product from a concept; multi-feature work |
 | **product-spec-writer** | Generate product specs (requirements) BEFORE design | Scoping a feature from research/insights |
-| **design-spec-writer** | Generate design specs BEFORE coding | Starting new UI features |
 | **design-context-manager** | Initialize/maintain product design context | Project setup, foundation changes, reverse-engineer a live site |
+| **design-spec-writer** | Generate design specs BEFORE coding | Starting new UI features |
 | **design-reviewer** | Review implemented UI for issues | After implementation, before PRs |
-| **review-panel** | Run expert design review panels (26 twins) | Multi-perspective design feedback |
-| **design-manager-twin-creator** | Create digital twins of design leaders | Capturing someone's critique style |
+
+**Companions (standalone, not counted in the pipeline):**
+
+| Skill | Purpose | When to Use |
+|-------|---------|-------------|
 | **reference-ux** | Reverse-engineer a competitor's UX flow | Studying how another product solves a problem |
-| **hero-builder** | Build striking hero sections | Landing page heroes, above-the-fold |
-| **landing-page-builder** | Build conversion-focused landing pages | Marketing sites, product homepages |
-| **image-generator** | Generate AI imagery (nano-banana / Veo) | Hero imagery, marketing visuals |
-| **social-post-designer** | Create social posts with AI visuals | Social content creation |
-| **humanizer** | Strip AI-writing tells from prose | Editing or reviewing any written text (standalone, not part of the design pipeline) |
 | **clarity-review** | Cold-reader test for standalone clarity (curse-of-knowledge defense) | After humanizer, before publishing any article, post, or landing page |
 
-All design skills load curated taste references from the canonical checkout at `~/.claude-design-skills/shared/design-taste/` — see [Design Taste References](#design-taste-references) below.
+Marketing-surface skills (hero sections, landing pages, social posts, AI imagery) live in the separate [px-marketing-skills](https://github.com/chordio/px-marketing-skills) bundle; the pipeline's announce step uses it when installed. Panel reviews (simulated expert twins) and twin creation live in Crit Club, a separate project, so no simulation of a real, named person ships in this repo; the review step uses them when installed.
+
+All design skills load curated taste references from the canonical checkout at `~/.px-skills/shared/design-taste/` — see [Design Taste References](#design-taste-references) below.
+
+## Recommended external skills
+
+PX Skills composes with a few external tools, each installed from its own source. All are optional; every PX skill runs without them. `bash install.sh --check` reports which peers are present and where to get the missing ones.
+
+| Peer | Where the pipeline uses it | Why you'd want it | Without it |
+|---|---|---|---|
+| [gstack](https://github.com/gstack/gstack) | Start of definition (`/office-hours` pressure-tests the idea before anything is built) and implementation time (`/qa`, `/design-review`, `/ship`) | Idea-locking up front; code quality, visual QA, and deployment at the end | Bring your own QA and ship process; the artifacts don't change |
+| [humanizer](https://github.com/blader/humanizer) | Any copy the pipeline produces: spec prose, UI text, announcements | Strips AI-writing tells; our additions layer on via [`shared/writing/humanizer-house-rules.md`](shared/writing/humanizer-house-rules.md) | Prose cleanup is manual |
+
+Nothing here patches, hooks, or edits other tools. `install.sh` symlinks the skills and maintains one documented block in your CLAUDE.md — that's the whole install footprint.
+
+### gstack
+
+[gstack](https://github.com/gstack/gstack) provides the browse, QA, design-review, and ship workflows the pipeline hands off to. The pipeline uses it at two points:
+
+- **Start of definition** — `/office-hours` runs YC-style forcing questions to lock a strong idea before any research or code. `vet-idea` (ours) covers the same gate without gstack.
+- **Implementation time** — `/qa`, `/design-review` (test-fix-verify loops), then `/ship`, `/land-and-deploy`, `/canary`.
+
+gstack's skills don't read PX artifacts natively. When handing off, tell them to read `./design-context/` and `~/.px-skills/shared/design-taste/` first — `next-step` includes this in its suggestions automatically.
+
+### humanizer
+
+[blader/humanizer](https://github.com/blader/humanizer) (MIT) removes AI-writing tells from prose. Install it from its own repo — it ships as a Claude Code plugin. Our additional rules (empty intensifiers, standalone interrogative fragments, a regression-check step, and more) live in [`shared/writing/humanizer-house-rules.md`](shared/writing/humanizer-house-rules.md); apply them whenever you run humanizer. The CLAUDE.md block tells the agent to do this automatically. Run our `clarity-review` after it: humanizer makes prose *clean* (no AI tells), clarity-review makes it *clear* (every reference resolves where it appears).
+
+### px-marketing-skills
+
+Marketing-surface skills — hero sections, landing pages, social posts, AI image generation — live in a separate bundle, [chordio/px-marketing-skills](https://github.com/chordio/px-marketing-skills), so the core stays focused (and key-free: image generation's bring-your-own-key requirement lives there, not here). The pipeline's announce step (11) uses its `social-post-designer` to turn your `prfaq.md` and `design-context/` into real launch content.
+
+### Crit Club
+
+Multi-perspective panel critique — a `review-panel` of expert twins (clearly labeled simulations of public design thinkers) plus a twin-creator — lives in Crit Club, a separate project. When installed, the review step (9) gains panel critique, which is cheapest run on design specs before anything is built.
 
 ## The Pipeline
 
-The product-design skills compose into an artifact-driven pipeline. **You don't need to remember the skill names** — each step produces a concrete file, and the file tells you what comes next. If you're ever lost, run `next-step` and it will tell you where you are.
-
 ```
-  [ concept paragraph ]
-            │
-            ▼
+  [ idea ]
+      │
+      ▼  gate: should this exist?
+  verdict                                            ◄── vet-idea  (or gstack's /office-hours)
+      │
+      ▼
   research-brief.md + wiki/                          ◄── product-researcher (concept or domain mode)
-            │
-            ▼
+      │
+      ▼  gate: can this be explained? (skippable)
+  prfaq.md                                           ◄── prfaq (the announcement, written first)
+      │
+      ▼
   product-brief.md + architecture.md + features.json ◄── product-architect
-            │
-            ▼  ── per feature ──────────────────────────────────────────┐
+      │
+      ▼  ── per feature ──────────────────────────────────────────┐
   features/{slug}/research/brief.md                  ◄── product-researcher (target mode)
-            │
-            ▼
+      │
+      ▼
   features/{slug}/specs/{name}/spec.md               ◄── product-spec-writer
-            │
-            ▼  ── once per product ────────────────────────────────────┐
+      │
+      ▼  ── once per product ────────────────────────────────────┐
   design-context/                                    ◄── design-context-manager
-            │
-            ▼  ── per feature ─────────────────────────────────────────┐
+      │
+      ▼  ── per feature ─────────────────────────────────────────┐
   features/{slug}/design-specs/{name}/spec.md        ◄── design-spec-writer
-            │
-            ▼
+      │
+      ▼
   built code                                         ◄── hand-implementation (Next.js + mocks, etc.)
-            │
-            ▼
-  polished + tested                                  ◄── /qa + /design-review
-            │
-            ▼
-  shipped                                            ◄── /ship + /land-and-deploy + /canary
+      │
+      ▼
+  reviewed + polished                                ◄── design-reviewer  (Crit Club's review-panel + gstack's /qa + /design-review if installed)
+      │
+      ▼
+  shipped                                            ◄── your ship process  (gstack's /ship + /land-and-deploy if installed)
+      │
+      ▼
+  announced (optional)                               ◄── social-post-designer (px-marketing-skills) reusing prfaq.md
 ```
 
 | Step | Artifact | Skill | Notes |
 |------|----------|-------|-------|
-| 0 | (in your head) | `/office-hours` *(optional)* | Pressure-test the idea with forcing questions |
+| 0 | Verdict: should this exist? | `vet-idea` *(optional gate)* | Kills ideas that shouldn't exist; gstack's `/office-hours` is an alternative |
 | 1 | `research-brief.md` + `wiki/` | `product-researcher` (concept or domain mode) | Initiative-level research |
-| 2 | `product-brief.md` + `architecture.md` + `features.json` + project scaffolds | `product-architect` | Decomposes into features + defines architecture |
-| 3 | `features/{feature}/research/brief.md` | `product-researcher` (target mode) | Per-feature deep research |
-| 4 | `features/{feature}/specs/{slug}/spec.md` | `product-spec-writer` | Per-feature requirements |
-| 5 | `design-context/` | `design-context-manager` | **Runs ONCE per product**, after specs, before any design-spec |
-| 6 | `features/{feature}/design-specs/{slug}/spec.{json,md}` | `design-spec-writer` | Per-feature UX spec, persisted to disk |
-| 7 | Built code | hand-implementation | No skill auto-generates multi-screen prototypes (yet) |
-| 8 | Polished + tested | `/qa` + `/design-review` | Iterative fix loops |
-| 9 | Shipped | `/ship` + `/land-and-deploy` + `/canary` | Workflow + post-deploy monitoring |
+| 2 | `prfaq.md` | `prfaq` *(skippable gate)* | The announcement, written before the work — kills ideas that can't be explained |
+| 3 | `product-brief.md` + `architecture.md` + `features.json` + project scaffolds | `product-architect` | Decomposes into features + defines architecture |
+| 4 | `features/{feature}/research/brief.md` | `product-researcher` (target mode) | Per-feature deep research |
+| 5 | `features/{feature}/specs/{slug}/spec.md` | `product-spec-writer` | Per-feature requirements |
+| 6 | `design-context/` | `design-context-manager` | **Runs ONCE per product**, after specs, before any design-spec |
+| 7 | `features/{feature}/design-specs/{slug}/spec.{json,md}` | `design-spec-writer` | Per-feature UX spec, persisted to disk |
+| 8 | Built code | hand-implementation | No skill auto-generates multi-screen prototypes (yet) |
+| 9 | Reviewed + polished | `design-reviewer` | Crit Club's `review-panel` adds multi-perspective critique, and gstack's `/qa` + `/design-review` add a test-fix-verify loop, if installed |
+| 10 | Shipped | your ship process | gstack's `/ship` + `/land-and-deploy` + `/canary` if installed |
+| 11 | Announced | `social-post-designer` (px-marketing-skills) | Reuses `prfaq.md` + `design-context/`; optional |
 
-**Single-feature projects** can skip steps 1-3 and start at step 4 (`product-spec-writer`). The scope guard in `product-spec-writer` will bounce you back to `product-architect` if the input is initiative-sized.
+**Single-feature projects** can skip steps 1-4 and start at step 5 (`product-spec-writer`). The scope guard in `product-spec-writer` will bounce you back to `product-architect` if the input is initiative-sized.
 
 **Lost?** Run `next-step` from your workspace and it will tell you exactly where you are and what to run next.
 
 ## Installation
 
-The supported install path is a one-time clone to a canonical location, then `bash install.sh` to symlink every skill into `~/.claude/skills/`. Updates are then a single `git pull` away — no re-copy needed.
+The supported install path is a one-time clone to a canonical location, then `bash install.sh`. Updates are then a single `git pull` away — no re-copy needed.
 
-`install.sh` does three things:
-1. Symlinks every skill into `~/.claude/skills/`
-2. Keeps a marker-fenced block in `~/.claude/CLAUDE.md` describing the bundle (see [CLAUDE.md block](#claudemd-block) below — opt out with `--no-claudemd`)
-3. If gstack is installed, registers a SessionStart hook that keeps gstack's design skills patched with chordio's taste references (see [gstack bridge](#gstack-bridge) below — opt out with `--no-bridge`)
+### What `install.sh` does, and why
 
-Keep the canonical checkout at `~/.claude-design-skills`: skills read shared taste references from `~/.claude-design-skills/shared/design-taste/`, so project-local copies are not supported.
+It does exactly two things, both inspectable and reversible:
+
+**1. Symlinks every skill** from the checkout into `~/.claude/skills/` (user scope, so the skills are available in every project you open). Symlinks rather than copies for one reason: the checkout stays the single source of truth. `git pull` updates your live install instantly, nothing drifts out of sync, and you can trial a branch by re-pointing the links from a worktree (`bash install.sh --force`), then point them back. `bash install.sh --check` shows exactly where every link points.
+
+**2. Maintains one marker-fenced block** in `~/.claude/CLAUDE.md`, between `<!-- BEGIN px-skills v1 -->` and `<!-- END px-skills -->`. Strictly speaking this block is optional: skills are self-describing, and supporting the format means the agent auto-invokes them from each `SKILL.md`'s own frontmatter — the bundle works with `--no-claudemd`. The block is an accuracy upgrade. With eleven skills forming one pipeline, a session-start summary makes the agent noticeably more likely to call the right skill at the right moment, and it carries cross-skill context no single frontmatter can:
+
+- the pipeline map — which skill feeds which, so "I have an idea" routes to `vet-idea` and research instead of straight to code
+- where the shared taste references live, and that design output is held to them
+- the peer handoff rules: what context to pass gstack skills (`design-context/`, taste refs), and to apply our house rules whenever the humanizer peer runs
+
+The block is replaced in place on every run — never duplicated, never touching anything outside its own markers — and `--uninstall` strips it cleanly. Its full content is one readable file in this repo: [`agent-instructions/px-block.md`](agent-instructions/px-block.md). (`CLAUDE.md` is Claude Code's name for the agent's global memory file; the `AGENTS.md`-family equivalents for other clients are on the roadmap — see [Portability](#portability).)
+
+Everything else is a *no*: no hooks, no `settings.json` edits, no background processes, no patches to other tools, no network calls.
+
+Keep the canonical checkout at `~/.px-skills`: skills read shared taste references from `~/.px-skills/shared/design-taste/`, so project-local copies are not supported.
 
 ### First-time install
 
 ```bash
-git clone <your-fork-url> ~/.claude-design-skills
-cd ~/.claude-design-skills
+git clone https://github.com/chordio/px-skills ~/.px-skills
+cd ~/.px-skills
 bash install.sh
 
 # Verify what's installed
@@ -103,7 +160,7 @@ bash install.sh --check
 ### Updating
 
 ```bash
-cd ~/.claude-design-skills
+cd ~/.px-skills
 git pull
 # Symlinks already point at the working tree — instantly current
 ```
@@ -111,7 +168,7 @@ git pull
 ### Removing
 
 ```bash
-cd ~/.claude-design-skills
+cd ~/.px-skills
 bash install.sh --uninstall
 ```
 
@@ -120,11 +177,11 @@ bash install.sh --uninstall
 `install.sh` defaults its source to the directory containing the script. To swap your live install to point at a Conductor workspace or git worktree:
 
 ```bash
-cd ~/conductor/workspaces/claude-design-skills/<workspace>
+cd ~/conductor/workspaces/px-skills/<workspace>
 bash install.sh --force      # Re-point symlinks at this worktree
 
 # When done experimenting:
-cd ~/.claude-design-skills
+cd ~/.px-skills
 bash install.sh --force      # Restore the main checkout
 ```
 
@@ -132,15 +189,15 @@ Run `bash install.sh --check` from anywhere to see which checkout each skill cur
 
 ### CLAUDE.md block
 
-`install.sh` also keeps a marker-fenced block in `~/.claude/CLAUDE.md` describing the bundle so Claude sees the skill list at session start:
+`install.sh` keeps a marker-fenced block in `~/.claude/CLAUDE.md` describing the bundle so Claude sees the skill list at session start:
 
 ```
-<!-- BEGIN chordio-design-skills v1 -->
-… block content (skill table, taste-refs pointer, gstack recommendation) …
-<!-- END chordio-design-skills -->
+<!-- BEGIN px-skills v1 -->
+… block content (skill table, taste-refs pointer, peers section) …
+<!-- END px-skills -->
 ```
 
-The exact content lives at `agent-instructions/chordio-block.md`. Idempotent: re-running install refreshes the block in place (byte-identical when nothing changed). Behaviour:
+The exact content lives at `agent-instructions/px-block.md`. Idempotent: re-running install refreshes the block in place (byte-identical when nothing changed). Behaviour:
 
 | Scenario | Behaviour |
 |---|---|
@@ -150,38 +207,21 @@ The exact content lives at `agent-instructions/chordio-block.md`. Idempotent: re
 | `--no-claudemd` | Skip the block install/refresh entirely. |
 | `--uninstall` | Strips the block in place; the rest of the file is untouched. |
 
-`agent-instructions/CLAUDE.md` is the stack-agnostic baseline used for seeding — operating-instructions preamble, API-key recovery guidance, and the Elon first-principles algorithm. No skill-specific or gstack-specific content; those come from the chordio marker block and from gstack's own `/setup-gbrain` block respectively. The two installers manage separate marker namespaces and don't touch each other's content.
+`agent-instructions/CLAUDE.md` is the stack-agnostic baseline used for seeding — operating-instructions preamble, API-key recovery guidance, and the Elon first-principles algorithm. Peer tools (like gstack) manage their own marker namespaces in the same file; the installers don't touch each other's content.
 
-### gstack bridge
+## Portability
 
-If [gstack](https://github.com/gstack/gstack) is installed alongside this bundle, `install.sh` also registers a Claude Code **SessionStart hook** that keeps gstack's design skills (`design-review`, `plan-design-review`, `design-consultation`, `design-shotgun`, `design-html`) patched with a small block telling them to load chordio's taste references first.
+The skill format — a folder with a `SKILL.md`, YAML frontmatter plus markdown instructions — is an open convention that multiple agents now read: Claude Code, Gemini CLI, OpenAI Codex, Cursor, GitHub Copilot, and others. Supporting the format means the client auto-invokes skills from their frontmatter descriptions, with no memory-file setup required. PX Skills is built and tested on Claude Code. What's Claude-specific today is shallow, and it's exactly three things:
 
-The bridge runs `bin/chordio-bridge` on every Claude session start and is fully idempotent:
+1. **The installer's targets** — `install.sh` already works from a per-client table (client → skills directory → global memory file). Only the Claude Code row is active; rows for Gemini CLI, Codex, Cursor, and Copilot are in the table, commented out, and each activates only after a smoke test on that client. Unverified paths shipped as fact would be worse than no support.
+2. **Sub-agent fan-out** — `clarity-review` runs its blind reader panel as parallel sub-agents, and documents a sequential fallback for hosts without that primitive.
+3. **Peer handoffs** — gstack is itself a Claude Code bundle, so on other clients steps 9-10 fall back to "use your own QA and ship process," which the pipeline already supports.
 
-| Scenario | Behavior |
-|---|---|
-| Fresh install | Patches the 5 gstack SKILL.md.tmpl files, writes state to `~/.claude-design-skills/.bridge-state` |
-| Re-run, nothing changed | No-op, silent |
-| `gstack-upgrade` regenerated a tmpl | Detects content hash drift, re-patches that target |
-| chordio bumps `BRIDGE_VERSION` | Re-patches all targets with the new block |
-| gstack not installed | Silent no-op, exit 0 |
-| `--quiet` and no patches needed | No output, no session interruption |
-
-Opt out at install time with `--no-bridge`. Inspect or troubleshoot manually:
-
-```bash
-~/.claude-design-skills/bin/chordio-bridge --check     # report state, no writes
-~/.claude-design-skills/bin/chordio-bridge --dry-run   # show would-patches
-~/.claude-design-skills/bin/chordio-bridge --force     # re-patch everything
-bash install.sh --check                                # symlink + bridge state
-bash install.sh --uninstall                            # removes hook AND symlinks
-```
-
-The injected block is marker-fenced (`<!-- BEGIN chordio-taste vN --> ... <!-- END chordio-taste -->`) so it's safe to detect, replace, or strip. Patches in gstack's `SKILL.md.tmpl` survive `bun run gen:skill-docs` because they're the input to that regen. Patches in the rendered `SKILL.md` are belt-and-suspenders — if gstack regenerates and clobbers them, the next SessionStart re-patches.
+The artifacts the pipeline writes — research briefs, `prfaq.md`, specs, `design-context/` — are plain files with no client coupling at all. Whatever agent reads them, the process comes along.
 
 ## Design Taste References
 
-`shared/design-taste/` contains curated design reference material vendored from [pbakaus/impeccable](https://github.com/pbakaus/impeccable) (Apache-2.0). Every design skill in this repo reads from these files as the bar for what good design looks like.
+`shared/design-taste/` contains curated design reference material — the bar every design skill holds output against.
 
 ```
 shared/design-taste/
@@ -193,34 +233,32 @@ shared/design-taste/
 ├── interaction-design.md    # Affordances, feedback, state changes
 ├── responsive-design.md     # Breakpoints, fluid scales
 ├── ux-writing.md            # Voice, error messages, calibrated copy
+├── heuristics-scoring.md    # Nielsen's 10 heuristics with severity rubric
 ├── NOTICE.md                # Apache-2.0 attribution
-└── .impeccable-commit       # Pinned upstream commit
+└── .impeccable-commit       # Upstream commit the snapshot was taken at
 ```
 
-To refresh from upstream impeccable:
-
-```bash
-cd ~/.claude-design-skills
-bash refresh-impeccable.sh
-```
-
-The script no-ops if you're already at the upstream HEAD. Otherwise it pulls the latest, reports what changed, and leaves the diff for you to review and commit. `anti-patterns.md` is curated (not auto-fetched) — re-derive manually if upstream's `skill/SKILL.md` "Absolute bans" section has evolved.
+The files were originally vendored from [pbakaus/impeccable](https://github.com/pbakaus/impeccable) (Apache-2.0), which builds on Anthropic's frontend-design skill. Upstream has since restructured its reference set, so this snapshot is **maintained and evolved here** — we vendor data, never behavior. Attribution and license details in [`shared/design-taste/NOTICE.md`](shared/design-taste/NOTICE.md).
 
 ## Skills Overview
 
 ### next-step
 
-Workspace-aware pipeline guide. Scans the current workspace to determine where you are in the pipeline and tells you the one concrete next thing to run. Use this when starting a session, onboarding a teammate, or anytime you ask "what should I do next?".
+Workspace-aware pipeline guide. Scans the current workspace to determine where you are in the pipeline and tells you the one concrete next thing to run — including the context to pass when a step hands off to a peer tool. Use this when starting a session, onboarding a teammate, or anytime you ask "what should I do next?".
 
 **Usage:** Run `next-step` from your workspace.
 
-### product-architect
+### vet-idea
 
-Initiative-level product planning. Takes a vague product concept (or existing research), researches the space, decomposes it into features, defines the shared architecture (IA, nav, user flows, shared patterns, cross-feature touchpoints), and scaffolds one project per feature.
+Pressure-test an idea, feature, or requirement with Elon's five-step first-principles algorithm: question the requirements → try to delete it → optimize → speed up → automate, in that order. The upstream gut-check that runs before research and design; a deleted idea is a successful run.
 
-**Output:** `product-brief.md`, `architecture.md`, `features.json` at workspace root; `features/{feature-slug}/` scaffolds with `frame.md` seeded from architecture.
+**Usage:** Describe the idea and ask to vet it. If it survives, hand off to `product-researcher` and `product-architect`.
 
-**Usage:** Run on a new product idea before any feature-level work. The architecture keeps independently-built features coherent.
+### prfaq
+
+Working-backwards gate: write the announcement before the work. Drafts a one-page press release + FAQ (Amazon PRFAQ style, via [PRDkit](https://github.com/ehudhal/PRDkit)'s artifact shape) for an idea that survived vetting and research — before any architecture, specs, or code. If the press release comes out mushy or an FAQ answer embarrasses you, the idea isn't ready to spec; that discovery is the point. Ends with a verdict: proceed, sharpen, or kill.
+
+**Output:** `prfaq.md` at workspace root (initiative) or `features/{slug}/prfaq.md` (feature). After shipping, the announce step reuses it for real launch content.
 
 ### product-researcher
 
@@ -230,10 +268,18 @@ Research producer for **every** pipeline level. Three modes auto-detected from i
 - **TARGET mode** — a specific product (URL, company, app name) → feature-gap brief
 
 **Outputs:**
-- Concept / Domain → `research-brief.md` + `wiki/` at workspace root → feeds `product-architect`
+- Concept / Domain → `research-brief.md` + `wiki/` at workspace root → feeds `prfaq` and `product-architect`
 - Target → `features/{feature}/research/brief.md` → feeds `product-spec-writer`
 
 **Usage:** Drop in an idea, a domain phrase, or a URL — the skill detects the mode and produces the right brief shape.
+
+### product-architect
+
+Initiative-level product planning. Takes a product concept (or existing research), researches the space, decomposes it into features, defines the shared architecture (IA, nav, user flows, shared patterns, cross-feature touchpoints), and scaffolds one project per feature.
+
+**Output:** `product-brief.md`, `architecture.md`, `features.json` at workspace root; `features/{feature-slug}/` scaffolds with `frame.md` seeded from architecture.
+
+**Usage:** Run on a new product idea before any feature-level work. The architecture keeps independently-built features coherent.
 
 ### product-spec-writer
 
@@ -242,6 +288,17 @@ Generate a structured product spec (requirements doc) from research briefs, user
 **Output:** `features/{feature}/specs/{spec-slug}/spec.{json,md}` (multi-feature) or `specs/{spec-slug}/spec.{json,md}` at workspace root (single-feature).
 
 **Usage:** Ask Claude to write a product spec when you have research or a problem statement and need to scope the feature before design.
+
+### design-context-manager
+
+Initialize and maintain design context files that ground all design decisions.
+
+**Three paths:**
+- **Path A — Extraction**: scan tailwind config, CSS variables, components to extract from an existing codebase
+- **Path B — Interactive**: questionnaire-driven for new projects with no existing patterns
+- **Path C — Live URL**: point at a live site and reverse-engineer its design system via browser automation
+
+**Outputs:** `brand.md`, `colors.md`, `typography.md`, `layout.md`, `components.md`, `logo.md`, `design-tokens.json` (W3C format), `product-context.md`, `user-journeys.md` — all under `design-context/` in your project root.
 
 ### design-spec-writer
 
@@ -255,17 +312,6 @@ Generate UX design specifications BEFORE implementing UI features.
 - Avoids "AI slop" patterns via `shared/design-taste/anti-patterns.md`
 
 **Usage:** Ask Claude to generate a design spec for your feature. If `design-context/` exists, it grounds the spec.
-
-### design-context-manager
-
-Initialize and maintain design context files that ground all design decisions.
-
-**Three paths:**
-- **Path A — Extraction**: scan tailwind config, CSS variables, components to extract from an existing codebase
-- **Path B — Interactive**: questionnaire-driven for new projects with no existing patterns
-- **Path C — Live URL**: point at a live site and reverse-engineer its design system via browser automation (`/browse`, Browser Use, Playwright, or Puppeteer)
-
-**Outputs:** `brand.md`, `colors.md`, `typography.md`, `layout.md`, `components.md`, `logo.md`, `design-tokens.json` (W3C format), `product-context.md`, `user-journeys.md` — all under `design-context/` in your project root.
 
 ### design-reviewer
 
@@ -285,55 +331,17 @@ node ~/.claude/skills/design-reviewer/scripts/screenshot.js 375 667 mobile.png
 node ~/.claude/skills/design-reviewer/scripts/screenshot.js 1440 900 desktop.png
 ```
 
-### review-panel
-
-Assemble and run expert design review panels with 2-4 specialists for multi-perspective critique. Includes 26 pre-built expert twins (Jony Ive, Julie Zhuo, Brad Frost, Edward Tufte, Teresa Torres, April Dunford, Bob Moesta, and more). Synthesis cross-references `shared/design-taste/anti-patterns.md`.
-
-**Usage:** Share a design (Figma URL, image, or description). Claude selects appropriate experts based on design type and runs parallel reviews.
-
-### design-manager-twin-creator
-
-Create digital twins of design managers and leaders by analyzing their feedback patterns and conducting structured interviews. Created twins drop into `review-panel/twins/` for use in panel reviews.
-
-**Usage:** Provide examples of someone's feedback (Figma comments, Slack threads, review transcripts) and/or conduct an interview. The skill generates a reusable twin profile.
-
 ### reference-ux
 
 Capture and reverse-engineer UX patterns from live products. Point at any URL — the skill browses the experience on desktop + mobile, captures screenshots, and produces a structured UX reference document covering flow architecture, interaction patterns, layout templates, copy/tone, design tokens, responsive adaptations, and design principles.
 
-**Output:** `docs/references/<slug>/reference.md` + `screenshots/` (when in a git repo), or `~/.gstack/projects/<slug>/references/<slug>/` otherwise.
+**Output:** `docs/references/<slug>/reference.md` + `screenshots/` (when in a git repo).
 
 **Usage:** `Reference Stripe's pricing flow` — Claude navigates, captures, analyzes, and documents.
 
-### hero-builder
-
-Build hero sections that stop the scroll. Outputs production-ready React/Next.js with curated visual effects (atmospheric, typographic, interactive, cinematic, product). Refuses the hero-metric template, gradient text, glassmorphism-as-default, and other slop patterns flagged in `shared/design-taste/anti-patterns.md`.
-
-**Required Inputs:** Brand package (`style.md`, `tokens.json`, `logo/`) + hero brief (core promise, audience, mood).
-
-### landing-page-builder
-
-Build conversion-focused landing pages with exceptional visual storytelling. Section types: Hero → Problem → Solution → Benefits → How It Works → Social Proof → FAQ → Final CTA. Sub-agents handle image generation in parallel.
-
-**Required Inputs:** Brand package + product brief (what/who/problem/solution/differentiation/features/social proof/objections).
-
-### image-generator
-
-Generate AI imagery via nano-banana (images) and Veo (video) with detailed prompts tuned to brand aesthetic. Used by hero-builder and landing-page-builder as a sub-agent for parallel image generation.
-
-### social-post-designer
-
-Create high-converting social media posts with AI-generated visuals across LinkedIn, Twitter/X, Instagram, TikTok, and Facebook. Supports text-only, image, carousel, and video formats. Generates copy and detailed visual prompts for image/video generators.
-
-### humanizer
-
-Remove signs of AI-generated writing to make prose sound human. A standalone writing skill, not part of the product-design pipeline: it detects and fixes 35 patterns drawn from Wikipedia's "Signs of AI writing" guide (significance inflation, em/en dashes, rule-of-three, AI vocabulary, empty intensifiers, filler, and more), then runs a draft → audit → regression-check → final loop. Forked from [blader/humanizer](https://github.com/blader/humanizer) and maintained here with our own additions.
-
-**Usage:** Ask Claude to humanize a piece of text, optionally providing a sample of your own writing for voice matching.
-
 ### clarity-review
 
-Verify a piece reads clearly to someone arriving with no context — the curse-of-knowledge defect that de-slopping and structural passes both miss. A standalone writing skill and the sibling to humanizer: humanizer makes prose *clean* (no AI tells), clarity-review makes it *clear* (every reference resolves where it appears). It slices a piece into reveal levels (dek/headline only → +intro → full), dispatches a panel of deliberately blind cold-reader sub-agents that see only the text and are forced to answer strictly from it (default NOT ESTABLISHED), and probes each load-bearing entity ("the map", coined terms, the dek's claims) for whether it resolves at the level where it first appears. Adds an informed given-new linear read and a dek/title audit. Diagnoses and classifies; it does not rewrite.
+Verify a piece reads clearly to someone arriving with no context — the curse-of-knowledge defect that de-slopping and structural passes both miss. The sibling to the humanizer peer: humanizer makes prose *clean* (no AI tells), clarity-review makes it *clear* (every reference resolves where it appears). It slices a piece into reveal levels, dispatches a panel of deliberately blind cold-reader sub-agents, and probes each load-bearing entity for whether it resolves where it first appears. Diagnoses and classifies; it does not rewrite.
 
 **Usage:** Ask Claude to run a clarity review on an article, post, landing page, or any publication (a file path or pasted draft). Run it after humanizer.
 
@@ -341,24 +349,26 @@ Verify a piece reads clearly to someone arriving with no context — the curse-o
 
 ```
 Main pipeline (chronological):
-product-researcher (concept/domain) → product-architect (initiative)
-                                              ↓
-                                      product-researcher (target, per feature)
-                                              ↓
-                                      product-spec-writer (per feature)
-                                              ↓
-                                      design-context-manager (ONCE, project-wide)
-                                              ↓
-                                      design-spec-writer (per feature)
-                                              ↓
-                                      build → /qa + /design-review → /ship
+vet-idea → product-researcher (concept/domain) → prfaq → product-architect
+                                                              ↓
+                                                      product-researcher (target, per feature)
+                                                              ↓
+                                                      product-spec-writer (per feature)
+                                                              ↓
+                                                      design-context-manager (ONCE, project-wide)
+                                                              ↓
+                                                      design-spec-writer (per feature)
+                                                              ↓
+                                                      build → design-reviewer → ship → announce
+                                                              (Crit Club panel +  (gstack  (px-marketing-
+                                                               gstack /qa if       /ship)   skills)
+                                                               installed)
 
 Supporting skills:
   next-step                       → workspace-aware "what now?" guide (run anytime)
-  design-context-manager          → also feeds design-reviewer, review-panel, hero/landing-page builders
+  design-context-manager          → also feeds design-reviewer
   reference-ux                    → feeds design-context-manager (Path C) and design-spec-writer
-  design-manager-twin-creator     → produces twins for review-panel
-  image-generator                 → sub-agent for hero-builder, landing-page-builder, social-post-designer
+  clarity-review                  → prose clarity gate for anything you publish (pairs with the humanizer peer)
 ```
 
 **Progressive Enhancement:**
@@ -388,41 +398,35 @@ design-context/
 ## Repository Structure
 
 ```
-claude-design-skills/
+px-skills/
 ├── README.md
 ├── LICENSE
-├── install.sh                # Symlink installer + gstack bridge hook
-├── refresh-impeccable.sh     # Re-fetch upstream design references
-├── bin/
-│   └── chordio-bridge        # SessionStart hook: patches gstack design skills
+├── install.sh                # Symlink installer (symlinks + CLAUDE.md block, nothing else)
 ├── docs/
-│   └── augmentation-plan.md  # Plan for the design-taste augmentation
+│   ├── PRFAQ.md              # The working-backwards PRFAQ for this repo's own launch
+│   └── augmentation-plan.md  # Historical design doc
 ├── shared/
-│   └── design-taste/         # Vendored impeccable refs (Apache-2.0)
+│   ├── design-taste/         # Curated taste references (Apache-2.0 snapshot, evolved here)
+│   └── writing/              # humanizer-house-rules.md (our layer on the humanizer peer)
 ├── skills/
 │   ├── next-step/
+│   ├── vet-idea/
+│   ├── prfaq/
 │   ├── product-researcher/
 │   ├── product-architect/
 │   ├── product-spec-writer/
 │   ├── design-context-manager/
 │   ├── design-spec-writer/
 │   ├── design-reviewer/
-│   ├── review-panel/         # 26 expert twins under twins/
-│   ├── design-manager-twin-creator/
 │   ├── reference-ux/
-│   ├── hero-builder/
-│   ├── landing-page-builder/
-│   ├── image-generator/
-│   ├── social-post-designer/
-│   ├── humanizer/             # Standalone writing skill (AI-tell removal)
-│   └── clarity-review/        # Standalone writing skill (cold-reader clarity test)
+│   └── clarity-review/
 ├── agent-instructions/
 │   ├── CLAUDE.md             # Stack-agnostic baseline (seed for ~/.claude/CLAUDE.md)
-│   └── chordio-block.md      # Marker-fenced block installed into ~/.claude/CLAUDE.md
-├── evals/                    # Test framework
+│   └── px-block.md           # Marker-fenced block installed into ~/.claude/CLAUDE.md
+├── evals/                    # Eval harness (with-skill vs baseline comparisons)
 └── examples/                 # Example design-context output
 ```
 
 ## License
 
-MIT for code in this repo. Vendored material under `shared/design-taste/` is Apache-2.0 — see `shared/design-taste/NOTICE.md` for attribution to pbakaus/impeccable and (transitively) Anthropic's frontend-design skill.
+MIT for code in this repo. The taste-reference snapshot under `shared/design-taste/` is Apache-2.0 — see `shared/design-taste/NOTICE.md` for attribution to pbakaus/impeccable and (transitively) Anthropic's frontend-design skill.

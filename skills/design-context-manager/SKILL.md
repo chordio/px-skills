@@ -49,7 +49,7 @@ Invoke this skill after:
 
 ## Design Taste References
 
-The vendored references at `~/.claude-design-skills/shared/design-taste/` define what a complete, high-quality design system looks like. When extracting (Path A) or interviewing (Path B), use them as the **completeness bar** — does the design system you're producing have well-reasoned positions on each of these domains?
+The vendored references at `~/.px-skills/shared/design-taste/` define what a complete, high-quality design system looks like. When extracting (Path A) or interviewing (Path B), use them as the **completeness bar** — does the design system you're producing have well-reasoned positions on each of these domains?
 
 - `typography.md` — type scale, weights, line length, OpenType features
 - `color-and-contrast.md` — color strategy (Restrained / Committed / Full palette / Drenched), OKLCH, tinted neutrals
@@ -154,8 +154,8 @@ Use when the user has a live site — their own production site, a competitor fo
    | Fonts | `document.fonts` entries; `@font-face` rules in stylesheets; `<link>` font CDN URLs |
 
 4. **Reverse-engineer the system** — given the harvested values:
-   - Cluster colors into semantic groups (Restrained / Committed / Full palette / Drenched — see `~/.claude-design-skills/shared/design-taste/color-and-contrast.md` for the framework)
-   - Identify the type scale by deduplicating font-size values; check if ratios are consistent (≥1.25 between steps — see `~/.claude-design-skills/shared/design-taste/typography.md`)
+   - Cluster colors into semantic groups (Restrained / Committed / Full palette / Drenched — see `~/.px-skills/shared/design-taste/color-and-contrast.md` for the framework)
+   - Identify the type scale by deduplicating font-size values; check if ratios are consistent (≥1.25 between steps — see `~/.px-skills/shared/design-taste/typography.md`)
    - Identify the spacing scale by deduplicating padding/margin values; find the base unit (commonly 4 or 8)
    - Note container max-widths from layout shifts
 

@@ -1,7 +1,7 @@
 <!--
-Stack-independent CLAUDE.md baseline for users of claude-design-skills.
+Stack-independent CLAUDE.md baseline for users of px-skills.
 Drop this into ~/.claude/CLAUDE.md as a starting point. Installers like
-chordio-design-skills (this repo) and gstack append their own marker-fenced
+px-skills (this repo) and gstack append their own marker-fenced
 blocks below when installed; they coexist without touching each other's content.
 -->
 

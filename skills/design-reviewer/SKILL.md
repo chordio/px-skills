@@ -17,7 +17,7 @@ Use this skill AFTER implementing UI features:
 
 ## Design Taste References (read first)
 
-Before reviewing, read the relevant references from `~/.claude-design-skills/shared/design-taste/`. They define what good looks like — your job is to compare implementation against this bar.
+Before reviewing, read the relevant references from `~/.px-skills/shared/design-taste/`. They define what good looks like — your job is to compare implementation against this bar.
 
 - `anti-patterns.md` — bans to flag (side-stripe borders, gradient text, glassmorphism as default, hero-metric template, identical card grids, em dashes, dark-as-default reflex, AI slop)
 - `typography.md` — scale, weight contrast, line length (use during Typography review lens)
@@ -135,7 +135,7 @@ If `design-context/` exists in the project, load relevant files:
 
 ### Severity Classification
 
-See `references/severity-guide.md` for classification criteria. For Nielsen-heuristics-based severity grading (0–4 per heuristic), also reference `~/.claude-design-skills/shared/design-taste/heuristics-scoring.md` — a 0 or 1 on a heuristic typically justifies **Major** or **Critical**; 2 → **Minor**; 3–4 → no issue.
+See `references/severity-guide.md` for classification criteria. For Nielsen-heuristics-based severity grading (0–4 per heuristic), also reference `~/.px-skills/shared/design-taste/heuristics-scoring.md` — a 0 or 1 on a heuristic typically justifies **Major** or **Critical**; 2 → **Minor**; 3–4 → no issue.
 
 | Severity | Description | Heuristic score (approx) |
 |----------|-------------|--------------------------|
