@@ -76,15 +76,26 @@ Sentence *shapes* that fail a cold reader regardless of content. Flag every
 instance in marketing copy (site, deks, headings, publications); classify as
 `banned-form`.
 
-- **"What …" fragments.** A free-relative clause punctuated as a standalone
-  declarative sentence: "What measurement is worth." "What it measures."
-  "What you get." A cold reader starts parsing a question and hits a period —
-  the sentence garden-paths, and the form is a stock AI-marketing kicker
-  besides. Common in headings, where it costs the most (L0/L1). The fix is not
-  to prepend "Here is…"; state the content directly ("Measurement pays for
-  itself when…", "It measures the experience the model ships.") or, rarely, use
-  a real question the next sentence answers. (Humanizer §35 is the same rule on
-  the clean axis.)
+- **Interrogative-word fragments.** A free-relative clause opening with *any*
+  interrogative word — *what*, *where*, *when*, *how*, *why*, *who*, *which*,
+  *whose* — punctuated as a standalone declarative sentence: "What measurement is
+  worth." "What it measures." "Where the model fits." "Where it breaks down."
+  "When measurement pays off." "How a wrong score happens." "How the score holds
+  up." "Why the number moves." "Who checks the checker." "Which model wins." A
+  cold reader starts parsing a question and hits a period — the sentence
+  garden-paths, and the form is a stock AI-marketing kicker besides. Common in
+  headings, where it costs the most (L0/L1). The fix is not to prepend "Here
+  is…"; state the content directly ("Measurement pays for itself when…", "It
+  measures the experience the model ships.", "The model fits the pipeline at code
+  review.", "A wrong score starts in one of four places.") or, rarely, use a real
+  question the next sentence answers.
+  **In a section heading the ban is absolute: a heading may never open with an
+  interrogative word, fragment or complete sentence.** Headings are skim surfaces
+  read out of order, so even a well-formed "What matters is the coverage"
+  garden-paths on first scan and reads as the stock AI kicker; rewrite so the
+  first word is not one of these ("Coverage is what matters."). (A genuine yes/no
+  question opening with an auxiliary — "Can the model tell?" — is outside this
+  list and allowed.) (Humanizer §35 is the same rule on the clean axis.)
 
 ## Defect classes (locked vocabulary)
 
