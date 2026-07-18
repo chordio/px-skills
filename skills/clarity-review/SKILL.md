@@ -118,9 +118,12 @@ the slice. Ignorance is the instrument.
      (the `good` in "good benchmarks") is a defect — it imports an axis and dilutes
      the promise. Confirm the dek states the *contribution* in language the body delivers.
    - **Banned-forms sweep:** flag every sentence matching the rubric's *Banned
-     sentence forms* list — currently standalone "What …" fragments ("What
-     measurement is worth.", "What it measures."), which hit headings and deks
-     hardest. Classify as `banned-form`.
+     sentence forms* list — standalone interrogative-word fragments opening with
+     *any* question word (what, where, when, how, why, who, which, whose): "What
+     measurement is worth.", "Where the model fits.", "When measurement pays
+     off.", "How a wrong score happens." — which hit headings and deks hardest.
+     In a **section heading** the ban is absolute: flag any interrogative-word
+     opener, fragment or complete sentence. Classify as `banned-form`.
 
 5. **Synthesize by consensus.** An entity the **majority** of the panel marks
    `NOT ESTABLISHED` at the level where it appears is a confirmed defect; a lone
